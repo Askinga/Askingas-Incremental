@@ -2,3 +2,6 @@ body{
   background-color: rgb(255,255,0);
     transition: all 0.3s;
 }
+#button{
+  postition: absolute;
+}
