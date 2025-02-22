@@ -1,7 +1,9 @@
 body{
-  background-color: rgb(255,255,0);
+  background-color: rgb(200,123,34);
     transition: all 0.3s;
 }
 #button{
   postition: absolute;
+  width: 30px;
+  height: 20px;
 }
