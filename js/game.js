@@ -9,11 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function incrementClick() {
     let currentClicks = new Decimal(parseFloat(clickElement.innerHTML));
-    if (up1bought && up1bought.gte(1)) clickMulti = clickMulti.times(2);
+    if (up1bought && up1bought.gte(1)) clickMulti = 2;
     if (isNaN(currentClicks)) {
       currentClicks = new Decimal(0);
     }
-    clickElement.innerHTML = currentClicks.add(clickMulti).toString();
+    clickElement.innerHTML = currentClicks + clickMulti;
   }
 
   function saveGameState() {
