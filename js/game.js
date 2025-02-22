@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
-
+  const clickMulti = new Decimal(1);
+  
   if (!clickElement) {
     console.error('Click element not found');
     return;
@@ -8,10 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function incrementClick() {
   let currentClicks = parseFloat(clickElement.innerHTML);
+  if(up1bought.gte(1)) clickMulti = clickMulti.times(2);
   if (isNaN(currentClicks)) {
     currentClicks = 0;
   }
-  clickElement.innerHTML = currentClicks + 1;
+  clickElement.innerHTML = currentClicks.add(clickMulti);
   }
 
   function saveGameState() {
