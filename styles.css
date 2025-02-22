@@ -15,3 +15,7 @@ body{
   transition-timing-function: ease-out;
   cursor: pointer;
 }
+
+.click-button:activate{
+  transform: scale(1.2)
+}
