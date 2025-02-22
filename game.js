@@ -7,6 +7,6 @@ function Click(){
 }
 
 function displayText() {
-  var text = 'You have ' format(player.clicks) + ' Clicks'
+  var text = 'You have ' format(player.clicks) + ' Clicks';
   text.style.display = "block";
 }
