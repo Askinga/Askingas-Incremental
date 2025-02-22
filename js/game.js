@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
   let clickMulti = new Decimal(1); // Ensure Decimal is imported
+  let up1bought = 0; // Move this line above its usage
 
   if (!clickElement) {
     console.error('Click element not found');
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isNaN(currentClicks)) {
       currentClicks = new Decimal(0);
     }
-    clickElement.innerHTML = currentClicks + clickMulti;
+    clickElement.innerHTML = currentClicks.plus(clickMulti); // Use Decimal arithmetic
   }
 
   function saveGameState() {
@@ -49,36 +50,33 @@ document.addEventListener('DOMContentLoaded', () => {
   // Autosave the game state every 5 seconds
   setInterval(saveGameState, 5000);
 
-  let up1bought = 0;
-
-function saveUpgradeState() {
-  try {
-    localStorage.setItem('up1bought', up1bought);
-  } catch (e) {
-    console.error('Failed to save upgrade state', e);
-  }
-}
-
-function loadUpgradeState() {
-  try {
-    const savedUp1bought = localStorage.getItem('up1bought');
-    if (savedUp1bought !== null) {
-      up1bought = parseInt(savedUp1bought);
+  function saveUpgradeState() {
+    try {
+      localStorage.setItem('up1bought', up1bought);
+    } catch (e) {
+      console.error('Failed to save upgrade state', e);
     }
-  } catch (e) {
-    console.error('Failed to load upgrade state', e);
   }
-}
 
-function buyUpgrade1() {
-  if (up1bought < 1 && parseInt(clickElement.innerHTML) >= 75) {
-    up1bought += 1;
-    clickElement.innerHTML = parseInt(clickElement.innerHTML) - 75;
-    saveUpgradeState();  // Add this line to save the upgrade state
+  function loadUpgradeState() {
+    try {
+      const savedUp1bought = localStorage.getItem('up1bought');
+      if (savedUp1bought !== null) {
+        up1bought = parseInt(savedUp1bought);
+      }
+    } catch (e) {
+      console.error('Failed to load upgrade state', e);
+    }
   }
-}
 
-// Call loadGameState2 when the game starts
-loadUpgradeState();
-  
+  function buyUpgrade1() {
+    if (up1bought < 1 && parseInt(clickElement.innerHTML) >= 75) {
+      up1bought += 1;
+      clickElement.innerHTML = parseInt(clickElement.innerHTML) - 75;
+      saveUpgradeState();
+    }
+  }
+
+  // Call loadUpgradeState when the game starts
+  loadUpgradeState();
 });
