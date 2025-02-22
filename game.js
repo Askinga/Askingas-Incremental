@@ -1,4 +1,4 @@
-let clicks = document.querySelector(.clicks)
+let clicks = document.querySelector('.clicks')
 }
 
 function Click(){
