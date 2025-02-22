@@ -10,3 +10,4 @@ function displayText() {
   var text = 'You have ' format(player.clicks) + ' Clicks';
   text.style.display = "block";
 }
+
