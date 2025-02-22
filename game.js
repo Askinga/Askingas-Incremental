@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function incrementClick() {
     clickElement.innerHTML = parseFloat(clickElement.innerHTML) + 1;
   }
+	function save(){}
+
+  function load(){}
 
   document.querySelector('.click-button').addEventListener('click', incrementClick);
 });
