@@ -1,5 +1,5 @@
-let click = document.querySelector('.clicks');
+let clickElement = document.querySelector('.clicks');
 
-function click() {
-  click.innerHTML = parseFloat(click.innerHTML) + 1;
+function incrementClick() {
+  clickElement.innerHTML = parseFloat(clickElement.innerHTML) + 1;
 };
