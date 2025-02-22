@@ -51,3 +51,12 @@ body{
   transform: scale(1.06);
   transition-timing-function: ease-out;
 }
+
+/* Upgrade 1 styles */
+.upgrade.requirements-met {
+  background-color: yellow;
+}
+
+.upgrade.bought {
+  background-color: green;
+}
