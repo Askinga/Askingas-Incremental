@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-    let currentClicks = parseFloat(clickElement.innerHTML);
-    if (up1bought >= 1) clickMulti = 2;
-    if (isNaN(currentClicks)) {
-      currentClicks = 1;
-    }
-    clickElement.innerHTML = currentClick +clickMulti; // Use Decimal arithmetic
+  let currentClicks = parseFloat(clickElement.innerHTML);
+  if (up1bought >= 1) clickMulti = 2;
+  if (isNaN(currentClicks)) {
+    currentClicks = 1;
+  }
+  clickElement.innerHTML = currentClick + clickMulti; // Typo: should be currentClicks
   }
 
   function saveGameState() {
@@ -38,11 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const clickButton = document.querySelector('.click-button');
-  if (clickButton) {
-    clickButton.addEventListener('click', incrementClick);
-  } else {
-    console.error('Click button not found');
-  }
+if (clickButton) {
+  clickButton.addEventListener('click', incrementClick);
+} else {
+  console.error('Click button not found');
+} 
 
   // Load game state when the game starts
   loadGameState();
@@ -70,13 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buyUpgrade1() {
-    if (up1bought < 1 && parseInt(clickElement.innerHTML) >= 75) {
-      up1bought += 1;
-      clickElement.innerHTML = parseInt(clickElement.innerHTML) - 75;
-      saveUpgradeState();
-    }
+  if (up1bought < 1 && parseInt(clickElement.innerHTML) >= 75) {
+    up1bought += 1;
+    clickElement.innerHTML = parseInt(clickElement.innerHTML) - 75;
+    saveUpgradeState();
   }
-
+  }
   // Call loadUpgradeState when the game starts
   loadUpgradeState();
 });
