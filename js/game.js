@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
+  const clickButton = document.querySelector('.click-button');
   let clickMulti = new Decimal(1); // Ensure Decimal is imported
-  
+  let up1bought = 0;
 
   if (!clickElement) {
     console.error('Click element not found');
+    return;
+  }
+
+  if (!clickButton) {
+    console.error('Click button not found');
     return;
   }
 
@@ -28,20 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  const clickButton = document.querySelector('.click-button');
-if (clickButton) {
-  clickButton.addEventListener('click', incrementClick);
-} else {
-  console.error('Click button not found');
-} 
-
-  // Load game state when the game starts
-  loadGameState();
-
-  // Autosave the game state every 5 seconds
-  setInterval(saveGameState, 5000);
-
-  let up1bought = 0; // Move this line above its usage
   function saveUpgradeState() {
     try {
       localStorage.setItem('up1bought', up1bought);
@@ -49,15 +41,6 @@ if (clickButton) {
       console.error('Failed to save upgrade state', e);
     }
   }
-
-  function incrementClick() {
-  let currentClicks = parseFloat(clickElement.innerHTML);
-  if (up1bought >= 1) clickMulti = 2;
-  if (isNaN(currentClicks)) {
-    currentClicks = 1;
-  }
-  clickElement.innerHTML = currentClicks + clickMulti; // Typo: should be currentClicks
-    }
 
   function loadUpgradeState() {
     try {
@@ -70,13 +53,29 @@ if (clickButton) {
     }
   }
 
+  function incrementClick() {
+    let currentClicks = parseFloat(clickElement.innerHTML);
+    if (up1bought >= 1) clickMulti = 2;
+    if (isNaN(currentClicks)) {
+      currentClicks = 1;
+    }
+    clickElement.innerHTML = currentClicks + clickMulti;
+  }
+
   function buyUpgrade1() {
-  if (up1bought < 1 && parseInt(clickElement.innerHTML) >= 75) {
-    up1bought += 1;
-    clickElement.innerHTML = parseInt(clickElement.innerHTML) - 75;
-    saveUpgradeState();
+    if (up1bought < 1 && parseInt(clickElement.innerHTML) >= 75) {
+      up1bought += 1;
+      clickElement.innerHTML = parseInt(clickElement.innerHTML) - 75;
+      saveUpgradeState();
+    }
   }
-  }
-  // Call loadUpgradeState when the game starts
+
+  clickButton.addEventListener('click', incrementClick);
+
+  // Load game state and upgrade state when the game starts
+  loadGameState();
   loadUpgradeState();
+
+  // Autosave the game state every 5 seconds
+  setInterval(saveGameState, 5000);
 });
