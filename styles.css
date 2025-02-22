@@ -35,3 +35,17 @@ body{
   font-family: inherit;
   border-radius: 6px;
 }
+
+.upgrade{
+  color: red;
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  display: flex;
+}
+
+.upgrade:hover{
+  transition: transform 0.5s;
+  transform: scale(1.1);
+  transition-timimg-function: ease-out;
+}
