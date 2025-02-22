@@ -1,5 +1,5 @@
-let clicks = document.querySelector('.clicks')
 
-function Click(){
-  clicks.innerHTML = parseFloat(clicks.innerHTML) + 1
-}
+document.querySelector('.clicks').addEventListener('click', () => {
+  const clicks = document.querySelector('.clicks');
+  clicks.innerHTML = parseFloat(clicks.innerHTML) + 1;
+});
