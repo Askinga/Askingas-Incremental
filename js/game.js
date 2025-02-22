@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function incrementClick() {
     let currentClicks = new Decimal(parseFloat(clickElement.innerHTML));
-    if (up1bought && up1bought.gte(1)) clickMulti = 2;
+    if (up1bought >= 1) clickMulti = 2;
     if (isNaN(currentClicks)) {
       currentClicks = new Decimal(0);
     }
