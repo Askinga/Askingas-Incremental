@@ -49,5 +49,5 @@ body{
 .upgrade:hover{
   transition: transform 0.5s;
   transform: scale(1.06);
-  transition-timimg-function: ease-out;
+  transition-timing-function: ease-out;
 }
