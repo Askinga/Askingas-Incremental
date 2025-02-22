@@ -3,23 +3,20 @@ import Decimal from 'decimal.js';
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
   const clickButton = document.querySelector('.click-button');
+  const CLICK_STORAGE_KEY = 'clicks';
+  const UPGRADE1_STORAGE_KEY = 'up1bought';
   let clickMulti = 1;
   let up1bought = 0;
 
-  if (!clickElement) {
-    console.error('Click element not found');
-    return;
-  }
-
-  if (!clickButton) {
-    console.error('Click button not found');
+  if (!clickElement || !clickButton) {
+    console.error('Required DOM elements not found');
     return;
   }
 
   function saveGameState() {
     try {
       const clicks = clickElement.innerHTML;
-      localStorage.setItem('clicks', clicks);
+      localStorage.setItem(CLICK_STORAGE_KEY, clicks);
     } catch (e) {
       console.error('Failed to save game state', e);
     }
@@ -27,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function loadGameState() {
     try {
-      const clicks = localStorage.getItem('clicks');
+      const clicks = localStorage.getItem(CLICK_STORAGE_KEY);
       if (clicks !== null) {
         clickElement.innerHTML = clicks;
       }
@@ -38,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function saveUpgradeState() {
     try {
-      localStorage.setItem('up1bought', up1bought);
+      localStorage.setItem(UPGRADE1_STORAGE_KEY, up1bought);
     } catch (e) {
       console.error('Failed to save upgrade state', e);
     }
@@ -46,9 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function loadUpgradeState() {
     try {
-      const savedUp1bought = localStorage.getItem('up1bought');
+      const savedUp1bought = localStorage.getItem(UPGRADE1_STORAGE_KEY);
       if (savedUp1bought !== null) {
-        up1bought = parseInt(savedUp1bought);
+        up1bought = parseInt(savedUp1bought, 10);
       }
     } catch (e) {
       console.error('Failed to load upgrade state', e);
@@ -57,17 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function incrementClick() {
     let currentClicks = parseFloat(clickElement.innerHTML);
-    if (up1bought >= 1) clickMulti = 2;
     if (isNaN(currentClicks)) {
       currentClicks = 1;
     }
+    if (up1bought >= 1) clickMulti = 2;
     clickElement.innerHTML = currentClicks + clickMulti;
   }
 
   function buyUpgrade1() {
-    if (up1bought < 1 && parseInt(clickElement.innerHTML) >= 75) {
+    const currentClicks = parseInt(clickElement.innerHTML, 10);
+    if (up1bought < 1 && currentClicks >= 75) {
       up1bought += 1;
-      clickElement.innerHTML = parseInt(clickElement.innerHTML) - 75;
+      clickElement.innerHTML = currentClicks - 75;
       saveUpgradeState();
     }
   }
