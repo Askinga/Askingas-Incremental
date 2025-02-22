@@ -2,7 +2,7 @@ body{
   background-color: rgba(0,146,255,1)
     transition: all 0.3s;
 }
-#button{
+.button{
   postition: absolute;
   width: 50px;
   height: 35px;
