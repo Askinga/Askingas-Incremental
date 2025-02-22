@@ -1,5 +1,14 @@
-let clickElement = document.querySelector('.clicks');
+document.addEventListener('DOMContentLoaded', () => {
+  const clickElement = document.querySelector('.clicks');
 
-function incrementClick() {
-  clickElement.innerHTML = parseFloat(clickElement.innerHTML) + 1;
-};
+  if (!clickElement) {
+    console.error('Click element not found');
+    return;
+  }
+
+  function incrementClick() {
+    clickElement.innerHTML = parseFloat(clickElement.innerHTML) + 1;
+  }
+
+  document.querySelector('.click-button').addEventListener('click', incrementClick);
+});
