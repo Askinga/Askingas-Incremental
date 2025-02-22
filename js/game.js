@@ -1,45 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
-  const clickMulti = new Decimal(1);
-  
+  let clickMulti = new Decimal(1); // Ensure Decimal is imported
+
   if (!clickElement) {
     console.error('Click element not found');
     return;
   }
 
   function incrementClick() {
-  let currentClicks = parseFloat(clickElement.innerHTML);
-  if(up1bought.gte(1)) clickMulti = clickMulti.times(2);
-  if (isNaN(currentClicks)) {
-    currentClicks = 0;
-  }
-  clickElement.innerHTML = currentClicks.add(clickMulti);
+    let currentClicks = new Decimal(parseFloat(clickElement.innerHTML));
+    if (up1bought && up1bought.gte(1)) clickMulti = clickMulti.times(2);
+    if (isNaN(currentClicks)) {
+      currentClicks = new Decimal(0);
+    }
+    clickElement.innerHTML = currentClicks.add(clickMulti).toString();
   }
 
   function saveGameState() {
-  try {
-    const clicks = clickElement.innerHTML;
-    localStorage.setItem('clicks', clicks);
-  } catch (e) {
-    console.error('Failed to save game state', e);
+    try {
+      const clicks = clickElement.innerHTML;
+      localStorage.setItem('clicks', clicks);
+    } catch (e) {
+      console.error('Failed to save game state', e);
+    }
   }
-}
-
 
   function loadGameState() {
-  try {
-    const clicks = localStorage.getItem('clicks');
-    if (clicks !== null) {
-      clickElement.innerHTML = clicks;
+    try {
+      const clicks = localStorage.getItem('clicks');
+      if (clicks !== null) {
+        clickElement.innerHTML = clicks;
+      }
+    } catch (e) {
+      console.error('Failed to load game state', e);
     }
-  } catch (e) {
-    console.error('Failed to load game state', e);
   }
-}
 
-  
-
-  document.querySelector('.click-button').addEventListener('click', incrementClick);
+  const clickButton = document.querySelector('.click-button');
+  if (clickButton) {
+    clickButton.addEventListener('click', incrementClick);
+  } else {
+    console.error('Click button not found');
+  }
 
   // Load game state when the game starts
   loadGameState();
