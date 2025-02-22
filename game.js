@@ -7,20 +7,35 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-    clickElement.innerHTML = parseFloat(clickElement.innerHTML) + 1;
+  let currentClicks = parseFloat(clickElement.innerHTML);
+  if (isNaN(currentClicks)) {
+    currentClicks = 0;
+  }
+  clickElement.innerHTML = currentClicks + 1;
   }
 
   function saveGameState() {
+  try {
     const clicks = clickElement.innerHTML;
     localStorage.setItem('clicks', clicks);
+  } catch (e) {
+    console.error('Failed to save game state', e);
   }
+}
+
 
   function loadGameState() {
+  try {
     const clicks = localStorage.getItem('clicks');
     if (clicks !== null) {
       clickElement.innerHTML = clicks;
     }
+  } catch (e) {
+    console.error('Failed to load game state', e);
   }
+}
+
+  
 
   document.querySelector('.click-button').addEventListener('click', incrementClick);
 
