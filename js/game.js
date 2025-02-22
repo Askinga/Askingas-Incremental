@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-    let currentClicks = (parseFloat(clickElement.innerHTML));
+    let currentClicks = parseFloat(clickElement.innerHTML);
     if (up1bought >= 1) clickMulti = 2;
     if (isNaN(currentClicks)) {
       currentClicks = 1;
