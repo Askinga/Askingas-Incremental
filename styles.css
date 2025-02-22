@@ -38,14 +38,14 @@ body{
 
 .upgrade{
   color: red;
-  width: 300px;
-  height: 300px;
+  width: 150px;
+  height: 150px;
   border-radius: 10px;
   display: flex;
 }
 
 .upgrade:hover{
   transition: transform 0.5s;
-  transform: scale(1.1);
+  transform: scale(1.06);
   transition-timimg-function: ease-out;
 }
