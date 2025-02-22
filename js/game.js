@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
-  let clickMulti = new Decimal(1); // Ensure Decimal is imported
+  let clickMulti = 1; // Ensure Decimal is imported
   let up1bought = 0; // Move this line above its usage
 
   if (!clickElement) {
@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-    let currentClicks = new Decimal(parseFloat(clickElement.innerHTML));
+    let currentClicks = (parseFloat(clickElement.innerHTML));
     if (up1bought >= 1) clickMulti = 2;
     if (isNaN(currentClicks)) {
-      currentClicks = new Decimal(0);
+      currentClicks = 1;
     }
-    clickElement.innerHTML = currentClicks.plus(clickMulti); // Use Decimal arithmetic
+    clickElement.innerHTML = currentClick +clickMulti; // Use Decimal arithmetic
   }
 
   function saveGameState() {
