@@ -1,20 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
-  let clickMulti = 1; // Ensure Decimal is imported
-  let up1bought = 0; // Move this line above its usage
+  let clickMulti = new Decimal(1); // Ensure Decimal is imported
+  
 
   if (!clickElement) {
     console.error('Click element not found');
     return;
-  }
-
-  function incrementClick() {
-  let currentClicks = parseFloat(clickElement.innerHTML);
-  if (up1bought >= 1) clickMulti = 2;
-  if (isNaN(currentClicks)) {
-    currentClicks = 1;
-  }
-  clickElement.innerHTML = currentClick + clickMulti; // Typo: should be currentClicks
   }
 
   function saveGameState() {
@@ -50,6 +41,7 @@ if (clickButton) {
   // Autosave the game state every 5 seconds
   setInterval(saveGameState, 5000);
 
+  let up1bought = 0; // Move this line above its usage
   function saveUpgradeState() {
     try {
       localStorage.setItem('up1bought', up1bought);
@@ -57,6 +49,15 @@ if (clickButton) {
       console.error('Failed to save upgrade state', e);
     }
   }
+
+  function incrementClick() {
+  let currentClicks = parseFloat(clickElement.innerHTML);
+  if (up1bought >= 1) clickMulti = 2;
+  if (isNaN(currentClicks)) {
+    currentClicks = 1;
+  }
+  clickElement.innerHTML = currentClicks + clickMulti; // Typo: should be currentClicks
+    }
 
   function loadUpgradeState() {
     try {
