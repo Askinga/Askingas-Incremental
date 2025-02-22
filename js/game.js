@@ -3,7 +3,7 @@ import Decimal from 'decimal.js';
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
   const clickButton = document.querySelector('.click-button');
-  let clickMulti = new Decimal(1);
+  let clickMulti = 1;
   let up1bought = 0;
 
   if (!clickElement) {
