@@ -1,9 +1,8 @@
-let player = {
-  	clicks: 0
+let clicks = documents.querySelecter(.clicks)
 }
 
 function Click(){
-  player.clicks = player.clicks.add(1);
+  clicks.innerHTML = parseFloat(clicks.innerHTML) + 1;
 }
 
 function displayText() {
