@@ -1,8 +1,7 @@
-import Decimal from 'decimal.js';
-
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
   const clickButton = document.querySelector('.click-button');
+  const upgradeButton = document.querySelector('.upgrade');
   const CLICK_STORAGE_KEY = 'clicks';
   const UPGRADE1_STORAGE_KEY = 'up1bought';
   let clickMulti = 1;
@@ -71,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   clickButton.addEventListener('click', incrementClick);
+  upgradeButton.addEventListener('click', buyUpgrade1);
 
   // Load game state and upgrade state when the game starts
   loadGameState();
