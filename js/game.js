@@ -41,17 +41,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function loadUpgradeState() {
-  try {
-    const savedUp1bought = localStorage.getItem(UPGRADE1_STORAGE_KEY);
-    if (savedUp1bought !== null) {
-      up1bought = parseInt(savedUp1bought, 10);
-      if (up1bought >= 1) {
-        upgradeButton.classList.add('bought');
+    try {
+      const savedUp1bought = localStorage.getItem(UPGRADE1_STORAGE_KEY);
+      if (savedUp1bought !== null) {
+        up1bought = parseInt(savedUp1bought, 10);
+        if (up1bought >= 1) {
+          upgradeButton.classList.add('bought');
+        }
       }
+    } catch (e) {
+      console.error('Failed to load upgrade state', e);
     }
-  } catch (e) {
-    console.error('Failed to load upgrade state', e);
-  }
   }
 
   function incrementClick() {
@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (up1bought >= 1) clickMulti = 2;
     clickElement.innerHTML = currentClicks + clickMulti;
+    checkUpgradeRequirements(); // Check requirements after incrementing clicks
   }
 
   function buyUpgrade1() {
@@ -70,35 +71,27 @@ document.addEventListener('DOMContentLoaded', () => {
       clickElement.innerHTML = currentClicks - 75;
       saveUpgradeState();
     }
-    if(up1bought >= 1){
-      upgradeButton.classList.add('bought')
+    if (up1bought >= 1) {
+      upgradeButton.classList.add('bought');
     }
-    if(clickElement.innerHTML >= 75 && up1bought < 1){
-      upgradeButton.classList.add('requirements-met')
+    checkUpgradeRequirements(); // Check requirements after buying upgrade
+  }
+
+  function checkUpgradeRequirements() {
+    const currentClicks = parseInt(clickElement.innerHTML, 10);
+    if (currentClicks >= 75 && up1bought < 1) {
+      upgradeButton.classList.add('requirements-met');
+    } else {
+      upgradeButton.classList.remove('requirements-met');
     }
   }
 
-  // Assuming you have a function to check requirements and purchase the upgrade
-function checkUpgradeRequirements() {
-  const upgradeButton = document.querySelector('.upgrade'); 
-}
-
-function buyUpgrade() {
-  const upgradeButton = document.querySelector('.upgrade');
-  if (requirementsMet && !upgradeBought) {
-    // Logic to buy the upgrade
-    upgradeButton.classList.add('bought');
-  }
-}
-
-// Call these functions appropriately in your game logic
   clickButton.addEventListener('click', incrementClick);
   upgradeButton.addEventListener('click', buyUpgrade1);
 
-  // Load game state and upgrade state when the game starts
   loadGameState();
   loadUpgradeState();
 
-  // Autosave the game state every 5 seconds
   setInterval(saveGameState, 5000);
+  checkUpgradeRequirements(); // Initial check when the game starts
 });
