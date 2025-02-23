@@ -77,34 +77,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buyUpgrade1() {
-  const currentClicks = parseInt(clickElement.innerHTML, 10);
-  if (up1bought < 1 && currentClicks >= 75) {
-    up1bought += 1;
-    clickElement.innerHTML = currentClicks - 75;
-    clickMulti *= 2; // Apply multiplier for upgrade 1
-    saveUpgradeState();
-    saveGameState(); // Save the updated clicks
+    const currentClicks = parseInt(clickElement.innerHTML, 10);
+    if (up1bought < 1 && currentClicks >= 75) {
+      up1bought += 1;
+      clickElement.innerHTML = currentClicks - 75;
+      clickMulti *= 2; // Apply multiplier for upgrade 1
+      saveUpgradeState();
+      saveGameState(); // Save the updated clicks
+    }
+    if (up1bought >= 1) {
+      up1Button.classList.add('bought');
+    }
+    checkUpgradeRequirements(); // Check requirements after buying upgrade
   }
-  if (up1bought >= 1) {
-    up1Button.classList.add('bought');
-  }
-  checkUpgradeRequirements(); // Check requirements after buying upgrade
-}
 
-function buyUpgrade2() {
-  const currentClicks = parseInt(clickElement.innerHTML, 10);
-  if (up2bought < 1 && currentClicks >= 300) {
-    up2bought += 1;
-    clickElement.innerHTML = currentClicks - 300;
-    clickMulti *= 2; // Apply multiplier for upgrade 2
-    saveUpgradeState();
-    saveGameState(); // Save the updated clicks
+  function buyUpgrade2() {
+    const currentClicks = parseInt(clickElement.innerHTML, 10);
+    if (up2bought < 1 && currentClicks >= 300) {
+      up2bought += 1;
+      clickElement.innerHTML = currentClicks - 300;
+      clickMulti *= 2; // Apply multiplier for upgrade 2
+      saveUpgradeState();
+      saveGameState(); // Save the updated clicks
+    }
+    if (up2bought >= 1) {
+      up2Button.classList.add('bought');
+    }
+    checkUpgradeRequirements(); // Check requirements after buying upgrade
   }
-  if (up2bought >= 1) {
-    up2Button.classList.add('bought');
-  }
-  checkUpgradeRequirements(); // Check requirements after buying upgrade
-}
 
   function checkUpgradeRequirements() {
     const currentClicks = parseInt(clickElement.innerHTML, 10);
@@ -120,7 +120,7 @@ function buyUpgrade2() {
     }
   }
 
-  click-buttonButton.addEventListener('click', incrementClick);
+  clickButton.addEventListener('click', incrementClick);
   up1Button.addEventListener('click', buyUpgrade1);
   up2Button.addEventListener('click', buyUpgrade2);
 
