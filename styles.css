@@ -1,12 +1,13 @@
 body{
-  background-color: rgba(160,124,200,0.7);
+  background-color: rgba(160,14,20,0.5);
     transition: all 0.3s;
 }
 .click-button{
   width: 100px;
   height: 50px;
-  border-radius: 15px;
-  border-color: red;
+  border-radius: 18px;
+  border-color: cyan;
+  background-color: cyan;
 }
 
 .click-button:hover{
