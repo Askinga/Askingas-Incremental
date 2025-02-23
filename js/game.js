@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const upgradeButton = document.querySelector('.upgrade');
   const CLICK_STORAGE_KEY = 'clicks';
   const UPGRADE1_STORAGE_KEY = 'up1bought';
+  const UPGRADE2_STORAGE_KEY = 'up2bought';
   let clickMulti = 1;
   let up1bought = 0;
+  let up2bought = 0;
 
   if (!clickElement || !clickButton) {
     console.error('Required DOM elements not found');
@@ -35,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function saveUpgradeState() {
     try {
       localStorage.setItem(UPGRADE1_STORAGE_KEY, up1bought);
+    	localStorage.setItem(UPGRADE2_STORAGE_KEY, up2bought);
     } catch (e) {
       console.error('Failed to save upgrade state', e);
     }
@@ -43,10 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadUpgradeState() {
     try {
       const savedUp1bought = localStorage.getItem(UPGRADE1_STORAGE_KEY);
+      const savedUp2bought = localStorage.getItem(UPGRADE2_STORAGE_KEY);
       if (savedUp1bought !== null) {
         up1bought = parseInt(savedUp1bought, 10);
         if (up1bought >= 1) {
-          upgradeButton.classList.add('bought');
+          up1Button.classList.add('bought');
+        }
+        if (up2bought >= 1) {
+          up2Button.classList.add('bought');
         }
       }
     } catch (e) {
@@ -60,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentClicks = 1;
     }
     if (up1bought >= 1) clickMulti = 2;
+    if (up2bought >= 1) clickMulti = 4;
     clickElement.innerHTML = currentClicks + clickMulti;
     checkUpgradeRequirements(); // Check requirements after incrementing clicks
   }
@@ -72,22 +80,39 @@ document.addEventListener('DOMContentLoaded', () => {
       saveUpgradeState();
     }
     if (up1bought >= 1) {
-      upgradeButton.classList.add('bought');
+      up1Button.classList.add('bought');
     }
     checkUpgradeRequirements(); // Check requirements after buying upgrade
   }
-
+	function buyUpgrade2() {
+    if (up2bought < 1 && currentClicks >= 300) {
+      up2bought += 1;
+      clickElement.innerHTML = currentClicks - 300;
+      saveUpgradeState();
+    }
+    if (up2bought >= 1) {
+      up2Button.classList.add('bought');
+    }
+    checkUpgradeRequirements(); // Check requirements after buying upgrade
+  }
+  
   function checkUpgradeRequirements() {
     const currentClicks = parseInt(clickElement.innerHTML, 10);
     if (currentClicks >= 75 && up1bought < 1) {
-      upgradeButton.classList.add('requirements-met');
+      up1Button.classList.add('requirements-met');
     } else {
-      upgradeButton.classList.remove('requirements-met');
+      up1Button.classList.remove('requirements-met');
+    }
+    if (currentClicks >= 75 && up1bought < 1) {
+      up2Button.classList.add('requirements-met');
+    } else {
+      up2Button.classList.remove('requirements-met');
     }
   }
 
   clickButton.addEventListener('click', incrementClick);
-  upgradeButton.addEventListener('click', buyUpgrade1);
+  up1Button.addEventListener('click', buyUpgrade1);
+  up2Button.addEventListener('click', buyUpgrade2);
 
   loadGameState();
   loadUpgradeState();
