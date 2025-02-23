@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
+      saveGameState();
+      elements.up2Button.class document.addEventListener('DOMContentLoaded', () => {
   const elements = {
     clickElement: document.querySelector('.clicks'),
     clickButton: document.querySelector('.click-button'),
@@ -16,21 +17,21 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   let gameState = {
-  clickMulti: new Decimal(1),
-  up1bought: 0,
-  up2bought: 0,
-  clickCount: new Decimal(0),
-  cpsClicks: new Decimal(0),
-  lastTime: Date.now(),
-  cps: new Decimal(0),
-  passiveIncome: new Decimal(0)
-};
-  
+    clickMulti: new Decimal(1),
+    up1bought: 0,
+    up2bought: 0,
+    clickCount: new Decimal(0),
+    cpsClicks: new Decimal(0),
+    lastTime: Date.now(),
+    cps: new Decimal(0),
+    passiveIncome: new Decimal(0)
+  };
+
   function saveGameState() {
     try {
-      localStorage.setItem(storageKeys.CLICK_STORAGE_KEY, gameState.clickCount);
-      localStorage.setItem(storageKeys.CPS_STORAGE_KEY, gameState.cps);
-      localStorage.setItem(storageKeys.LAST_TIME_STORAGE_KEY, gameState.lastTime);
+      localStorage.setItem(storageKeys.CLICK_STORAGE_KEY, gameState.clickCount.toString());
+      localStorage.setItem(storageKeys.CPS_STORAGE_KEY, gameState.cps.toString());
+      localStorage.setItem(storageKeys.LAST_TIME_STORAGE_KEY, gameState.lastTime.toString());
     } catch (e) {
       console.error('Failed to save game state', e);
     }
@@ -42,14 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const cps = localStorage.getItem(storageKeys.CPS_STORAGE_KEY);
       const lastTime = localStorage.getItem(storageKeys.LAST_TIME_STORAGE_KEY);
       if (clicks !== null) {
-        gameState.clickCount = parseInt(clicks, 10);
-        elements.clickElement.innerText = gameState.clickCount;
+        gameState.clickCount = new Decimal(clicks);
+        elements.clickElement.innerText = gameState.clickCount.toString();
       }
       if (cps !== null) {
-        gameState.cps = parseInt(cps, 10);
+        gameState.cps = new Decimal(cps);
       }
       if (lastTime !== null) {
-        gameState.lastTime = parseInt(lastTime, 10);
+        gameState.lastTime = new Decimal(lastTime);
       }
     } catch (e) {
       console.error('Failed to load game state', e);
@@ -58,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function saveUpgradeState() {
     try {
-      localStorage.setItem(storageKeys.UPGRADE1_STORAGE_KEY, gameState.up1bought);
-      localStorage.setItem(storageKeys.UPGRADE2_STORAGE_KEY, gameState.up2bought);
+      localStorage.setItem(storageKeys.UPGRADE1_STORAGE_KEY, gameState.up1bought.toString());
+      localStorage.setItem(storageKeys.UPGRADE2_STORAGE_KEY, gameState.up2bought.toString());
     } catch (e) {
       console.error('Failed to save upgrade state', e);
     }
@@ -73,16 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.up1bought = parseInt(savedUp1bought, 10);
         if (gameState.up1bought >= 1) {
           elements.up1Button.classList.add('bought');
-          gameState.clickMulti *= 2;
+          gameState.clickMulti = gameState.clickMulti.times(2);
         }
       }
       if (savedUp2bought !== null) {
         gameState.up2bought = parseInt(savedUp2bought, 10);
         if (gameState.up2bought >= 1) {
           elements.up2Button.classList.add('bought');
-          gameState.clickMulti *= 2;
-          gameState.cps += 1;
-          gameState.passiveIncome += 1; // Increment passive income
+          gameState.clickMulti = gameState.clickMulti.times(2);
+          gameState.cps = gameState.cps.plus(1);
+          gameState.passiveIncome = gameState.passiveIncome.plus(1); // Increment passive income
         }
       }
     } catch (e) {
@@ -91,64 +92,64 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-  gameState.clickCount = gameState.clickCount.add(gameState.clickMulti);
-  elements.clickElement.innerText = gameState.clickCount.toString();
-  checkUpgradeRequirements();
-  saveGameState();
-}
-
-function buyUpgrade1() {
-  if (gameState.up1bought < 1 && gameState.clickCount.greaterThanOrEqualTo(75)) {
-    gameState.up1bought += 1;
-    gameState.clickCount = gameState.clickCount.minus(75);
-    gameState.clickMulti = gameState.clickMulti.times(2);
+    gameState.clickCount = gameState.clickCount.plus(gameState.clickMulti);
     elements.clickElement.innerText = gameState.clickCount.toString();
-    saveUpgradeState();
+    checkUpgradeRequirements();
     saveGameState();
-    elements.up1Button.classList.add('bought');
   }
-  checkUpgradeRequirements();
-}
 
-function buyUpgrade2() {
-  if (gameState.up2bought < 1 && gameState.clickCount.greaterThanOrEqualTo(300)) {
-    gameState.up2bought += 1;
-    gameState.clickCount = gameState.clickCount.minus(300);
-    gameState.clickMulti = gameState.clickMulti.times(2);
-    gameState.cps = gameState.cps.plus(1);
-    gameState.passiveIncome = gameState.passiveIncome.plus(1);
-    elements.clickElement.innerText = gameState.clickCount.toString();
-    saveUpgradeState();
-    saveGameState();
-    elements.up2Button.classList.add('bought');
+  function buyUpgrade1() {
+    if (gameState.up1bought < 1 && gameState.clickCount.greaterThanOrEqualTo(75)) {
+      gameState.up1bought += 1;
+      gameState.clickCount = gameState.clickCount.minus(75);
+      gameState.clickMulti = gameState.clickMulti.times(2);
+      elements.clickElement.innerText = gameState.clickCount.toString();
+      saveUpgradeState();
+      saveGameState();
+      elements.up1Button.classList.add('bought');
+    }
+    checkUpgradeRequirements();
   }
-  checkUpgradeRequirements();
-}
+
+  function buyUpgrade2() {
+    if (gameState.up2bought < 1 && gameState.clickCount.greaterThanOrEqualTo(300)) {
+      gameState.up2bought += 1;
+      gameState.clickCount = gameState.clickCount.minus(300);
+      gameState.clickMulti = gameState.clickMulti.times(2);
+      gameState.cps = gameState.cps.plus(1);
+      gameState.passiveIncome = gameState.passiveIncome.plus(1);
+      elements.clickElement.innerText = gameState.clickCount.toString();
+      saveUpgradeState();
+      saveGameState();
+      elements.up2Button.classList.add('bought');
+    }
+    checkUpgradeRequirements();
+  }
 
   // Function to handle passive income clicks
   function handlePassiveIncome() {
-    gameState.clickCount += gameState.passiveIncome;
-    elements.clickElement.innerText = gameState.clickCount;
+    gameState.clickCount = gameState.clickCount.plus(gameState.passiveIncome);
+    elements.clickElement.innerText = gameState.clickCount.toString();
     saveGameState();
   }
 
   function updateCPS() {
-  const now = Date.now();
-  const elapsedSeconds = (now - gameState.lastTime) / 1000;
-  const totalClicks = gameState.cpsClicks + gameState.passiveIncome * elapsedSeconds;
-  const cpsDisplay = (totalClicks / elapsedSeconds).toFixed(2);
-  elements.cpsElement.innerText = `CPS: ${cpsDisplay}`;
-  gameState.cpsClicks = 0;
-  gameState.lastTime = now;
+    const now = Date.now();
+    const elapsedSeconds = new Decimal((now - gameState.lastTime) / 1000);
+    const totalClicks = gameState.cpsClicks.plus(gameState.passiveIncome.times(elapsedSeconds));
+    const cpsDisplay = totalClicks.div(elapsedSeconds).toFixed(2);
+    elements.cpsElement.innerText = `CPS: ${cpsDisplay}`;
+    gameState.cpsClicks = new Decimal(0);
+    gameState.lastTime = now;
   }
 
   function checkUpgradeRequirements() {
-    if (gameState.clickCount >= 75 && gameState.up1bought < 1) {
+    if (gameState.clickCount.greaterThanOrEqualTo(75) && gameState.up1bought < 1) {
       elements.up1Button.classList.add('requirements-met');
     } else {
       elements.up1Button.classList.remove('requirements-met');
     }
-    if (gameState.clickCount >= 300 && gameState.up2bought < 1) {
+    if (gameState.clickCount.greaterThanOrEqualTo(300) && gameState.up2bought < 1) {
       elements.up2Button.classList.add('requirements-met');
     } else {
       elements.up2Button.classList.remove('requirements-met');
