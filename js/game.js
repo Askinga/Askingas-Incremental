@@ -1,5 +1,4 @@
-      saveGameState();
-      elements.up2Button.class document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const elements = {
     clickElement: document.querySelector('.clicks'),
     clickButton: document.querySelector('.click-button'),
