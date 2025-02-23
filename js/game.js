@@ -52,9 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (up1bought >= 1) {
           up1Button.classList.add('bought');
         }
+      }
+      if (savedUp2bought !== null) {
+        up2bought = parseInt(savedUp2bought, 10);
         if (up2bought >= 1) {
           up2Button.classList.add('bought');
         }
+      }
       }
     } catch (e) {
       console.error('Failed to load upgrade state', e);
@@ -103,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       up1Button.classList.remove('requirements-met');
     }
-    if (currentClicks >= 75 && up1bought < 1) {
+    if (currentClicks >= 300 && up2bought < 1) {
       up2Button.classList.add('requirements-met');
     } else {
       up2Button.classList.remove('requirements-met');
