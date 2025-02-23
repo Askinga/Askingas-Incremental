@@ -73,13 +73,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-  let currentClicks = parseFloat(clickElement.innerHTML);
+  let currentClicks = parseFloat(clickElement.innerText);
   if (isNaN(currentClicks)) {
     currentClicks = 0;
   }
-  clickElement.innerHTML = currentClicks + clickMulti;
+  currentClicks += clickMulti;
+  clickElement.innerText = currentClicks.toFixed(0); // Ensure the display is an integer
   clickCount++; // Increment the click count
   checkUpgradeRequirements(); // Check requirements after incrementing clicks
+  saveGameState(); // Save game state after each click
   }
 
   function buyUpgrade1() {
