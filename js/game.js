@@ -133,12 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateCPS() {
-    const now = Date.now();
-    const elapsedSeconds = (now - gameState.lastTime) / 1000;
-    const cpsDisplay = (gameState.cpsClicks / elapsedSeconds).toFixed(2);
-    elements.cpsElement.innerText = `CPS: ${cpsDisplay}`;
-    gameState.cpsClicks = 0;
-    gameState.lastTime = now;
+  const now = Date.now();
+  const elapsedSeconds = (now - gameState.lastTime) / 1000;
+  const totalClicks = gameState.cpsClicks + gameState.passiveIncome * elapsedSeconds;
+  const cpsDisplay = (totalClicks / elapsedSeconds).toFixed(2);
+  elements.cpsElement.innerText = `CPS: ${cpsDisplay}`;
+  gameState.cpsClicks = 0;
+  gameState.lastTime = now;
   }
 
   function checkUpgradeRequirements() {
