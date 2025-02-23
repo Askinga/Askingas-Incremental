@@ -1,8 +1,9 @@
-body{
-  background-color: rgba(160,14,20,0.5);
-    transition: all 0.3s;
+body {
+  background-color: rgba(160, 14, 20, 0.5);
+  transition: all 0.3s;
 }
-.click-button{
+
+.click-button {
   width: 100px;
   height: 50px;
   border-radius: 18px;
@@ -10,18 +11,18 @@ body{
   background-color: cyan;
 }
 
-.click-button:hover{
+.click-button:hover {
   transition: transform 0.65s;
   transform: scale(1.15);
   transition-timing-function: ease-out;
   cursor: pointer;
 }
 
-.click-button:active{
-  transform: scale(1.2)
+.click-button:active {
+  transform: scale(1.2);
 }
 
-.util-buttons{
+.util-buttons {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -29,7 +30,7 @@ body{
   gap: 10px;
 }
 
-.util-button{
+.util-button {
   padding: 8px 15px;
   font-size: 16px;
   font-weight: 600;
@@ -37,28 +38,30 @@ body{
   border-radius: 6px;
 }
 
-#upgrade1, #upgrade2:hover{
+#upgrade1, #upgrade2:hover {
   transition: transform 0.5s;
   transform: scale(1.06);
   transition-timing-function: ease-out;
 }
 
 #upgrade1, #upgrade2 {
-   background-color: red;
-   text-align: center;
-   vertical-align: middle;
-   width: 150px;
-   height: 150px;
-   border-radius: 10px;
-   display: flex;
-   flex-direction: row; /* This sets the direction to left-to-right */
-   flex-wrap: wrap;
+  background-color: red;
+  text-align: center;
+  vertical-align: middle;
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column; /* Changed to column for vertical alignment */
+  justify-content: center; /* Center alignment */
+  align-items: center; /* Center alignment */
+  flex-wrap: wrap;
 }
 
 #upgrade1.requirements-met, #upgrade2.requirements-met {
-   background-color: yellow;
+  background-color: yellow;
 }
 
 #upgrade1.bought, #upgrade2.bought {
-   background-color: green;
+  background-color: green;
 }
