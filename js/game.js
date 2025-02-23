@@ -73,13 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-    let currentClicks = parseFloat(clickElement.innerHTML);
-    if (isNaN(currentClicks)) {
-      currentClicks = 0;
-    }
-    clickElement.innerHTML = currentClicks + clickMulti;
-    clickCount++; // Increment the click count
-    checkUpgradeRequirements(); // Check requirements after incrementing clicks
+  let currentClicks = parseFloat(clickElement.innerHTML);
+  if (isNaN(currentClicks)) {
+    currentClicks = 0;
+  }
+  clickElement.innerHTML = currentClicks + clickMulti;
+  clickCount++; // Increment the click count
+  checkUpgradeRequirements(); // Check requirements after incrementing clicks
   }
 
   function buyUpgrade1() {
