@@ -41,14 +41,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function loadUpgradeState() {
-    try {
-      const savedUp1bought = localStorage.getItem(UPGRADE1_STORAGE_KEY);
-      if (savedUp1bought !== null) {
-        up1bought = parseInt(savedUp1bought, 10);
+  try {
+    const savedUp1bought = localStorage.getItem(UPGRADE1_STORAGE_KEY);
+    if (savedUp1bought !== null) {
+      up1bought = parseInt(savedUp1bought, 10);
+      if (up1bought >= 1) {
+        upgradeButton.classList.add('bought');
       }
-    } catch (e) {
-      console.error('Failed to load upgrade state', e);
     }
+  } catch (e) {
+    console.error('Failed to load upgrade state', e);
+  }
   }
 
   function incrementClick() {
