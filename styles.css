@@ -74,19 +74,27 @@ body{
 }
 
 /* Upgrade 1 styles */
-.up1.requirements-met {
+#upgrade1 {
+  background-color: red;
+}
+
+#upgrade1.requirements-met {
   background-color: yellow;
 }
 
-.up1.bought {
+#upgrade1.bought {
   background-color: green;
 }
 
 /* Upgrade 2 styles */
-.up2.requirements-met {
+#upgrade2 {
+  background-color: red;
+}
+
+#upgrade2.requirements-met {
   background-color: yellow;
 }
 
-.up2.bought {
+#upgrade2.bought {
   background-color: green;
 }
