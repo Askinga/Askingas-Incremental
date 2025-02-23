@@ -38,7 +38,7 @@ body {
   border-radius: 6px;
 }
 
-#upgrade1, #upgrade2:hover {
+#upgrade1:hover, #upgrade2:hover {
   transition: transform 0.5s;
   transform: scale(1.06);
   transition-timing-function: ease-out;
