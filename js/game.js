@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     cps: 0
   };
 
-  // Check and ensure all required elements are present
   if (Object.values(elements).some(el => !el)) {
     console.error('Required DOM elements not found');
     return;
@@ -82,12 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-    let currentClicks = parseInt(elements.clickElement.innerText, 10);
-    if (isNaN(currentClicks)) {
-      currentClicks = 0;
-    }
-    currentClicks += gameState.clickMulti;
-    elements.clickElement.innerText = currentClicks.toFixed(0);
+    const currentClicks = parseInt(elements.clickElement.innerText, 10) || 0;
+    const newClicks = currentClicks + gameState.clickMulti;
+    elements.clickElement.innerText = newClicks;
     gameState.clickCount++;
     checkUpgradeRequirements();
     saveGameState();
