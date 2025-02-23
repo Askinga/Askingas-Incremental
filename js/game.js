@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buyUpgrade2() {
+    const currentClicks = parseInt(clickElement.innerHTML, 10);
     if (up2bought < 1 && currentClicks >= 300) {
       up2bought += 1;
       clickElement.innerHTML = currentClicks - 300;
