@@ -80,12 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Assuming you have a function to check requirements and purchase the upgrade
 function checkUpgradeRequirements() {
-  const upgradeButton = document.querySelector('.upgrade');
-  if (requirementsMet) {
-    upgradeButton.classList.add('requirements-met');
-  } else {
-    upgradeButton.classList.remove('requirements-met');
-  }
+  const upgradeButton = document.querySelector('.upgrade'); 
 }
 
 function buyUpgrade() {
