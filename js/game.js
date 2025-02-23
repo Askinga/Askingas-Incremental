@@ -103,18 +103,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buyUpgrade2() {
-    if (gameState.up2bought < 1 && gameState.clickCount >= 300) {
-      gameState.up2bought += 1;
-      gameState.clickCount -= 300;
-      gameState.clickMulti *= 2;
-      gameState.cps += 1;
+  if (gameState.up2bought < 1 && gameState.clickCount >= 300) {
+    gameState.up2bought += 1;
+    gameState.clickCount -= 300;
+    gameState.clickMulti *= 2;
+    gameState.cps += 1;
+    elements.clickElement.innerText = gameState.clickCount;
+    saveUpgradeState();
+    saveGameState();
+    elements.up2Button.classList.add('bought');
+
+    // Start passive clicks
+    setInterval(() => {
+      gameState.clickCount += 1;
       elements.clickElement.innerText = gameState.clickCount;
-      saveUpgradeState();
       saveGameState();
-      elements.up2Button.classList.add('bought');
-    }
-    checkUpgradeRequirements();
+    }, 1000); // 1 click per second
   }
+  checkUpgradeRequirements();
+}
+
+function updateCPS() {
+  const now = Date.now();
+  const elapsedSeconds = (now - gameState.lastTime) / 1000;
+  const cpsDisplay = (gameState.cpsClicks / elapsedSeconds + gameState.cps).toFixed(2);
+  elements.cpsElement.innerText = `CPS: ${cpsDisplay}`;
+  gameState.cpsClicks = 0;
+  gameState.lastTime = now;
+}
 
   function checkUpgradeRequirements() {
     if (gameState.clickCount >= 75 && gameState.up1bought < 1) {
@@ -127,15 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       elements.up2Button.classList.remove('requirements-met');
     }
-  }
-
-  function updateCPS() {
-    const now = Date.now();
-    const elapsedSeconds = (now - gameState.lastTime) / 1000;
-    const cpsDisplay = (gameState.cpsClicks / elapsedSeconds + gameState.cps).toFixed(2);
-    elements.cpsElement.innerText = `CPS: ${cpsDisplay}`;
-    gameState.cpsClicks = 0;
-    gameState.lastTime = now;
   }
 
   elements.clickButton.addEventListener('click', incrementClick);
