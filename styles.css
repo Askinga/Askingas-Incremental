@@ -45,6 +45,7 @@ body{
   border-radius: 10px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 #upgrade:hover{
