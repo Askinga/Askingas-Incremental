@@ -8,42 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const storageKeys = {
-  CLICK_STORAGE_KEY: 'clicks',
-  UPGRADE1_STORAGE_KEY: 'up1bought',
-  UPGRADE2_STORAGE_KEY: 'up2bought',
-  CPS_STORAGE_KEY: 'cps',
-  LAST_TIME_STORAGE_KEY: 'lastTime'
-};
-
-function saveGameState() {
-  try {
-    localStorage.setItem(storageKeys.CLICK_STORAGE_KEY, gameState.clickCount);
-    localStorage.setItem(storageKeys.CPS_STORAGE_KEY, gameState.cps);
-    localStorage.setItem(storageKeys.LAST_TIME_STORAGE_KEY, gameState.lastTime);
-  } catch (e) {
-    console.error('Failed to save game state', e);
-  }
-}
-
-function loadGameState() {
-  try {
-    const clicks = localStorage.getItem(storageKeys.CLICK_STORAGE_KEY);
-    const cps = localStorage.getItem(storageKeys.CPS_STORAGE_KEY);
-    const lastTime = localStorage.getItem(storageKeys.LAST_TIME_STORAGE_KEY);
-    if (clicks !== null) {
-      gameState.clickCount = parseInt(clicks, 10);
-      elements.clickElement.innerText = gameState.clickCount;
-    }
-    if (cps !== null) {
-      gameState.cps = parseInt(cps, 10);
-    }
-    if (lastTime !== null) {
-      gameState.lastTime = parseInt(lastTime, 10);
-    }
-  } catch (e) {
-    console.error('Failed to load game state', e);
-  }
-}
+    CLICK_STORAGE_KEY: 'clicks',
+    UPGRADE1_STORAGE_KEY: 'up1bought',
+    UPGRADE2_STORAGE_KEY: 'up2bought',
+    CPS_STORAGE_KEY: 'cps',
+    LAST_TIME_STORAGE_KEY: 'lastTime'
+  };
 
   let gameState = {
     clickMulti: 1,
@@ -52,12 +22,38 @@ function loadGameState() {
     clickCount: 0,
     cpsClicks: 0,
     lastTime: Date.now(),
-    cps: 0
+    cps: 0,
+    passiveIncome: 0 // New state for passive income
   };
 
-  if (Object.values(elements).some(el => !el)) {
-    console.error('Required DOM elements not found');
-    return;
+  function saveGameState() {
+    try {
+      localStorage.setItem(storageKeys.CLICK_STORAGE_KEY, gameState.clickCount);
+      localStorage.setItem(storageKeys.CPS_STORAGE_KEY, gameState.cps);
+      localStorage.setItem(storageKeys.LAST_TIME_STORAGE_KEY, gameState.lastTime);
+    } catch (e) {
+      console.error('Failed to save game state', e);
+    }
+  }
+
+  function loadGameState() {
+    try {
+      const clicks = localStorage.getItem(storageKeys.CLICK_STORAGE_KEY);
+      const cps = localStorage.getItem(storageKeys.CPS_STORAGE_KEY);
+      const lastTime = localStorage.getItem(storageKeys.LAST_TIME_STORAGE_KEY);
+      if (clicks !== null) {
+        gameState.clickCount = parseInt(clicks, 10);
+        elements.clickElement.innerText = gameState.clickCount;
+      }
+      if (cps !== null) {
+        gameState.cps = parseInt(cps, 10);
+      }
+      if (lastTime !== null) {
+        gameState.lastTime = parseInt(lastTime, 10);
+      }
+    } catch (e) {
+      console.error('Failed to load game state', e);
+    }
   }
 
   function saveUpgradeState() {
@@ -86,6 +82,7 @@ function loadGameState() {
           elements.up2Button.classList.add('bought');
           gameState.clickMulti *= 2;
           gameState.cps += 1;
+          gameState.passiveIncome += 1; // Increment passive income
         }
       }
     } catch (e) {
@@ -95,7 +92,6 @@ function loadGameState() {
 
   function incrementClick() {
     gameState.clickCount += gameState.clickMulti;
-    gameState.cpsClicks += gameState.clickMulti;
     elements.clickElement.innerText = gameState.clickCount;
     checkUpgradeRequirements();
     saveGameState();
@@ -115,34 +111,35 @@ function loadGameState() {
   }
 
   function buyUpgrade2() {
-  if (gameState.up2bought < 1 && gameState.clickCount >= 300) {
-    gameState.up2bought += 1;
-    gameState.clickCount -= 300;
-    gameState.clickMulti *= 2;
-    gameState.cps += 1;
-    elements.clickElement.innerText = gameState.clickCount;
-    saveUpgradeState();
-    saveGameState();
-    elements.up2Button.classList.add('bought');
-
-    // Start passive clicks
-    setInterval(() => {
-      gameState.clickCount += 1;
+    if (gameState.up2bought < 1 && gameState.clickCount >= 300) {
+      gameState.up2bought += 1;
+      gameState.clickCount -= 300;
+      gameState.clickMulti *= 2;
+      gameState.cps += 1;
+      gameState.passiveIncome += 1; // Increment passive income
       elements.clickElement.innerText = gameState.clickCount;
+      saveUpgradeState();
       saveGameState();
-    }, 1000); // 1 click per second
+      elements.up2Button.classList.add('bought');
+    }
+    checkUpgradeRequirements();
   }
-  checkUpgradeRequirements();
-}
 
-function updateCPS() {
-  const now = Date.now();
-  const elapsedSeconds = (now - gameState.lastTime) / 1000;
-  const cpsDisplay = (gameState.cpsClicks / elapsedSeconds).toFixed(2);
-  elements.cpsElement.innerText = `CPS: ${cpsDisplay}`;
-  gameState.cpsClicks = 0;
-  gameState.lastTime = now;
-}
+  // Function to handle passive income clicks
+  function handlePassiveIncome() {
+    gameState.clickCount += gameState.passiveIncome;
+    elements.clickElement.innerText = gameState.clickCount;
+    saveGameState();
+  }
+
+  function updateCPS() {
+    const now = Date.now();
+    const elapsedSeconds = (now - gameState.lastTime) / 1000;
+    const cpsDisplay = (gameState.cpsClicks / elapsedSeconds).toFixed(2);
+    elements.cpsElement.innerText = `CPS: ${cpsDisplay}`;
+    gameState.cpsClicks = 0;
+    gameState.lastTime = now;
+  }
 
   function checkUpgradeRequirements() {
     if (gameState.clickCount >= 75 && gameState.up1bought < 1) {
@@ -166,6 +163,7 @@ function updateCPS() {
 
   setInterval(saveGameState, 5000);
   setInterval(updateCPS, 1000);
+  setInterval(handlePassiveIncome, 1000); // Handle passive income every second
   updateCPS();
   checkUpgradeRequirements();
 });
