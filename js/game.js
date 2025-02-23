@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     clickButton: document.querySelector('.click-button'),
     up1Button: document.querySelector('#upgrade1'),
     up2Button: document.querySelector('#upgrade2'),
-    cpsElement: document.querySelector('.cps')
+    cpsElement: document.querySelector('.cps'),
+    loadingScreen: document.getElementById('loading-screen') // Add this line
   };
 
   const storageKeys = {
@@ -167,4 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(handlePassiveIncome, 1000); // Handle passive income every second
   updateCPS();
   checkUpgradeRequirements();
+
+  // Hide the loading screen once everything is loaded
+  elements.loadingScreen.style.display = 'none'; // Add this line
 });
