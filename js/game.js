@@ -16,16 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   let gameState = {
-    clickMulti: 1,
-    up1bought: 0,
-    up2bought: 0,
-    clickCount: 0,
-    cpsClicks: 0,
-    lastTime: Date.now(),
-    cps: 0,
-    passiveIncome: 0 // New state for passive income
-  };
-
+  clickMulti: new Decimal(1),
+  up1bought: 0,
+  up2bought: 0,
+  clickCount: new Decimal(0),
+  cpsClicks: new Decimal(0),
+  lastTime: Date.now(),
+  cps: new Decimal(0),
+  passiveIncome: new Decimal(0)
+};
+  
   function saveGameState() {
     try {
       localStorage.setItem(storageKeys.CLICK_STORAGE_KEY, gameState.clickCount);
@@ -91,39 +91,39 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-    gameState.clickCount += gameState.clickMulti;
-    elements.clickElement.innerText = gameState.clickCount;
-    checkUpgradeRequirements();
+  gameState.clickCount = gameState.clickCount.add(gameState.clickMulti);
+  elements.clickElement.innerText = gameState.clickCount.toString();
+  checkUpgradeRequirements();
+  saveGameState();
+}
+
+function buyUpgrade1() {
+  if (gameState.up1bought < 1 && gameState.clickCount.greaterThanOrEqualTo(75)) {
+    gameState.up1bought += 1;
+    gameState.clickCount = gameState.clickCount.minus(75);
+    gameState.clickMulti = gameState.clickMulti.times(2);
+    elements.clickElement.innerText = gameState.clickCount.toString();
+    saveUpgradeState();
     saveGameState();
+    elements.up1Button.classList.add('bought');
   }
+  checkUpgradeRequirements();
+}
 
-  function buyUpgrade1() {
-    if (gameState.up1bought < 1 && gameState.clickCount >= 75) {
-      gameState.up1bought += 1;
-      gameState.clickCount -= 75;
-      gameState.clickMulti *= 2;
-      elements.clickElement.innerText = gameState.clickCount;
-      saveUpgradeState();
-      saveGameState();
-      elements.up1Button.classList.add('bought');
-    }
-    checkUpgradeRequirements();
+function buyUpgrade2() {
+  if (gameState.up2bought < 1 && gameState.clickCount.greaterThanOrEqualTo(300)) {
+    gameState.up2bought += 1;
+    gameState.clickCount = gameState.clickCount.minus(300);
+    gameState.clickMulti = gameState.clickMulti.times(2);
+    gameState.cps = gameState.cps.plus(1);
+    gameState.passiveIncome = gameState.passiveIncome.plus(1);
+    elements.clickElement.innerText = gameState.clickCount.toString();
+    saveUpgradeState();
+    saveGameState();
+    elements.up2Button.classList.add('bought');
   }
-
-  function buyUpgrade2() {
-    if (gameState.up2bought < 1 && gameState.clickCount >= 300) {
-      gameState.up2bought += 1;
-      gameState.clickCount -= 300;
-      gameState.clickMulti *= 2;
-      gameState.cps += 1;
-      gameState.passiveIncome += 1; // Increment passive income
-      elements.clickElement.innerText = gameState.clickCount;
-      saveUpgradeState();
-      saveGameState();
-      elements.up2Button.classList.add('bought');
-    }
-    checkUpgradeRequirements();
-  }
+  checkUpgradeRequirements();
+}
 
   // Function to handle passive income clicks
   function handlePassiveIncome() {
