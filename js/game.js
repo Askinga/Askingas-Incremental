@@ -73,6 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if(up1bought >= 1){
       upgradeButton.classList.add('bought')
     }
+    if(clickElement.innerHTML >= 75 && up1bought < 1){
+      upgradeButton.classList.add('requirements-met')
+    }
   }
 
   // Assuming you have a function to check requirements and purchase the upgrade
