@@ -67,6 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
       clickElement.innerHTML = currentClicks - 75;
       saveUpgradeState();
     }
+    if(up1bought >= 1){
+      upgradeButton.classList.add('bought')
+    }
   }
 
   // Assuming you have a function to check requirements and purchase the upgrade
