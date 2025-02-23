@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
           elements.up2Button.classList.add('bought');
           gameState.clickMulti = gameState.clickMulti.times(2);
           gameState.cps = gameState.cps.plus(1);
-          gameState.passiveIncome = gameState.passiveIncome.plus(1); // Increment passive income
+          gameState.passiveIncome = gameState.passiveIncome.plus(1);
         }
       }
     } catch (e) {
@@ -164,12 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setInterval(saveGameState, 5000);
   setInterval(updateCPS, 1000);
-  setInterval(handlePassiveIncome, 1000); // Handle passive income every second
+  setInterval(handlePassiveIncome, 1000);
   updateCPS();
   checkUpgradeRequirements();
 
-  // Hide the loading screen once everything is loaded
-  setTimeout(() => {
+  // Ensure the loading screen is hidden once everything is loaded
+  window.addEventListener('load', () => {
     elements.loadingScreen.style.display = 'none';
-  }, 1000); // Adding a delay to ensure all elements are loaded
+  });
 });
