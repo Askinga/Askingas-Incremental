@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isNaN(currentClicks)) {
       currentClicks = 0;
     }
-    clickElement.innerHTML = currentClicks + clickMulti;
+    clickElement.innerHTML = (currentClicks + clickMulti).toString();
     checkUpgradeRequirements(); // Check requirements after incrementing clicks
   }
 
