@@ -3,14 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const clickButton = document.querySelector('.click-button');
   const up1Button = document.querySelector('#upgrade1');  // Changed to match ID
   const up2Button = document.querySelector('#upgrade2');  // Changed to match ID
+  const cpsElement = document.querySelector('.cps'); // Element to display CPS
   const CLICK_STORAGE_KEY = 'clicks';
   const UPGRADE1_STORAGE_KEY = 'up1bought';
   const UPGRADE2_STORAGE_KEY = 'up2bought';
   let clickMulti = 1;
   let up1bought = 0;
   let up2bought = 0;
+  let clickCount = 0; // Track number of clicks
+  let lastTime = Date.now();
 
-  if (!clickElement || !clickButton || !up1Button || !up2Button) {
+  if (!clickElement || !clickButton || !up1Button || !up2Button || !cpsElement) {
     console.error('Required DOM elements not found');
     return;
   }
@@ -73,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentClicks = 0;
     }
     clickElement.innerHTML = currentClicks + clickMulti;
+    clickCount++; // Increment the click count
     checkUpgradeRequirements(); // Check requirements after incrementing clicks
   }
 
@@ -120,6 +124,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function updateCPS() {
+    const now = Date.now();
+    const elapsedSeconds = (now - lastTime) / 1000;
+    const cps = (clickCount / elapsedSeconds).toFixed(2);
+    cpsElement.innerHTML = `CPS: ${cps}`;
+    clickCount = 0;
+    lastTime = now;
+  }
+
   clickButton.addEventListener('click', incrementClick);
   up1Button.addEventListener('click', buyUpgrade1);
   up2Button.addEventListener('click', buyUpgrade2);
@@ -128,5 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadUpgradeState();
 
   setInterval(saveGameState, 5000);
+  setInterval(updateCPS, 1000); // Update CPS every second
   checkUpgradeRequirements(); // Initial check when the game starts
 });
