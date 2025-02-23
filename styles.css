@@ -52,11 +52,11 @@ body {
   height: 150px;
   border-radius: 10px;
   display: flex;
-  flex-direction: column; /* Changed to column for vertical alignment */
+  flex-direction: row; /* Changed to row for horizontal alignment */
   justify-content: center; /* Center alignment */
   align-items: center; /* Center alignment */
   flex-wrap: wrap;
-}
+  }
 
 #upgrade1.requirements-met, #upgrade2.requirements-met {
   background-color: yellow;
