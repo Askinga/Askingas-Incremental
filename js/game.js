@@ -52,12 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
         up1bought = parseInt(savedUp1bought, 10);
         if (up1bought >= 1) {
           up1Button.classList.add('bought');
+          clickMulti *= 2; // Apply multiplier for upgrade 1
         }
       }
       if (savedUp2bought !== null) {
         up2bought = parseInt(savedUp2bought, 10);
         if (up2bought >= 1) {
           up2Button.classList.add('bought');
+          clickMulti *= 2; // Apply multiplier for upgrade 2
         }
       }
     } catch (e) {
@@ -70,8 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isNaN(currentClicks)) {
       currentClicks = 0;
     }
-    if (up1bought >= 1) clickMulti * 2;
-    if (up2bought >= 1) clickMulti * 2;
     clickElement.innerHTML = currentClicks + clickMulti;
     checkUpgradeRequirements(); // Check requirements after incrementing clicks
   }
@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (up1bought < 1 && currentClicks >= 75) {
       up1bought += 1;
       clickElement.innerHTML = currentClicks - 75;
+      clickMulti *= 2; // Apply multiplier for upgrade 1
       saveUpgradeState();
     }
     if (up1bought >= 1) {
@@ -94,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (up2bought < 1 && currentClicks >= 300) {
       up2bought += 1;
       clickElement.innerHTML = currentClicks - 300;
+      clickMulti *= 2; // Apply multiplier for upgrade 2
       saveUpgradeState();
     }
     if (up2bought >= 1) {
