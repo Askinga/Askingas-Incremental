@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
   const clickButton = document.querySelector('.click-button');
-  const up1Button = document.querySelector('.upgrade1');
-  const up2Button = document.querySelector('.upgrade2');
+  const up1Button = document.querySelector('#upgrade1');  // Changed to match ID
+  const up2Button = document.querySelector('#upgrade2');  // Changed to match ID
   const CLICK_STORAGE_KEY = 'clicks';
   const UPGRADE1_STORAGE_KEY = 'up1bought';
   const UPGRADE2_STORAGE_KEY = 'up2bought';
@@ -73,8 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
       currentClicks = 0;
     }
     clickElement.innerHTML = currentClicks + clickMulti;
-    console.log(`Clicks: ${clickElement.innerHTML}`); // Debugging
-    saveGameState(); // Save game state after incrementing clicks
     checkUpgradeRequirements(); // Check requirements after incrementing clicks
   }
 
