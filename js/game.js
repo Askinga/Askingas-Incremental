@@ -1,4 +1,4 @@
-                    document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
   const clickButton = document.querySelector('.click-button');
   const up1Button = document.querySelector('.upgrade1');
@@ -73,6 +73,7 @@
       currentClicks = 0;
     }
     clickElement.innerHTML = currentClicks + clickMulti;
+    console.log(`Clicks: ${clickElement.innerHTML}`); // Debugging
     saveGameState(); // Save game state after incrementing clicks
     checkUpgradeRequirements(); // Check requirements after incrementing clicks
   }
