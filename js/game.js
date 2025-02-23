@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let up2bought = 0;
   let clickCount = 0; // Track number of clicks
   let lastTime = Date.now();
+  let cps = 0; // Initialize cps variable
 
   if (!clickElement || !clickButton || !up1Button || !up2Button || !cpsElement) {
     console.error('Required DOM elements not found');
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (up2bought >= 1) {
           up2Button.classList.add('bought');
           clickMulti *= 2; // Apply multiplier for upgrade 2
+          cps += 1; // Add 1 cps for upgrade 2
         }
       }
     } catch (e) {
@@ -101,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       up2bought += 1;
       clickElement.innerHTML = currentClicks - 300;
       clickMulti *= 2; // Apply multiplier for upgrade 2
+      cps += 1; // Add 1 cps for upgrade 2
       saveUpgradeState();
       saveGameState(); // Save the updated clicks
     }
@@ -127,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCPS() {
     const now = Date.now();
     const elapsedSeconds = (now - lastTime) / 1000;
-    const cps = (clickCount / elapsedSeconds).toFixed(2);
-    cpsElement.innerHTML = `CPS: ${cps}`;
+    const cpsDisplay = (clickCount / elapsedSeconds + cps).toFixed(2); // Update cps display to include the cps from upgrades
+    cpsElement.innerHTML = `CPS: ${cpsDisplay}`;
     clickCount = 0;
     lastTime = now;
   }
