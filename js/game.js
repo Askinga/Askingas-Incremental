@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     up1Button: document.querySelector('#upgrade1'),
     up2Button: document.querySelector('#upgrade2'),
     cpsElement: document.querySelector('.cps'),
-    loadingScreen: document.getElementById('loading-screen') // Add this line
+    loadingScreen: document.getElementById('loading-screen')
   };
 
   const storageKeys = {
@@ -126,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
     checkUpgradeRequirements();
   }
 
-  // Function to handle passive income clicks
   function handlePassiveIncome() {
     gameState.clickCount = gameState.clickCount.plus(gameState.passiveIncome);
     elements.clickElement.innerText = gameState.clickCount.toString();
@@ -170,5 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
   checkUpgradeRequirements();
 
   // Hide the loading screen once everything is loaded
-  elements.loadingScreen.style.display = 'none'; // Add this line
+  setTimeout(() => {
+    elements.loadingScreen.style.display = 'none';
+  }, 1000); // Adding a delay to ensure all elements are loaded
 });
