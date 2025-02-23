@@ -36,7 +36,7 @@ body{
   border-radius: 6px;
 }
 
-.upgrade{
+#upgrade{
   background-color: red;
   text-align: center;
   vertical-align: middle;
@@ -46,17 +46,26 @@ body{
   display: flex;
 }
 
-.upgrade:hover{
+#upgrade:hover{
   transition: transform 0.5s;
   transform: scale(1.06);
   transition-timing-function: ease-out;
 }
 
 /* Upgrade 1 styles */
-.upgrade.requirements-met {
+.up1.requirements-met {
   background-color: yellow;
 }
 
-.upgrade.bought {
+.up1.bought {
+  background-color: green;
+}
+
+/* Upgrade 1 styles */
+.up2.requirements-met {
+  background-color: yellow;
+}
+
+.up2.bought {
   background-color: green;
 }
