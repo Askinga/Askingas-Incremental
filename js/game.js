@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const clickElement = document.querySelector('.clicks');
   const clickButton = document.querySelector('.click-button');
-  const upgradeButton = document.querySelector('.upgrade');
+  const up1Button = document.querySelector('.upgrade1');
+  const up2Button = document.querySelector('.upgrade2');
   const CLICK_STORAGE_KEY = 'clicks';
   const UPGRADE1_STORAGE_KEY = 'up1bought';
   const UPGRADE2_STORAGE_KEY = 'up2bought';
@@ -9,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let up1bought = 0;
   let up2bought = 0;
 
-  if (!clickElement || !clickButton) {
+  if (!clickElement || !clickButton || !up1Button || !up2Button) {
     console.error('Required DOM elements not found');
     return;
   }
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function saveUpgradeState() {
     try {
       localStorage.setItem(UPGRADE1_STORAGE_KEY, up1bought);
-    	localStorage.setItem(UPGRADE2_STORAGE_KEY, up2bought);
+      localStorage.setItem(UPGRADE2_STORAGE_KEY, up2bought);
     } catch (e) {
       console.error('Failed to save upgrade state', e);
     }
@@ -59,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
           up2Button.classList.add('bought');
         }
       }
-      }
     } catch (e) {
       console.error('Failed to load upgrade state', e);
     }
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function incrementClick() {
     let currentClicks = parseFloat(clickElement.innerHTML);
     if (isNaN(currentClicks)) {
-      currentClicks = 1;
+      currentClicks = 0;
     }
     if (up1bought >= 1) clickMulti = 2;
     if (up2bought >= 1) clickMulti = 4;
@@ -88,7 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     checkUpgradeRequirements(); // Check requirements after buying upgrade
   }
-	function buyUpgrade2() {
+
+  function buyUpgrade2() {
+    const currentClicks = parseInt(clickElement.innerHTML, 10);
     if (up2bought < 1 && currentClicks >= 300) {
       up2bought += 1;
       clickElement.innerHTML = currentClicks - 300;
@@ -99,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     checkUpgradeRequirements(); // Check requirements after buying upgrade
   }
-  
+
   function checkUpgradeRequirements() {
     const currentClicks = parseInt(clickElement.innerHTML, 10);
     if (currentClicks >= 75 && up1bought < 1) {
