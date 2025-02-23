@@ -77,17 +77,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buyUpgrade1() {
-    const currentClicks = parseInt(clickElement.innerHTML, 10);
-    if (up1bought < 1 && currentClicks >= 75) {
-      up1bought += 1;
-      clickElement.innerHTML = currentClicks - 75;
-      clickMulti *= 2; // Apply multiplier for upgrade 1
-      saveUpgradeState();
-    }
-    if (up1bought >= 1) {
-      up1Button.classList.add('bought');
-    }
-    checkUpgradeRequirements(); // Check requirements after buying upgrade
+  const currentClicks = parseInt(clickElement.innerHTML, 10);
+  if (up1bought < 1 && currentClicks >= 75) {
+    up1bought += 1;
+    clickElement.innerHTML = currentClicks - 75;
+    clickMulti *= 2; // Apply multiplier for upgrade 1
+    saveUpgradeState();
+  }
+  if (up1bought >= 1) {
+    up1Button.classList.add('bought');
+  }
+  checkUpgradeRequirements(); // Check requirements after buying upgrade
   }
 
   function buyUpgrade2() {
