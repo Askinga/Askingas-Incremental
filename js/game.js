@@ -19,8 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  console.log('All required DOM elements found');
-
   function saveGameState() {
     try {
       const clicks = clickElement.innerText;
@@ -75,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function incrementClick() {
-    let currentClicks = parseFloat(clickElement.innerText);
+    let currentClicks = parseInt(clickElement.innerText, 10);
     if (isNaN(currentClicks)) {
       currentClicks = 0;
     }
@@ -144,13 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
   up1Button.addEventListener('click', buyUpgrade1);
   up2Button.addEventListener('click', buyUpgrade2);
 
-  console.log('Event listeners added');
-
   loadGameState();
   loadUpgradeState();
 
   setInterval(saveGameState, 5000);
   setInterval(updateCPS, 1000);
   checkUpgradeRequirements();
-  console.log('Initial state loaded and intervals set');
 });
