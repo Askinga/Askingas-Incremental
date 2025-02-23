@@ -8,10 +8,42 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const storageKeys = {
-    CLICK_STORAGE_KEY: 'clicks',
-    UPGRADE1_STORAGE_KEY: 'up1bought',
-    UPGRADE2_STORAGE_KEY: 'up2bought'
-  };
+  CLICK_STORAGE_KEY: 'clicks',
+  UPGRADE1_STORAGE_KEY: 'up1bought',
+  UPGRADE2_STORAGE_KEY: 'up2bought',
+  CPS_STORAGE_KEY: 'cps',
+  LAST_TIME_STORAGE_KEY: 'lastTime'
+};
+
+function saveGameState() {
+  try {
+    localStorage.setItem(storageKeys.CLICK_STORAGE_KEY, gameState.clickCount);
+    localStorage.setItem(storageKeys.CPS_STORAGE_KEY, gameState.cps);
+    localStorage.setItem(storageKeys.LAST_TIME_STORAGE_KEY, gameState.lastTime);
+  } catch (e) {
+    console.error('Failed to save game state', e);
+  }
+}
+
+function loadGameState() {
+  try {
+    const clicks = localStorage.getItem(storageKeys.CLICK_STORAGE_KEY);
+    const cps = localStorage.getItem(storageKeys.CPS_STORAGE_KEY);
+    const lastTime = localStorage.getItem(storageKeys.LAST_TIME_STORAGE_KEY);
+    if (clicks !== null) {
+      gameState.clickCount = parseInt(clicks, 10);
+      elements.clickElement.innerText = gameState.clickCount;
+    }
+    if (cps !== null) {
+      gameState.cps = parseInt(cps, 10);
+    }
+    if (lastTime !== null) {
+      gameState.lastTime = parseInt(lastTime, 10);
+    }
+  } catch (e) {
+    console.error('Failed to load game state', e);
+  }
+}
 
   let gameState = {
     clickMulti: 1,
@@ -26,26 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (Object.values(elements).some(el => !el)) {
     console.error('Required DOM elements not found');
     return;
-  }
-
-  function saveGameState() {
-    try {
-      localStorage.setItem(storageKeys.CLICK_STORAGE_KEY, gameState.clickCount);
-    } catch (e) {
-      console.error('Failed to save game state', e);
-    }
-  }
-
-  function loadGameState() {
-    try {
-      const clicks = localStorage.getItem(storageKeys.CLICK_STORAGE_KEY);
-      if (clicks !== null) {
-        gameState.clickCount = parseInt(clicks, 10);
-        elements.clickElement.innerText = gameState.clickCount;
-      }
-    } catch (e) {
-      console.error('Failed to load game state', e);
-    }
   }
 
   function saveUpgradeState() {
