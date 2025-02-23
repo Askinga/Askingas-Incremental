@@ -70,8 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isNaN(currentClicks)) {
       currentClicks = 0;
     }
-    if (up1bought >= 1) clickMulti = 2;
-    if (up2bought >= 1) clickMulti = 4;
+    if (up1bought >= 1) clickMulti * 2;
+    if (up2bought >= 1) clickMulti * 2;
     clickElement.innerHTML = currentClicks + clickMulti;
     checkUpgradeRequirements(); // Check requirements after incrementing clicks
   }
