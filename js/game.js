@@ -120,7 +120,7 @@ function buyUpgrade2() {
     }
   }
 
-  clickButton.addEventListener('click', incrementClick);
+  click-buttonButton.addEventListener('click', incrementClick);
   up1Button.addEventListener('click', buyUpgrade1);
   up2Button.addEventListener('click', buyUpgrade2);
 
