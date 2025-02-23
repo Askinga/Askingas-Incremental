@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     up1bought: 0,
     up2bought: 0,
     clickCount: 0,
+    cpsClicks: 0,
     lastTime: Date.now(),
     cps: 0
   };
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function incrementClick() {
     gameState.clickCount += gameState.clickMulti;
+    gameState.cpsClicks += gameState.clickMulti;
     elements.clickElement.innerText = gameState.clickCount;
     checkUpgradeRequirements();
     saveGameState();
@@ -130,9 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCPS() {
     const now = Date.now();
     const elapsedSeconds = (now - gameState.lastTime) / 1000;
-    const cpsDisplay = (gameState.clickCount / elapsedSeconds + gameState.cps).toFixed(2);
+    const cpsDisplay = (gameState.cpsClicks / elapsedSeconds + gameState.cps).toFixed(2);
     elements.cpsElement.innerText = `CPS: ${cpsDisplay}`;
-    gameState.clickCount = 0;
+    gameState.cpsClicks = 0;
     gameState.lastTime = now;
   }
 
@@ -145,6 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setInterval(saveGameState, 5000);
   setInterval(updateCPS, 1000);
+  updateCPS();
   checkUpgradeRequirements();
 });
-  
