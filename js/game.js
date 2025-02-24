@@ -133,7 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUpgradeState();
     updateCPS();
     checkUpgradeRequirements();
-    elements.loadingScreen.style.display = 'none';
+    // Ensure everything is initialized before hiding the loading screen
+    setTimeout(() => {
+      elements.loadingScreen.style.display = 'none';
+    }, 100);
   };
 
   initializeGame();
