@@ -127,20 +127,15 @@ document.addEventListener('DOMContentLoaded', () => {
   elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', 75, 2, elements.up1Button));
   elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', 300, 2, elements.up2Button));
 
-  // Ensure the game state is loaded and then hide the loading screen
   const initializeGame = () => {
     loadGameState();
     loadUpgradeState();
     updateCPS();
     checkUpgradeRequirements();
-    // Ensure everything is initialized before hiding the loading screen
-    setTimeout(() => {
-      elements.loadingScreen.style.display = 'none';
-    }, 100);
+    elements.loadingScreen.style.display = 'none';
   };
 
   initializeGame();
-
   setInterval(saveGameState, 5000);
   setInterval(updateCPS, 1000);
   setInterval(handlePassiveIncome, 1000);
