@@ -136,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCPS();
   checkUpgradeRequirements();
 
+  // Fixed: Ensuring loading screen is properly hidden after the game loads
   window.addEventListener('load', () => {
     elements.loadingScreen.style.display = 'none';
   });
