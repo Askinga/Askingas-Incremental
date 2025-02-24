@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const elements = {
     clickElement: document.querySelector('.clicks'),
