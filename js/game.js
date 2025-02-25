@@ -139,19 +139,20 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', 300, 2, elements.up2Button));
 
     const initializeGame = () => {
-      try {
-        loadGameState();
-        loadUpgradeState();
-        updateCPS();
-        checkUpgradeRequirements();
-        elements.loadingScreen.style.display = 'none';
-        console.log("Game initialized successfully");
-      } catch (e) {
-        console.error("Error during game initialization", e);
-      }
-    };
+  try {
+    loadGameState();
+    loadUpgradeState();
+    updateCPS();
+    checkUpgradeRequirements();
+    console.log("Game initialized successfully");
+  } catch (e) {
+    console.error("Error during game initialization", e);
+  } finally {
+    elements.loadingScreen.style.display = 'none';
+  }
+};
 
-    initializeGame();
+initializeGame();
     setInterval(saveGameState, 5000);
     setInterval(updateCPS, 1000);
     setInterval(handlePassiveIncome, 1000);
