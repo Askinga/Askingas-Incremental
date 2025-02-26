@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   try {
-    // Cache elements to minimize DOM queries
     const elements = {
       clickElement: getElement('.clicks'),
       clickButton: getElement('.click-button'),
@@ -68,10 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const loadGameState = () => {
-      gameState.clickCount = loadState(storageKeys.CLICK, new Decimal(0));
-      gameState.cps = loadState(storageKeys.CPS, new Decimal(0));
-      gameState.lastTime = loadState(storageKeys.LAST_TIME, Date.now());
-      updateElementText(elements.clickElement, gameState.clickCount);
+      const clickCount = loadState(storageKeys.CLICK, new Decimal(0));
+      const cps = loadState(storageKeys.CPS, new Decimal(0));
+      const lastTime = loadState(storageKeys.LAST_TIME, Date.now());
+      return { clickCount, cps, lastTime };
     };
 
     const saveUpgradeState = () => {
@@ -80,18 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const loadUpgradeState = () => {
-      gameState.up1Bought = loadState(storageKeys.UPGRADE1, 0).toNumber();
-      gameState.up2Bought = loadState(storageKeys.UPGRADE2, 0).toNumber();
-      if (gameState.up1Bought >= 1) {
-        elements.up1Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(2);
-      }
-      if (gameState.up2Bought >= 1) {
-        elements.up2Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(2);
-        gameState.cps = gameState.cps.plus(1);
-        gameState.passiveIncome = gameState.passiveIncome.plus(1);
-      }
+      const up1Bought = loadState(storageKeys.UPGRADE1, 0).toNumber();
+      const up2Bought = loadState(storageKeys.UPGRADE2, 0).toNumber();
+      return { up1Bought, up2Bought };
     };
 
     const incrementClick = () => {
@@ -141,8 +131,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const initializeGame = () => {
       try {
-        loadGameState();
-        loadUpgradeState();
+        const { clickCount, cps, lastTime } = loadGameState();
+        gameState.clickCount = clickCount;
+        gameState.cps = cps;
+        gameState.lastTime = lastTime;
+
+        const { up1Bought, up2Bought } = loadUpgradeState();
+        gameState.up1Bought = up1Bought;
+        gameState.up2Bought = up2Bought;
+
+        if (gameState.up1Bought >= 1) {
+          elements.up1Button.classList.add('bought');
+          gameState.clickMulti = gameState.clickMulti.times(2);
+        }
+        if (gameState.up2Bought >= 1) {
+          elements.up2Button.classList.add('bought');
+          gameState.clickMulti = gameState.clickMulti.times(2);
+          gameState.cps = gameState.cps.plus(1);
+          gameState.passiveIncome = gameState.passiveIncome.plus(1);
+        }
+
+        updateElementText(elements.clickElement, gameState.clickCount);
         updateCPS();
         checkUpgradeRequirements();
         console.log("Game initialized successfully");
