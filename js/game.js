@@ -129,38 +129,38 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', 75, 2, elements.up1Button));
     elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', 300, 2, elements.up2Button));
 
-    const initializeGame = () => {
-      try {
-        const { clickCount, cps, lastTime } = loadGameState();
-        gameState.clickCount = clickCount;
-        gameState.cps = cps;
-        gameState.lastTime = lastTime;
+    const initializeGame = async () => {
+  try {
+    const { clickCount, cps, lastTime } = loadGameState();
+    gameState.clickCount = clickCount;
+    gameState.cps = cps;
+    gameState.lastTime = lastTime;
 
-        const { up1Bought, up2Bought } = loadUpgradeState();
-        gameState.up1Bought = up1Bought;
-        gameState.up2Bought = up2Bought;
+    const { up1Bought, up2Bought } = loadUpgradeState();
+    gameState.up1Bought = up1Bought;
+    gameState.up2Bought = up2Bought;
 
-        if (gameState.up1Bought >= 1) {
-          elements.up1Button.classList.add('bought');
-          gameState.clickMulti = gameState.clickMulti.times(2);
-        }
-        if (gameState.up2Bought >= 1) {
-          elements.up2Button.classList.add('bought');
-          gameState.clickMulti = gameState.clickMulti.times(2);
-          gameState.cps = gameState.cps.plus(1);
-          gameState.passiveIncome = gameState.passiveIncome.plus(1);
-        }
+    if (gameState.up1Bought >= 1) {
+      elements.up1Button.classList.add('bought');
+      gameState.clickMulti = gameState.clickMulti.times(2);
+    }
+    if (gameState.up2Bought >= 1) {
+      elements.up2Button.classList.add('bought');
+      gameState.clickMulti = gameState.clickMulti.times(2);
+      gameState.cps = gameState.cps.plus(1);
+      gameState.passiveIncome = gameState.passiveIncome.plus(1);
+    }
 
-        updateElementText(elements.clickElement, gameState.clickCount);
-        updateCPS();
-        checkUpgradeRequirements();
-        console.log("Game initialized successfully");
-      } catch (e) {
-        console.error("Error during game initialization", e);
-      } finally {
-        elements.loadingScreen.style.display = 'none';
-      }
-    };
+    await updateElementText(elements.clickElement, gameState.clickCount);
+    await updateCPS();
+    await checkUpgradeRequirements();
+    console.log("Game initialized successfully");
+  } catch (e) {
+    console.error("Error during game initialization", e);
+  } finally {
+    elements.loadingScreen.style.display = 'none';
+  }
+};
 
     initializeGame();
     setInterval(saveGameState, 5000);
