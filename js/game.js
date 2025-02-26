@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   try {
+    // Cache elements to minimize DOM queries
     const elements = {
       clickElement: getElement('.clicks'),
       clickButton: getElement('.click-button'),
