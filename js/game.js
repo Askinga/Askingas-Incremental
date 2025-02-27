@@ -128,38 +128,41 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', 300, 2, elements.up2Button));
 
     const initializeGame = async () => {
-      try {
+    try {
+        // Load game state
         const { clickCount, cps, lastTime } = loadGameState();
         gameState.clickCount = clickCount;
         gameState.cps = cps;
         gameState.lastTime = lastTime;
 
+        // Load upgrade state
         const { up1Bought, up2Bought } = loadUpgradeState();
         gameState.up1Bought = up1Bought;
         gameState.up2Bought = up2Bought;
 
+        // Apply upgrades if bought
         if (gameState.up1Bought >= 1) {
-          elements.up1Button.classList.add('bought');
-          gameState.clickMulti = gameState.clickMulti.times(2);
+            elements.up1Button.classList.add('bought');
+            gameState.clickMulti = gameState.clickMulti.times(2);
         }
         if (gameState.up2Bought >= 1) {
-          elements.up2Button.classList.add('bought');
-          gameState.clickMulti = gameState.clickMulti.times(2);
-          gameState.cps = gameState.cps.plus(1);
-          gameState.passiveIncome = gameState.passiveIncome.plus(1);
+            elements.up2Button.classList.add('bought');
+            gameState.clickMulti = gameState.clickMulti.times(2);
+            gameState.cps = gameState.cps.plus(1);
+            gameState.passiveIncome = gameState.passiveIncome.plus(1);
         }
 
-        await updateElementText(elements.clickElement, gameState.clickCount);
-        await updateCPS();
-        await checkUpgradeRequirements();
+        // Update UI elements
+        updateElementText(elements.clickElement, gameState.clickCount);
+        updateCPS();
+        checkUpgradeRequirements();
         console.log("Game initialized successfully");
-      } catch (e) {
+    } catch (e) {
         console.error("Error during game initialization", e);
-      } finally {
+    } finally {
         elements.loadingScreen.style.display = 'none';
-      }
-    };
-
+    }
+};
     initializeGame();
     setInterval(saveGameState, 5000);
     setInterval(updateCPS, 1000);
