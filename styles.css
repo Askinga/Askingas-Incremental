@@ -52,12 +52,12 @@ div.a {
   border-radius: 6px;
 }
 
-#upgrade1:hover, #upgrade2:hover {
+#upgrade1:hover, #upgrade2, #upgrade3:hover {
   transition: transform 0.5s ease-out;
   transform: scale(1.06);
 }
 
-#upgrade1, #upgrade2 {
+#upgrade1, #upgrade2, #upgrade3 {
   background-color: red;
   text-align: center;
   vertical-align: middle;
@@ -71,10 +71,10 @@ div.a {
   flex-wrap: wrap;
   }
 
-#upgrade1.requirements-met, #upgrade2.requirements-met {
+#upgrade1.requirements-met, #upgrade2.requirements-met, #upgrade3.requirements-met {
   background-color: yellow;
 }
 
-#upgrade1.bought, #upgrade2.bought {
+#upgrade1.bought, #upgrade2.bought, #upgrade3.bought {
   background-color: green;
 }
