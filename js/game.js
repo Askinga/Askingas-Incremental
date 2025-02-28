@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     clickButton: getElement('.click-button'),
     up1Button: getElement('#upgrade1'),
     up2Button: getElement('#upgrade2'),
+    up3Button: getElement('#upgrade3'),
     cpsElement: getElement('.cps'),
     loadingScreen: getElement('#loading-screen')
   };
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     CLICK: 'clicks',
     UPGRADE1: 'up1bought',
     UPGRADE2: 'up2bought',
+    UPGRADE3: 'up3bought',
     CPS: 'cps',
     LAST_TIME: 'lastTime'
   };
@@ -28,6 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     clickMulti: 1,
     up1Bought: 0,
     up2Bought: 0,
+    up3Bought: 0,
     clickCount: 0,
     cpsClicks: 0,
     lastTime: Date.now(),
@@ -75,12 +78,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const saveUpgradeState = () => {
     saveState(storageKeys.UPGRADE1, gameState.up1Bought);
     saveState(storageKeys.UPGRADE2, gameState.up2Bought);
+    saveState(storageKeys.UPGRADE3, gameState.up3Bought);
   };
 
   const loadUpgradeState = async () => {
     const [up1Bought, up2Bought] = await Promise.all([
       loadState(storageKeys.UPGRADE1, 0),
-      loadState(storageKeys.UPGRADE2, 0)
+      loadState(storageKeys.UPGRADE2, 0),
+      loadState(storageKeys.UPGRADE23, 0)
     ]);
     return { up1Bought, up2Bought };
   };
@@ -125,11 +130,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const checkUpgradeRequirements = () => {
     elements.up1Button.classList.toggle('requirements-met', gameState.clickCount >= 75 && gameState.up1Bought < 1);
     elements.up2Button.classList.toggle('requirements-met', gameState.clickCount >= 300 && gameState.up2Bought < 1);
+    elements.up3Button.classList.toggle('requirements-met', gameState.clickCount >= 700 && gameState.up3Bought < 1); // New upgrade
+};
   };
 
   elements.clickButton.addEventListener('click', incrementClick);
   elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', 75, 2, elements.up1Button));
   elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', 300, 2, elements.up2Button));
+  elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', 700, 2, elements.up3Button));
 
   const initializeGame = async () => {
     try {
@@ -152,6 +160,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         gameState.clickMulti *= 2;
         gameState.cps += 1;
         gameState.passiveIncome += 1;
+      }
+      if (gameState.up3Bought >= 1) {
+        elements.up3Button.classList.add('bought');
+        gameState.clickMulti *= 1.75;
+        gameState.cps *= 5;
+        gameState.passiveIncome *= 5;
       }
 
       updateElementText(elements.clickElement, gameState.clickCount);
