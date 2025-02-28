@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       saveGameState();
       element.classList.add('bought');
       checkUpgradeRequirements();
+      updateCPS();
     }
   };
 
