@@ -130,8 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const checkUpgradeRequirements = () => {
     elements.up1Button.classList.toggle('requirements-met', gameState.clickCount >= 75 && gameState.up1Bought < 1);
     elements.up2Button.classList.toggle('requirements-met', gameState.clickCount >= 300 && gameState.up2Bought < 1);
-    elements.up3Button.classList.toggle('requirements-met', gameState.clickCount >= 700 && gameState.up3Bought < 1); // New upgrade
-};
+    elements.up3Button.classList.toggle('requirements-met', gameState.clickCount >= 700 && gameState.up3Bought < 1);
   };
 
   elements.clickButton.addEventListener('click', incrementClick);
@@ -175,21 +174,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (e) {
       console.error("Error during game initialization", e);
     } finally {
-      elements.loadingScreen.style.display = 'none';
+      hideLoadingScreen();
     }
   };
 
-	// JavaScript to handle the fade-out and removal of the loading screen
-function hideLoadingScreen() {
-  const loadingScreen = document.getElementById('loading-screen');
-  loadingScreen.style.animation = 'fadeOut 1s forwards';
-  loadingScreen.addEventListener('animationend', () => {
-    loadingScreen.style.display = 'none';
-  });
-}
-
-// Call this function when you want to hide the loading screen
-hideLoadingScreen();
+  function hideLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    loadingScreen.style.animation = 'fadeOut 1s forwards';
+    loadingScreen.addEventListener('animationend', () => {
+      loadingScreen.style.display = 'none';
+    });
+  }
 
   await initializeGame();
 
