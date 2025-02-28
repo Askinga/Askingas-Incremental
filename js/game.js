@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const [up1Bought, up2Bought] = await Promise.all([
       loadState(storageKeys.UPGRADE1, 0),
       loadState(storageKeys.UPGRADE2, 0),
-      loadState(storageKeys.UPGRADE23, 0)
+      loadState(storageKeys.UPGRADE3, 0)
     ]);
     return { up1Bought, up2Bought };
   };
