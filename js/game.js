@@ -60,37 +60,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     element.innerText = value.toString();
   };
 
-  const saveGameState = () => {
-  const saveUpgradeState = () => {
-  try {
-    saveState(storageKeys.UPGRADE1, gameState.up1Bought);
-    saveState(storageKeys.UPGRADE2, gameState.up2Bought);
-    saveState(storageKeys.UPGRADE3, gameState.up3Bought);
-    console.log("Upgrade states saved successfully.");
-  } catch (error) {
-    console.error("Error saving upgrade states:", error);
-  }
-};
-
-const loadUpgradeState = async () => {
-  try {
-    const [up1Bought, up2Bought, up3Bought] = await Promise.all([
-      loadState(storageKeys.UPGRADE1, 0),
-      loadState(storageKeys.UPGRADE2, 0),
-      loadState(storageKeys.UPGRADE3, 0)
-    ]);
-    gameState.up1Bought = up1Bought;
-    gameState.up2Bought = up2Bought;
-    gameState.up3Bought = up3Bought;
-
-    console.log("Upgrade states loaded successfully.");
-    return { up1Bought, up2Bought, up3Bought };
-  } catch (error) {
-    console.error("Error loading upgrade states:", error);
-    return { up1Bought: 0, up2Bought: 0, up3Bought: 0 };
-  }
-};
-
   const saveUpgradeState = () => {
     saveState(storageKeys.UPGRADE1, gameState.up1Bought);
     saveState(storageKeys.UPGRADE2, gameState.up2Bought);
@@ -98,12 +67,20 @@ const loadUpgradeState = async () => {
   };
 
   const loadUpgradeState = async () => {
-    const [up1Bought, up2Bought, up3Bought] = await Promise.all([
-      loadState(storageKeys.UPGRADE1, 0),
-      loadState(storageKeys.UPGRADE2, 0),
-      loadState(storageKeys.UPGRADE3, 0)
-    ]);
-    return { up1Bought, up2Bought, up3Bought };
+    try {
+      const [up1Bought, up2Bought, up3Bought] = await Promise.all([
+        loadState(storageKeys.UPGRADE1, 0),
+        loadState(storageKeys.UPGRADE2, 0),
+        loadState(storageKeys.UPGRADE3, 0)
+      ]);
+      gameState.up1Bought = up1Bought;
+      gameState.up2Bought = up2Bought;
+      gameState.up3Bought = up3Bought;
+      return { up1Bought, up2Bought, up3Bought };
+    } catch (e) {
+      console.error("Error loading upgrade states:", e);
+      return { up1Bought: 0, up2Bought: 0, up3Bought: 0 };
+    }
   };
 
   const incrementClick = () => {
@@ -154,9 +131,32 @@ const loadUpgradeState = async () => {
   elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', 300, 2, elements.up2Button));
   elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', 700, 2, elements.up3Button));
 
+  const saveGameState = () => {
+    saveState(storageKeys.CLICK, gameState.clickCount);
+    saveState(storageKeys.CPS, gameState.cps);
+    saveState(storageKeys.LAST_TIME, gameState.lastTime);
+  };
+
+  const loadGameState = async () => {
+    try {
+      const [clickCount, cps, lastTime] = await Promise.all([
+        loadState(storageKeys.CLICK, 0),
+        loadState(storageKeys.CPS, 0),
+        loadState(storageKeys.LAST_TIME, Date.now())
+      ]);
+      gameState.clickCount = clickCount;
+      gameState.cps = cps;
+      gameState.lastTime = lastTime;
+      return { clickCount, cps, lastTime };
+    } catch (e) {
+      console.error("Error loading game state:", e);
+      return { clickCount: 0, cps: 0, lastTime: Date.now() };
+    }
+  };
+
   const initializeGame = async () => {
     try {
-      const [{ clickCount, cps, lastTime }, { up1Bought, up2Bought }] = await Promise.all([
+      const [{ clickCount, cps, lastTime }, { up1Bought, up2Bought, up3Bought }] = await Promise.all([
         loadGameState(),
         loadUpgradeState()
       ]);
@@ -165,6 +165,7 @@ const loadUpgradeState = async () => {
       gameState.lastTime = lastTime;
       gameState.up1Bought = up1Bought;
       gameState.up2Bought = up2Bought;
+      gameState.up3Bought = up3Bought;
 
       if (gameState.up1Bought >= 1) {
         elements.up1Button.classList.add('bought');
@@ -196,10 +197,14 @@ const loadUpgradeState = async () => {
 
   function hideLoadingScreen() {
     const loadingScreen = document.getElementById('loading-screen');
-    loadingScreen.style.animation = 'fadeOut 1s forwards';
-    loadingScreen.addEventListener('animationend', () => {
-      loadingScreen.style.display = 'none';
-    });
+    if (loadingScreen) {
+      loadingScreen.style.animation = 'fadeOut 1s forwards';
+      loadingScreen.addEventListener('animationend', () => {
+        loadingScreen.style.display = 'none';
+      });
+    } else {
+      console.error('Loading screen element not found.');
+    }
   }
 
   await initializeGame();
