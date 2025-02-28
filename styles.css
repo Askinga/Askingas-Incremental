@@ -77,11 +77,17 @@ div.a {
   height: 150px;
   border-radius: 10px;
   display: flex;
-  flex-direction: row; /* Changed to row for horizontal alignment */
+  flex-direction: column; /* Changed to column for vertical alignment */
   justify-content: center; /* Center alignment */
   align-items: center; /* Center alignment */
-  flex-wrap: wrap;
-  }
+  margin-right: 10px; /* Add space between upgrades */
+}
+
+.upgrade-container {
+  display: flex;
+  flex-direction: row; /* Set the container to arrange items in a row */
+  overflow-x: auto; /* Allow horizontal scrolling if necessary */
+}
 
 #upgrade1.requirements-met, #upgrade2.requirements-met, #upgrade3.requirements-met {
   background-color: yellow;
