@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const gameState = {
-    clickMulti: new Decimal(1),
+    clickMulti: 1,
     up1Bought: 0,
     up2Bought: 0,
-    clickCount: new Decimal(0),
-    cpsClicks: new Decimal(0),
+    clickCount: 0,
+    cpsClicks: 0,
     lastTime: Date.now(),
-    cps: new Decimal(0),
-    passiveIncome: new Decimal(0)
+    cps: 0,
+    passiveIncome: 0
   };
 
   const saveState = (key, value) => {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const loadState = async (key, defaultValue) => {
     try {
       const value = localStorage.getItem(key);
-      return value !== null ? new Decimal(value) : defaultValue;
+      return value !== null ? parseFloat(value) : defaultValue;
     } catch (e) {
       console.error(`Failed to load ${key}`, e);
       return defaultValue;
@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const loadGameState = async () => {
     const [clickCount, cps, lastTime] = await Promise.all([
-      loadState(storageKeys.CLICK, new Decimal(0)),
-      loadState(storageKeys.CPS, new Decimal(0)),
+      loadState(storageKeys.CLICK, 0),
+      loadState(storageKeys.CPS, 0),
       loadState(storageKeys.LAST_TIME, Date.now())
     ]);
     return { clickCount, cps, lastTime };
@@ -79,24 +79,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const loadUpgradeState = async () => {
     const [up1Bought, up2Bought] = await Promise.all([
-      loadState(storageKeys.UPGRADE1, 0).toNumber(),
-      loadState(storageKeys.UPGRADE2, 0).toNumber()
+      loadState(storageKeys.UPGRADE1, 0),
+      loadState(storageKeys.UPGRADE2, 0)
     ]);
     return { up1Bought, up2Bought };
   };
 
   const incrementClick = () => {
-    gameState.clickCount = gameState.clickCount.plus(gameState.clickMulti);
+    gameState.clickCount += gameState.clickMulti;
     updateElementText(elements.clickElement, gameState.clickCount);
     checkUpgradeRequirements();
     saveGameState();
   };
 
   const buyUpgrade = (upgradeKey, cost, multiplier, element) => {
-    if (gameState[upgradeKey] < 1 && gameState.clickCount.greaterThanOrEqualTo(cost)) {
+    if (gameState[upgradeKey] < 1 && gameState.clickCount >= cost) {
       gameState[upgradeKey] += 1;
-      gameState.clickCount = gameState.clickCount.minus(cost);
-      gameState.clickMulti = gameState.clickMulti.times(multiplier);
+      gameState.clickCount -= cost;
+      gameState.clickMulti *= multiplier;
       updateElementText(elements.clickElement, gameState.clickCount);
       saveUpgradeState();
       saveGameState();
@@ -106,24 +106,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const handlePassiveIncome = () => {
-    gameState.clickCount = gameState.clickCount.plus(gameState.passiveIncome);
+    gameState.clickCount += gameState.passiveIncome;
     updateElementText(elements.clickElement, gameState.clickCount);
     saveGameState();
   };
 
   const updateCPS = () => {
     const now = Date.now();
-    const elapsedSeconds = new Decimal((now - gameState.lastTime) / 1000);
-    const totalClicks = gameState.cpsClicks.plus(gameState.passiveIncome.times(elapsedSeconds));
-    const cpsDisplay = totalClicks.div(elapsedSeconds).toFixed(2);
+    const elapsedSeconds = (now - gameState.lastTime) / 1000;
+    const totalClicks = gameState.cpsClicks + gameState.passiveIncome * elapsedSeconds;
+    const cpsDisplay = (totalClicks / elapsedSeconds).toFixed(2);
     updateElementText(elements.cpsElement, `CPS: ${cpsDisplay}`);
-    gameState.cpsClicks = new Decimal(0);
+    gameState.cpsClicks = 0;
     gameState.lastTime = now;
   };
 
   const checkUpgradeRequirements = () => {
-    elements.up1Button.classList.toggle('requirements-met', gameState.clickCount.greaterThanOrEqualTo(75) && gameState.up1Bought < 1);
-    elements.up2Button.classList.toggle('requirements-met', gameState.clickCount.greaterThanOrEqualTo(300) && gameState.up2Bought < 1);
+    elements.up1Button.classList.toggle('requirements-met', gameState.clickCount >= 75 && gameState.up1Bought < 1);
+    elements.up2Button.classList.toggle('requirements-met', gameState.clickCount >= 300 && gameState.up2Bought < 1);
   };
 
   elements.clickButton.addEventListener('click', incrementClick);
@@ -144,13 +144,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (gameState.up1Bought >= 1) {
         elements.up1Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(2);
+        gameState.clickMulti *= 2;
       }
       if (gameState.up2Bought >= 1) {
         elements.up2Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(2);
-        gameState.cps = gameState.cps.plus(1);
-        gameState.passiveIncome = gameState.passiveIncome.plus(1);
+        gameState.clickMulti *= 2;
+        gameState.cps += 1;
+        gameState.passiveIncome += 1;
       }
 
       updateElementText(elements.clickElement, gameState.clickCount);
