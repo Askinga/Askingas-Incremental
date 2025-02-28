@@ -82,12 +82,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const loadUpgradeState = async () => {
-    const [up1Bought, up2Bought] = await Promise.all([
+    const [up1Bought, up2Bought, up3Bought] = await Promise.all([
       loadState(storageKeys.UPGRADE1, 0),
       loadState(storageKeys.UPGRADE2, 0),
       loadState(storageKeys.UPGRADE3, 0)
     ]);
-    return { up1Bought, up2Bought };
+    return { up1Bought, up2Bought, up3Bought };
   };
 
   const incrementClick = () => {
