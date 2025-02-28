@@ -83,13 +83,6 @@ const loadUpgradeState = async () => {
     gameState.up2Bought = up2Bought;
     gameState.up3Bought = up3Bought;
 
-    if (gameState.up3Bought >= 1) {
-      elements.up3Button.classList.add('bought');
-      gameState.clickMulti *= 1.75;
-      gameState.cps *= 5;
-      gameState.passiveIncome *= 5;
-    }
-
     console.log("Upgrade states loaded successfully.");
     return { up1Bought, up2Bought, up3Bought };
   } catch (error) {
