@@ -179,6 +179,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   };
 
+	// JavaScript to handle the fade-out and removal of the loading screen
+function hideLoadingScreen() {
+  const loadingScreen = document.getElementById('loading-screen');
+  loadingScreen.style.animation = 'fadeOut 1s forwards';
+  loadingScreen.addEventListener('animationend', () => {
+    loadingScreen.style.display = 'none';
+  });
+}
+
+// Call this function when you want to hide the loading screen
+hideLoadingScreen();
+
   await initializeGame();
 
   setInterval(saveGameState, 5000);
