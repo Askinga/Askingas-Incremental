@@ -61,19 +61,42 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const saveGameState = () => {
-    saveState(storageKeys.CLICK, gameState.clickCount);
-    saveState(storageKeys.CPS, gameState.cps);
-    saveState(storageKeys.LAST_TIME, gameState.lastTime);
-  };
+  const saveUpgradeState = () => {
+  try {
+    saveState(storageKeys.UPGRADE1, gameState.up1Bought);
+    saveState(storageKeys.UPGRADE2, gameState.up2Bought);
+    saveState(storageKeys.UPGRADE3, gameState.up3Bought);
+    console.log("Upgrade states saved successfully.");
+  } catch (error) {
+    console.error("Error saving upgrade states:", error);
+  }
+};
 
-  const loadGameState = async () => {
-    const [clickCount, cps, lastTime] = await Promise.all([
-      loadState(storageKeys.CLICK, 0),
-      loadState(storageKeys.CPS, 0),
-      loadState(storageKeys.LAST_TIME, Date.now())
+const loadUpgradeState = async () => {
+  try {
+    const [up1Bought, up2Bought, up3Bought] = await Promise.all([
+      loadState(storageKeys.UPGRADE1, 0),
+      loadState(storageKeys.UPGRADE2, 0),
+      loadState(storageKeys.UPGRADE3, 0)
     ]);
-    return { clickCount, cps, lastTime };
-  };
+    gameState.up1Bought = up1Bought;
+    gameState.up2Bought = up2Bought;
+    gameState.up3Bought = up3Bought;
+
+    if (gameState.up3Bought >= 1) {
+      elements.up3Button.classList.add('bought');
+      gameState.clickMulti *= 1.75;
+      gameState.cps *= 5;
+      gameState.passiveIncome *= 5;
+    }
+
+    console.log("Upgrade states loaded successfully.");
+    return { up1Bought, up2Bought, up3Bought };
+  } catch (error) {
+    console.error("Error loading upgrade states:", error);
+    return { up1Bought: 0, up2Bought: 0, up3Bought: 0 };
+  }
+};
 
   const saveUpgradeState = () => {
     saveState(storageKeys.UPGRADE1, gameState.up1Bought);
