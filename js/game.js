@@ -27,15 +27,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const gameState = {
-    clickMulti: 1,
-    up1Bought: 0,
-    up2Bought: 0,
-    up3Bought: 0,
-    clickCount: 0,
-    cpsClicks: 0,
-    lastTime: Date.now(),
-    cps: 0,
-    passiveIncome: 0
+    clickMulti: new Decimal(1),
+    up1Bought: new Decimal(0),
+    up2Bought: new Decimal(0),
+    up3Bought: new Decimal(0),
+    clickCount: new Decimal(0),
+    cpsClicks: new Decimal(0),
+    lastTime: new Decimal(Date.now()),
+    cps: new Decimal(0),
+    passiveIncome: new Decimal(0)
   };
 
   const saveState = (key, value) => {
@@ -49,10 +49,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const loadState = async (key, defaultValue) => {
     try {
       const value = localStorage.getItem(key);
-      return value !== null ? parseFloat(value) : defaultValue;
+      return value !== null ? new Decimal(value) : new Decimal(defaultValue);
     } catch (e) {
       console.error(`Failed to load ${key}`, e);
-      return defaultValue;
+      return new Decimal(defaultValue);
     }
   };
 
@@ -79,22 +79,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       return { up1Bought, up2Bought, up3Bought };
     } catch (e) {
       console.error("Error loading upgrade states:", e);
-      return { up1Bought: 0, up2Bought: 0, up3Bought: 0 };
+      return { up1Bought: new Decimal(0), up2Bought: new Decimal(0), up3Bought: new Decimal(0) };
     }
   };
 
   const incrementClick = () => {
-    gameState.clickCount += gameState.clickMulti;
+    gameState.clickCount = gameState.clickCount.add(gameState.clickMulti);
     updateElementText(elements.clickElement, gameState.clickCount);
     checkUpgradeRequirements();
     saveGameState();
   };
 
   const buyUpgrade = (upgradeKey, cost, multiplier, element) => {
-    if (gameState[upgradeKey] < 1 && gameState.clickCount >= cost) {
-      gameState[upgradeKey] += 1;
-      gameState.clickCount -= cost;
-      gameState.clickMulti *= multiplier;
+    if (gameState[upgradeKey].lessThan(1) && gameState.clickCount.gte(cost)) {
+      gameState[upgradeKey] = gameState[upgradeKey].add(1);
+      gameState.clickCount = gameState.clickCount.sub(cost);
+      gameState.clickMulti = gameState.clickMulti.times(multiplier);
       updateElementText(elements.clickElement, gameState.clickCount);
       saveUpgradeState();
       saveGameState();
@@ -105,31 +105,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const handlePassiveIncome = () => {
-    gameState.clickCount += gameState.passiveIncome;
+    gameState.clickCount = gameState.clickCount.add(gameState.passiveIncome);
     updateElementText(elements.clickElement, gameState.clickCount);
     saveGameState();
   };
 
   const updateCPS = () => {
-    const now = Date.now();
-    const elapsedSeconds = (now - gameState.lastTime) / 1000;
-    const totalClicks = gameState.cpsClicks + gameState.passiveIncome * elapsedSeconds;
-    const cpsDisplay = (totalClicks / elapsedSeconds).toFixed(2);
+    const now = new Decimal(Date.now());
+    const elapsedSeconds = now.sub(gameState.lastTime).div(1000);
+    const totalClicks = gameState.cpsClicks.add(gameState.passiveIncome.times(elapsedSeconds));
+    const cpsDisplay = totalClicks.div(elapsedSeconds).toFixed(2);
     updateElementText(elements.cpsElement, `CPS: ${cpsDisplay}`);
-    gameState.cpsClicks = 0;
+    gameState.cpsClicks = new Decimal(0);
     gameState.lastTime = now;
   };
 
   const checkUpgradeRequirements = () => {
-    elements.up1Button.classList.toggle('requirements-met', gameState.clickCount >= 75 && gameState.up1Bought < 1);
-    elements.up2Button.classList.toggle('requirements-met', gameState.clickCount >= 300 && gameState.up2Bought < 1);
-    elements.up3Button.classList.toggle('requirements-met', gameState.clickCount >= 700 && gameState.up3Bought < 1);
+    elements.up1Button.classList.toggle('requirements-met', gameState.clickCount.gte(75) && gameState.up1Bought.lessThan(1));
+    elements.up2Button.classList.toggle('requirements-met', gameState.clickCount.gte(300) && gameState.up2Bought.lessThan(1));
+    elements.up3Button.classList.toggle('requirements-met', gameState.clickCount.gte(700) && gameState.up3Bought.lessThan(1));
   };
 
   elements.clickButton.addEventListener('click', incrementClick);
-  elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', 75, 2, elements.up1Button));
-  elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', 300, 2, elements.up2Button));
-  elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', 700, 2, elements.up3Button));
+  elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), elements.up1Button));
+  elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), elements.up2Button));
+  elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(2), elements.up3Button));
 
   const saveGameState = () => {
     saveState(storageKeys.CLICK, gameState.clickCount);
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       return { clickCount, cps, lastTime };
     } catch (e) {
       console.error("Error loading game state:", e);
-      return { clickCount: 0, cps: 0, lastTime: Date.now() };
+      return { clickCount: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()) };
     }
   };
 
@@ -167,21 +167,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       gameState.up2Bought = up2Bought;
       gameState.up3Bought = up3Bought;
 
-      if (gameState.up1Bought >= 1) {
+      if (gameState.up1Bought.gte(1)) {
         elements.up1Button.classList.add('bought');
-        gameState.clickMulti *= 2;
+        gameState.clickMulti = gameState.clickMulti.times(2);
       }
-      if (gameState.up2Bought >= 1) {
+      if (gameState.up2Bought.gte(1)) {
         elements.up2Button.classList.add('bought');
-        gameState.clickMulti *= 2;
-        gameState.cps += 1;
-        gameState.passiveIncome += 1;
+        gameState.clickMulti = gameState.clickMulti.times(2);
+        gameState.cps = gameState.cps.add(1);
+        gameState.passiveIncome = gameState.passiveIncome.add(1);
       }
-      if (gameState.up3Bought >= 1) {
+      if (gameState.up3Bought.gte(1)) {
         elements.up3Button.classList.add('bought');
-        gameState.clickMulti *= 1.75;
-        gameState.cps *= 5;
-        gameState.passiveIncome *= 5;
+        gameState.clickMulti = gameState.clickMulti.times(1.75);
+        gameState.cps = gameState.cps.times(5);
+        gameState.passiveIncome = gameState.passiveIncome.times(5);
       }
 
       updateElementText(elements.clickElement, gameState.clickCount);
