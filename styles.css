@@ -34,8 +34,8 @@ div.a {
   width: 100px;
   height: 50px;
   border-radius: 18px;
-  border-color: cyan;
-  background-color: cyan;
+  border-color: violet;
+  background-color: violet;
 }
 
 .click-button:hover {
