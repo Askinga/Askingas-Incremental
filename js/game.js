@@ -96,11 +96,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveGameState();
   };
 
-  const buyUpgrade = (upgradeKey, cost, multiplier, element) => {
+  const buyUpgrade = (upgradeKey, cost, multiplier, cpsMulti, element) => {
     if (gameState[upgradeKey].lessThan(1) && gameState.clickCount.gte(cost)) {
       gameState[upgradeKey] = gameState[upgradeKey].add(1);
       gameState.clickCount = gameState.clickCount.sub(cost);
       gameState.clickMulti = gameState.clickMulti.times(multiplier);
+      gameState.cps = gameState.cps.times(cpsMulti)
+      gameState.passiveIncome = gameState.passiveIncome.times(cpsMulti)
       updateElementText(elements.clickElement, gameState.clickCount);
       saveUpgradeState();
       saveGameState();
@@ -134,10 +136,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   elements.clickButton.addEventListener('click', incrementClick);
-  elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), elements.up1Button));
-  elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), elements.up2Button));
-  elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(1.75), elements.up3Button));
-  elements.up4Button.addEventListener('click', () => buyUpgrade('up4Bought', new Decimal(1500), new Decimal(2.5), elements.up4Button));
+  elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), new Decimal(1), elements.up1Button));
+  elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), new Decimal(1),elements.up2Button));
+  elements.up2Button.addEventListener('click', () => addCPS('up2Bought', new Decimal(1), new Decimal(300)));
+  elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(1.75), new Decimal(5), elements.up3Button));
+  elements.up4Button.addEventListener('click', () => buyUpgrade('up4Bought', new Decimal(1500), new Decimal(2.5), new Decimal(3), elements.up4Button));
   
 
   const saveGameState = () => {
@@ -146,6 +149,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveState(storageKeys.LAST_TIME, gameState.lastTime);
   };
 
+	const addCPS = (upgradeKey, number, cost) => {
+   if (gameState[upgradeKey].lessThan(1) && gameState.clickCount.gte(cost)) { 
+    gameState.cps = gameState.cps.add(number)
+    gameState.passiveIncome = gameState.passiveIncome.add(number)
+   }
+  };
+  
   const loadGameState = async () => {
     try {
       const [clickCount, cps, lastTime] = await Promise.all([
@@ -227,4 +237,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   setInterval(saveGameState, 5000);
   setInterval(updateCPS, 1000);
   setInterval(handlePassiveIncome, 1000);
+  setInterval(checkUpgradeRequirements, 1000);
 });
