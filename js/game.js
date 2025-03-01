@@ -159,8 +159,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     elements.up4Button.classList.toggle('requirements-met', gameState.clickCount.gte(1500) && gameState.up4Bought.lessThan(1));
     elements.up5Button.classList.toggle('requirements-met', gameState.clickCount.gte(4250) && gameState.up5Bought.lessThan(1));
     elements.up6Button.classList.toggle('requirements-met', gameState.clickCount.gte(10000) && gameState.up6Bought.lessThan(1));
-    elements.up5Button.classList.toggle('requirements-met', gameState.clickCount.gte(50000) && gameState.up7Bought.lessThan(1));
-    elements.up6Button.classList.toggle('requirements-met', gameState.clickCount.gte(225000) && gameState.up8Bought.lessThan(1));
+    elements.up7Button.classList.toggle('requirements-met', gameState.clickCount.gte(50000) && gameState.up7Bought.lessThan(1));
+    elements.up8Button.classList.toggle('requirements-met', gameState.clickCount.gte(225000) && gameState.up8Bought.lessThan(1));
   };
 
   elements.clickButton.addEventListener('click', incrementClick);
@@ -171,8 +171,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   elements.up4Button.addEventListener('click', () => buyUpgrade('up4Bought', new Decimal(1500), new Decimal(2.5), new Decimal(3), elements.up4Button));
   elements.up5Button.addEventListener('click', () => buyUpgrade('up5Bought', new Decimal(4250), new Decimal(2.25), new Decimal(2.75), elements.up5Button));
   elements.up6Button.addEventListener('click', () => buyUpgrade('up6Bought', new Decimal(10000), new Decimal(4), new Decimal(5), elements.up6Button));
-  elements.up5Button.addEventListener('click', () => buyUpgrade('up7Bought', new Decimal(50000), new Decimal(3.25), new Decimal(3), elements.up7Button));
-  elements.up6Button.addEventListener('click', () => buyUpgrade('up8Bought', new Decimal(225000), new Decimal(5), new Decimal(2.8), elements.up8Button));
+  elements.up7Button.addEventListener('click', () => buyUpgrade('up7Bought', new Decimal(50000), new Decimal(3.25), new Decimal(3), elements.up7Button));
+  elements.up8Button.addEventListener('click', () => buyUpgrade('up8Bought', new Decimal(225000), new Decimal(5), new Decimal(2.8), elements.up8Button));
 
   const saveGameState = () => {
     saveState(storageKeys.CLICK, gameState.clickCount);
