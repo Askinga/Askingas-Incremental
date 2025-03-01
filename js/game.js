@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 const toScientific = () => {
     if(gameState.clickCount.gte(1e6)){
-    gameState.clickElement = gameState.clickElement.toExponential(2)
+    gameState.clickElement = gameState.clickElement.toExponential(2);
     }
   };
   
