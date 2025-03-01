@@ -64,12 +64,12 @@ div.a {
   border-radius: 6px;
 }
 
-#upgrade1:hover, #upgrade2:hover, #upgrade3:hover, #upgrade4:hover {
+#upgrade1:hover, #upgrade2:hover, #upgrade3:hover, #upgrade4:hover, #upgrade5:hover {
   transition: transform 0.5s ease-out;
   transform: scale(1.06);
 }
 
-#upgrade1, #upgrade2, #upgrade3, #upgrade4 {
+#upgrade1, #upgrade2, #upgrade3, #upgrade4, #upgrade5 {
   background-color: red;
   text-align: center;
   vertical-align: middle;
@@ -89,38 +89,15 @@ div.a {
   overflow-x: auto; /* Allow horizontal scrolling if necessary */
 }
 
-/* Add this CSS for tooltip */
-.upgrade-tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-.upgrade-tooltip .tooltiptext {
-  visibility: hidden;
-  width: 200px;
-  background-color: black;
-  color: white;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%; /* Position tooltip above the element */
-  left: 50%;
-  margin-left: -100px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
 .upgrade-tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
 }
 
-#upgrade1.requirements-met, #upgrade2.requirements-met, #upgrade3.requirements-met, #upgrade4.requirements-met {
+#upgrade1.requirements-met, #upgrade2.requirements-met, #upgrade3.requirements-met, #upgrade4.requirements-met, #upgrade5.requirements-met {
   background-color: yellow;
 }
 
-#upgrade1.bought, #upgrade2.bought, #upgrade3.bought, #upgrade4.bought {
+#upgrade1.bought, #upgrade2.bought, #upgrade3.bought, #upgrade4.bought, #upgrade5.bought {
   background-color: green;
 }
