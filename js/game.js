@@ -218,12 +218,13 @@ const updateCPC = () => {
 
   const initializeGame = async () => {
     try {
-      const [{ clickCount, cps, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought }] = await Promise.all([
+      const [{ clickCount, cps, cpc, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought }] = await Promise.all([
         loadGameState(),
         loadUpgradeState()
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
+      gameState.cpc = cpc
       gameState.lastTime = lastTime;
       gameState.up1Bought = up1Bought;
       gameState.up2Bought = up2Bought;
