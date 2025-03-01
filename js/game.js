@@ -180,6 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const saveGameState = () => {
     saveState(storageKeys.CLICK, gameState.clickCount);
     saveState(storageKeys.CPS, gameState.cps);
+    saveState(storageKeys.CPC, gameState.cpc);
     saveState(storageKeys.LAST_TIME, gameState.lastTime);
   };
 
@@ -198,18 +199,20 @@ const updateCPC = () => {
   
   const loadGameState = async () => {
     try {
-      const [clickCount, cps, lastTime] = await Promise.all([
+      const [clickCount, cps, cpc, lastTime] = await Promise.all([
         loadState(storageKeys.CLICK, 0),
         loadState(storageKeys.CPS, 0),
-        loadState(storageKeys.LAST_TIME, Date.now())
+        loadState(storageKeys.LAST_TIME, Date.now()),
+        loadState(storageKeys.CPC, 0),
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
+      gameState.cpc = cpc;
       gameState.lastTime = lastTime;
-      return { clickCount, cps, lastTime };
+      return { clickCount, cps, cpc, lastTime };
     } catch (e) {
       console.error("Error loading game state:", e);
-      return { clickCount: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()) };
+      return { clickCount: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()), cpc: new Decimal(0) };
     }
   };
 
