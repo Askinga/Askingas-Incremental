@@ -87,6 +87,7 @@ div.a {
   display: flex;
   flex-direction: row; /* Set the container to arrange items in a row */
   overflow-x: auto; /* Allow horizontal scrolling if necessary */
+  flex-wrap: wrap; /* Add wraping if upgrades are overflowing the screen. */
 }
 
 .upgrade-tooltip:hover .tooltiptext {
