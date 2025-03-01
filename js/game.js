@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     up7Button: getElement('#upgrade7'),
     up8Button: getElement('#upgrade8'),
     cpsElement: getElement('.cps'),
+    cpcElement: getElement('.clickMulti')
     loadingScreen: getElement('#loading-screen')
   };
 
@@ -187,6 +188,11 @@ const addCPS = (upgradeKey, number, cost) => {
     updateCPS();
    }
   };
+
+const updateCPC = () => {
+  const cpcDisplay = clickMulti.toFixed(2);
+  updateElementText(elements.cpcElement, `CPC: ${cpcDisplay}`);
+};
   
   const loadGameState = async () => {
     try {
@@ -296,6 +302,7 @@ const addCPS = (upgradeKey, number, cost) => {
 
   setInterval(saveGameState, 5000);
   setInterval(updateCPS, 1000);
+  setInterval(updateCPC, 1000);
   setInterval(handlePassiveIncome, 1000);
   setInterval(checkUpgradeRequirements, 1000);
 });
