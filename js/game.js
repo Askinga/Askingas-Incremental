@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     UPGRADE4: 'up4bought',
     UPGRADE5: 'up5bought',
     UPGRADE6: 'up6bought',
-    UPGRADE7: 'up8bought',
+    UPGRADE7: 'up7bought',
     UPGRADE8: 'up8bought',
     CPS: 'cps',
     CPC: 'clickMulti',
@@ -168,8 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   elements.clickButton.addEventListener('click', incrementClick);
   elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), new Decimal(1), elements.up1Button));
-  elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), new Decimal(1),elements.up2Button));
-  elements.up2Button.addEventListener('click', () => addCPS('up2Bought', new Decimal(1), new Decimal(300)));
+  elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), new Decimal(1),elements.up2Button), addCPS('up2Bought', new Decimal(1), new Decimal(300)));
   elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(1.75), new Decimal(5), elements.up3Button));
   elements.up4Button.addEventListener('click', () => buyUpgrade('up4Bought', new Decimal(1500), new Decimal(2.5), new Decimal(3), elements.up4Button));
   elements.up5Button.addEventListener('click', () => buyUpgrade('up5Bought', new Decimal(4250), new Decimal(2.25), new Decimal(2.75), elements.up5Button));
@@ -193,7 +192,7 @@ const addCPS = (upgradeKey, number, cost) => {
   };
 
 const updateCPC = () => {
-  const cpcDisplay = clickMulti.toFixed(2);
+  const cpcDisplay = gameState.clickMulti.toFixed(2);
   updateElementText(elements.cpcElement, `CPC: ${cpcDisplay}`);
 };
   
