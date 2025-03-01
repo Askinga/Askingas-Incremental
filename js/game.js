@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       gameState[upgradeKey] = gameState[upgradeKey].add(1);
       gameState.clickCount = gameState.clickCount.sub(cost);
       gameState.clickMulti = gameState.clickMulti.times(multiplier);
-      gameState.cps = gameState.cps.times(cpsMulti)
-      gameState.passiveIncome = gameState.passiveIncome.times(cpsMulti)
+      gameState.cps = gameState.cps.times(cpsMulti);
+      gameState.passiveIncome = gameState.passiveIncome.times(cpsMulti);
       updateElementText(elements.clickElement, gameState.clickCount);
       saveUpgradeState();
       saveGameState();
@@ -149,10 +149,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveState(storageKeys.LAST_TIME, gameState.lastTime);
   };
 
-	const addCPS = (upgradeKey, number, cost) => {
+const addCPS = (upgradeKey, number, cost) => {
    if (gameState[upgradeKey].lessThan(1) && gameState.clickCount.gte(cost)) { 
-    gameState.cps = gameState.cps.add(number)
-    gameState.passiveIncome = gameState.passiveIncome.add(number)
+    gameState.cps = gameState.cps.add(number);
+    gameState.passiveIncome = gameState.passiveIncome.add(number);
+    updateCPS();
    }
   };
   
