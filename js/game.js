@@ -125,8 +125,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateElementText(elements.clickElement, gameState.clickCount);
     checkUpgradeRequirements();
     saveGameState();
+    toScientific();
   };
 
+	const toScientific(){
+    if(gameState.clickCount.gte(1e6)){
+    gameState.clickElement = gameState.clickElement.toExponential(2)
+    }
+  };
+  
   const buyUpgrade = (upgradeKey, cost, multiplier, cpsMulti, element) => {
     if (gameState[upgradeKey].lessThan(1) && gameState.clickCount.gte(cost)) {
       gameState[upgradeKey] = gameState[upgradeKey].add(1);
