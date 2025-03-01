@@ -64,12 +64,12 @@ div.a {
   border-radius: 6px;
 }
 
-#upgrade1:hover, #upgrade2:hover, #upgrade3:hover {
+#upgrade1:hover, #upgrade2:hover, #upgrade3:hover, #upgrade4:hover {
   transition: transform 0.5s ease-out;
   transform: scale(1.06);
 }
 
-#upgrade1, #upgrade2, #upgrade3 {
+#upgrade1, #upgrade2, #upgrade3, #upgrade4 {
   background-color: red;
   text-align: center;
   vertical-align: middle;
@@ -117,10 +117,10 @@ div.a {
   opacity: 1;
 }
 
-#upgrade1.requirements-met, #upgrade2.requirements-met, #upgrade3.requirements-met {
+#upgrade1.requirements-met, #upgrade2.requirements-met, #upgrade3.requirements-met, #upgrade4.requirements-met {
   background-color: yellow;
 }
 
-#upgrade1.bought, #upgrade2.bought, #upgrade3.bought {
+#upgrade1.bought, #upgrade2.bought, #upgrade3.bought, #upgrade4.bought {
   background-color: green;
 }
