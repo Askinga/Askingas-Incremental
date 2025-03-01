@@ -297,7 +297,6 @@ const addCPS = (upgradeKey, number, cost) => {
 
   setInterval(saveGameState, 5000);
   setInterval(updateCPS, 1000);
-  setInterval(updateCPC, 1000);
   setInterval(handlePassiveIncome, 1000);
   setInterval(checkUpgradeRequirements, 1000);
 });
