@@ -65,14 +65,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const loadState = async (key, defaultValue) => {
-    try {
-      const value = localStorage.getItem(key);
-      return value !== null ? new Decimal(value) : new Decimal(defaultValue);
-    } catch (e) {
-      console.error(`Failed to load ${key}`, e);
-      return new Decimal(defaultValue);
-    }
-  };
+  try {
+    const value = localStorage.getItem(key);
+    return value !== null && !isNaN(value) ? new Decimal(value) : new Decimal(defaultValue);
+  } catch (e) {
+    console.error(`Failed to load ${key}`, e);
+    return new Decimal(defaultValue);
+  }
+};
+
 
   const updateElementText = (element, value) => {
     element.innerText = value.toString();
