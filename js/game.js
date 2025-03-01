@@ -7,6 +7,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     return element;
   };
 
+	function toScientificNotation(input) {
+    // Check if the input is in the form of a number followed by "B"
+    if (typeof input === 'string' && input.endsWith('B')) {
+        // Remove "B" and convert to a number
+        input = parseFloat(input.slice(0, -1)) * 1e9;
+    } else if (typeof input === 'string') {
+        // Check if it's just a regular number
+        input = parseFloat(input);
+    }
+
+    // Convert the number to scientific notation with 2 decimal places
+    return input.toExponential(2);
+  }
   const elements = {
     clickElement: getElement('.clicks'),
     clickButton: getElement('.click-button'),
@@ -125,13 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateElementText(elements.clickElement, gameState.clickCount);
     checkUpgradeRequirements();
     saveGameState();
-    toScientific();
-  };
-
-const toScientific = () => {
-    if(gameState.clickCount.gte(1e6)){
-    gameState.clickElement = gameState.clickElement.toExponential(2);
-    }
+    toScientificNotation(new Decimal(gameState.clickCount));
   };
   
   const buyUpgrade = (upgradeKey, cost, multiplier, cpsMulti, element) => {
