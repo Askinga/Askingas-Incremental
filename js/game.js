@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       gameState.up1Bought = up1Bought;
       gameState.up2Bought = up2Bought;
       gameState.up3Bought = up3Bought;
-      gameState.up4Bought = up3Bought;
+      gameState.up4Bought = up4Bought;
 
       if (gameState.up1Bought.gte(1)) {
         elements.up1Button.classList.add('bought');
