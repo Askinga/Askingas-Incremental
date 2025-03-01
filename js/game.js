@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     up7Button: getElement('#upgrade7'),
     up8Button: getElement('#upgrade8'),
     cpsElement: getElement('.cps'),
-    cpcElement: getElement('.clickMulti')
+    cpcElement: getElement('.clickMulti'),
     loadingScreen: getElement('#loading-screen')
   };
 
@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     UPGRADE7: 'up8bought',
     UPGRADE8: 'up8bought',
     CPS: 'cps',
+    CPC: 'clickMulti',
     LAST_TIME: 'lastTime'
   };
 
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     cpsClicks: new Decimal(0),
     lastTime: new Decimal(Date.now()),
     cps: new Decimal(0),
+    cpc: new Decimal(0),
     passiveIncome: new Decimal(0)
   };
 
