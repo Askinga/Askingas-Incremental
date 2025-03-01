@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     up7Button: getElement('#upgrade7'),
     up8Button: getElement('#upgrade8'),
     cpsElement: getElement('.cps'),
-    cpcElement: getElement('.clickMulti'),
     loadingScreen: getElement('#loading-screen')
   };
 
@@ -34,7 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     UPGRADE7: 'up7bought',
     UPGRADE8: 'up8bought',
     CPS: 'cps',
-    CPC: 'clickMulti',
     LAST_TIME: 'lastTime'
   };
 
@@ -52,7 +50,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     cpsClicks: new Decimal(0),
     lastTime: new Decimal(Date.now()),
     cps: new Decimal(0),
-    cpc: new Decimal(0),
     passiveIncome: new Decimal(0)
   };
 
@@ -191,40 +188,32 @@ const addCPS = (upgradeKey, number, cost) => {
     updateCPS();
    }
   };
-
-const updateCPC = () => {
-  const cpcDisplay = gameState.clickMulti.toFixed(2);
-  updateElementText(elements.cpcElement, `CPC: ${cpcDisplay}`);
-};
   
   const loadGameState = async () => {
     try {
-      const [clickCount, cps, cpc, lastTime] = await Promise.all([
+      const [clickCount, cps, lastTime] = await Promise.all([
         loadState(storageKeys.CLICK, 0),
         loadState(storageKeys.CPS, 0),
-        loadState(storageKeys.LAST_TIME, Date.now()),
-        loadState(storageKeys.CPC, 0),
+        loadState(storageKeys.LAST_TIME, Date.now())
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
-      gameState.cpc = cpc;
       gameState.lastTime = lastTime;
-      return { clickCount, cps, cpc, lastTime };
+      return { clickCount, cps, lastTime };
     } catch (e) {
       console.error("Error loading game state:", e);
-      return { clickCount: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()), cpc: new Decimal(0) };
+      return { clickCount: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()) };
     }
   };
 
   const initializeGame = async () => {
     try {
-      const [{ clickCount, cps, cpc, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought }] = await Promise.all([
+      const [{ clickCount, cps, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought }] = await Promise.all([
         loadGameState(),
         loadUpgradeState()
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
-      gameState.cpc = cpc
       gameState.lastTime = lastTime;
       gameState.up1Bought = up1Bought;
       gameState.up2Bought = up2Bought;
