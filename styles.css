@@ -80,7 +80,6 @@ div.a {
   flex-direction: column; /* Changed to column for vertical alignment */
   justify-content: center; /* Center alignment */
   align-items: center; /* Center alignment */
-  margin-right: 10px; /* Add space between upgrades */
 }
 
 .upgrade-container {
