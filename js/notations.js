@@ -30,7 +30,7 @@ function commaFormat(num, precision) {
 
 function format(decimal, precision = 2, small) {
     small = small || modInfo.allowSmall
-    decimal = new Decimal(decimal)
+    decimal = new Decimal(gameState.clickCount)
     if (isNaN(decimal.sign) || isNaN(decimal.layer) || isNaN(decimal.mag)) {
         player.hasNaN = true;
         return "NaN"
