@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   const elements = {
     clickElement: getElement('.clicks'),
-    prestigeElement: getElement('.')
+    prestigeElement: getElement('.prestigepoints'),
     clickButton: getElement('.click-button'),
     prestigeButton: getElement('.prestige-button'),
     up1Button: getElement('#upgrade1'),
@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const storageKeys = {
     CLICK: 'clicks',
+    PP: 'PPts',
     UPGRADE1: 'up1bought',
     UPGRADE2: 'up2bought',
     UPGRADE3: 'up3bought',
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const gameState = {
     clickMulti: new Decimal(1),
+    PPts: new Decimal(0),
     up1Bought: new Decimal(0),
     up2Bought: new Decimal(0),
     up3Bought: new Decimal(0),
@@ -168,6 +170,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       element.classList.add('bought');
       checkUpgradeRequirements();
       updateCPS();
+      updatePP();
     }
   };
 
@@ -177,6 +180,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveGameState();
   };
 
+  const updatePP = () => {
+  	let resetAmount = new Decimal(gameState.clickCount.add(1).pow(0.075).div(1e10));
+	updateElementText(elements.prestigepoints, format(resetAmount))
+  }
+	
   const updateCPS = () => {
     const now = new Decimal(Date.now());
     const elapsedSeconds = now.sub(gameState.lastTime).div(1000);
@@ -202,7 +210,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  
   };
 
+  const prestigeReset = () => {
+	let resetAmount = new Decimal(gameState.clickCount.add(1).pow(0.075).div(1e10));
+	if (resetAmount.gte(1)) {
+	    if(!confirm('Are you sure to prestige?'))
+	    doPrestigeReset();
+	}
+  }
+
+  const doPrestigeReset = () => {
+	  gameState.clickCount = new Decimal(0);
+	  gameState.up1Bought = new Decimal(0);
+	  gameState.up2Bought = new Decimal(0);
+	  gameState.up3Bought = new Decimal(0);
+	  gameState.up4Bought = new Decimal(0);
+	  gameState.up5Bought = new Decimal(0);
+	  gameState.up6Bought = new Decimal(0);
+	  gameState.up7Bought = new Decimal(0);
+  	  gameState.up8Bought = new Decimal(0);
+	  gameState.up9Bought = new Decimal(0);
+	  gameState.up10Bought = new Decimal(0);
+	  gameState.up11Bought = new Decimal(0);
+  }
+	  
   elements.clickButton.addEventListener('click', incrementClick);
+  elements.prestigeButton.addEventListener('click', prestigeReset);
   elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), new Decimal(1), elements.up1Button));
   elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), new Decimal(1), elements.up2Button)); // <-- Add this closing parenthesis
   elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(1.75), new Decimal(5), elements.up3Button));  
@@ -218,6 +250,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const saveGameState = () => {
     saveState(storageKeys.CLICK, gameState.clickCount);
+    saveState(storageKeys.PP, gameState.PPts);
     saveState(storageKeys.CPS, gameState.cps);
     saveState(storageKeys.CPC, gameState.cpc);
     saveState(storageKeys.LAST_TIME, gameState.lastTime);
@@ -233,29 +266,32 @@ const addCPS = (upgradeKey, number, cost) => {
   
   const loadGameState = async () => {
     try {
-      const [clickCount, cps, lastTime] = await Promise.all([
+      const [clickCount, PP, cps, lastTime] = await Promise.all([
         loadState(storageKeys.CLICK, 0),
+	loadState(storageKeys.PP, 0),
         loadState(storageKeys.CPS, 0),
         loadState(storageKeys.LAST_TIME, Date.now())
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
+      gameState.PPts = PPts;
       gameState.lastTime = lastTime;
       return { clickCount, cps, lastTime };
     } catch (e) {
       console.error("Error loading game state:", e);
-      return { clickCount: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()) };
+      return { clickCount: new Decimal(0), PPts: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()) };
     }
   };
 
   const initializeGame = async () => {
     try {
-      const [{ clickCount, cps, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought }] = await Promise.all([
+      const [{ clickCount, PPts, cps, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought }] = await Promise.all([
         loadGameState(),
         loadUpgradeState()
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
+      gameState.PPts = PPts;
       gameState.lastTime = lastTime;
       gameState.up1Bought = up1Bought;
       gameState.up2Bought = up2Bought;
