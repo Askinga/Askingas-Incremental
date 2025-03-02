@@ -34,8 +34,8 @@ div.a {
   width: 165px;
   height: 75px;
   border-radius: 20px;
-  border-color: violet;
-  background-color: violet;
+  border-color: green;
+  background-color: green;
 }
 
 .prestige-button {
@@ -52,7 +52,17 @@ div.a {
   cursor: pointer;
 }
 
+.prestige-button:hover {
+  transition: transform 0.65s ease-out;
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
 .click-button:active {
+  transform: scale(1.2);
+}
+
+.prestige-button:active {
   transform: scale(1.2);
 }
 
