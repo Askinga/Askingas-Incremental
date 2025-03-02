@@ -184,12 +184,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const handlePassiveIncome = () => {
     gameState.clickCount = gameState.clickCount.add(gameState.passiveIncome);
     updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
+    updatePP();
     saveGameState();
   };
 
   const updatePP = () => {
-  	let resetAmount = new Decimal(gameState.clickCount.add(1).pow(0.075).div(1e10));
-	updateElementText(elements.prestigeElement, format(resetAmount))
+  	const resetAmount = new Decimal(gameState.clickCount.add(1).pow(0.075).div(1e10));
+	updateElementText(elements.prestigeElement, format(resetAmount));
   }
 	
   const updateCPS = () => {
@@ -199,7 +200,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cpsDisplay = totalClicks.div(elapsedSeconds).toFixed(2);
     updateElementText(elements.cpsElement, 'CPS: ' + format(cpsDisplay));
     gameState.cpsClicks = new Decimal(0);
-    updatePP();
     gameState.lastTime = now;
   };
 
