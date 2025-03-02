@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const updatePP = () => {
-  	const resetAmount = new Decimal(gameState.clickCount.add(1).pow(0.075).div(1e10));
+  	const resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
 	updateElementText(elements.prestigeElement, format(resetAmount));
   }
 	
