@@ -44,10 +44,14 @@ div.a {
   border-radius: 10px;
   border-color: blue;
   background-color: blue;
-  display: none;
 }
 
-
+.tab-button:hover {
+  transition: transform 0.4s ease-out;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+  
 .click-button {
   width: 165px;
   height: 75px;
