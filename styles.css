@@ -38,6 +38,14 @@ div.a {
   background-color: violet;
 }
 
+.prestige-button {
+  width: 165px;
+  height: 75px;
+  border-radius: 20px;
+  border-color: blue;
+  background-color: blue;
+}
+
 .click-button:hover {
   transition: transform 0.65s ease-out;
   transform: scale(1.15);
