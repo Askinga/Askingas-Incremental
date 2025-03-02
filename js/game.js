@@ -268,7 +268,7 @@ const addCPS = (upgradeKey, number, cost) => {
   
   const loadGameState = async () => {
     try {
-      const [clickCount, PP, cps, lastTime] = await Promise.all([
+      const [clickCount, PPts, cps, lastTime] = await Promise.all([
         loadState(storageKeys.CLICK, 0),
 	loadState(storageKeys.PP, 0),
         loadState(storageKeys.CPS, 0),
