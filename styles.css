@@ -67,6 +67,7 @@ div.a {
 #upgrade1:hover, #upgrade2:hover, #upgrade3:hover, #upgrade4:hover, #upgrade5:hover, #upgrade6:hover, #upgrade7:hover, #upgrade8:hover, #upgrade9:hover, #upgrade10:hover, #upgrade11:hover {
   transition: transform 0.5s ease-out;
   transform: scale(1.06);
+  cursor: pointer;
 }
 
 #upgrade1, #upgrade2, #upgrade3, #upgrade4, #upgrade5, #upgrade6, #upgrade7, #upgrade8, #upgrade9, #upgrade10, #upgrade11 {
