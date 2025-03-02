@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const storageKeys = {
     CLICK: 'clicks',
-    PP: 'PPts',
+    PP: 'prestigepoints',
     UPGRADE1: 'up1bought',
     UPGRADE2: 'up2bought',
     UPGRADE3: 'up3bought',
@@ -265,7 +265,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveState(storageKeys.CLICK, gameState.clickCount);
     saveState(storageKeys.PP, gameState.PPts);
     saveState(storageKeys.CPS, gameState.cps);
-    saveState(storageKeys.CPC, gameState.cpc);
     saveState(storageKeys.LAST_TIME, gameState.lastTime);
   };
 
