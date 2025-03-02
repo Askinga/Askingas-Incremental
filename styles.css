@@ -44,6 +44,7 @@ div.a {
   border-radius: 10px;
   border-color: blue;
   background-color: blue;
+  display: none;
 }
 
 .tab-button:hover {
