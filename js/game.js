@@ -37,8 +37,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     up10Button: getElement('#upgrade10'),
     up11Button: getElement('#upgrade11'),  
     up12Button: getElement('#upgrade12'),
-    tabMain: getElement('.main-tab'),
-    tabPrestige: getElement('.prestige-tab'),
+    tabMain: getElement('#main-tab'),
+    tabPrestige: getElement('#prestige-tab'),
     cpsElement: getElement('.cps'),
     loadingScreen: getElement('#loading-screen')
   };
@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       saveGameState();
       element.classList.add('bought');
       checkUpgradeRequirements();
+      checkPrestigeTab();
       updateCPS();
       updatePP();
     }
@@ -188,6 +189,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
     updatePP();
     saveGameState();
+    checkPrestigeTab();
   };
 
   const updatePP = () => {
@@ -394,6 +396,7 @@ const addCPS = (upgradeKey, number, cost) => {
       updateCPS();
       updatePP();
       checkUpgradeRequirements();
+      checkPrestigeTab();
       console.log("Game initialized successfully");
     } catch (e) {
       console.error("Error during game initialization", e);
@@ -413,7 +416,13 @@ const addCPS = (upgradeKey, number, cost) => {
       console.error('Loading screen element not found.');
     }
   }  
-	  
+function checkPrestigeTab() {
+  	const prestigeTab = document.getElementById('prestige-tab');
+	if(gameState.clickCount.gte(1e10)) {
+	prestigeTab.style.display = '';
+    }
+}
+	
   await initializeGame();
 
   setInterval(saveGameState, 5000);
