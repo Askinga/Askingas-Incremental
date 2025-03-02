@@ -158,13 +158,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const incrementClick = () => {
+    const prestigeTab = document.getElementById('prestige-tab');
     gameState.clickCount = gameState.clickCount.add(gameState.clickMulti);
     updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
     checkUpgradeRequirements();
     saveGameState();
     toScientificNotation(new Decimal(gameState.clickCount));
     if(gameState.clickCount.gte(1e10)) {
-	prestige-tab.style.display = 'block';
+	prestigeTab.style.display = '';
     };
     updatePP();
   };
