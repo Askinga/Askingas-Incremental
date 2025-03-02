@@ -41,7 +41,7 @@ function sumValues(x) {
 }
 
 function format(decimal, precision = 2, small) {
-    small = small || modInfo.allowSmall
+    small = small
     decimal = new Decimal(decimal)
     if (isNaN(decimal.sign) || isNaN(decimal.layer) || isNaN(decimal.mag)) {
         player.hasNaN = true;
