@@ -164,7 +164,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveGameState();
     toScientificNotation(new Decimal(gameState.clickCount));
     updatePP();
-    checkPrestigeTab();
   };
   
   const buyUpgrade = (upgradeKey, cost, multiplier, cpsMulti, element) => {
@@ -189,7 +188,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
     updatePP();
     saveGameState();
-    checkPrestigeTab();
   };
 
   const updatePP = () => {
@@ -396,7 +394,6 @@ const addCPS = (upgradeKey, number, cost) => {
       updateCPS();
       updatePP();
       checkUpgradeRequirements();
-      checkPrestigeTab();
       console.log("Game initialized successfully");
     } catch (e) {
       console.error("Error during game initialization", e);
@@ -415,15 +412,7 @@ const addCPS = (upgradeKey, number, cost) => {
     } else {
       console.error('Loading screen element not found.');
     }
-  }
-
-  function checkPrestigeTab() {
-  	const prestigeTab = document.getElementById('prestige-tab');
-	if(gameState.clickCount.gte(1e10)) {
-	prestigeTab.style.display = '';
-    }
-  }
-
+  }  
 	  
   await initializeGame();
 
