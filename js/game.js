@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     up10Button: getElement('#upgrade10'),
     up11Button: getElement('#upgrade11'),  
     up12Button: getElement('#upgrade12'),
+    tabMain: getElement('.main-tab'),
+    tabPrestige: getElement('.prestige-tab'),
     cpsElement: getElement('.cps'),
     loadingScreen: getElement('#loading-screen')
   };
@@ -162,7 +164,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveGameState();
     toScientificNotation(new Decimal(gameState.clickCount));
     if(gameState.clickCount.gte(1e10)) {
-	prestige-tab.style.display = '';
+	prestige-tab.style.display = 'block';
     };
     updatePP();
   };
