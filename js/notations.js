@@ -1,4 +1,5 @@
 function exponentialFormat(num, precision, mantissa = true) {
+    decimalOne = new Decimal(1)
     let e = num.log10().floor()
     let m = num.div(Decimal.pow(10, e))
     if (m.toStringWithDecimalPlaces(precision) == 10) {
