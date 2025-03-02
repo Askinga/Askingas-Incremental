@@ -161,6 +161,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     checkUpgradeRequirements();
     saveGameState();
     toScientificNotation(new Decimal(gameState.clickCount));
+    if(gameState.clickCount.gte(1e10)) {
+	prestige-tab.style.display = '';
+    };
     updatePP();
   };
   
