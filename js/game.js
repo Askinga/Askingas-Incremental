@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const prestigeReset = () => {
 	let resetAmount = new Decimal(gameState.clickCount.add(1).pow(0.075).div(1e10));
 	if (resetAmount.gte(1)) {
-	    if(!confirm('Are you sure to prestige?'))
+	    if(!confirm("Are you sure to prestige?")) return
 	    doPrestigeReset();
 	}
   }
