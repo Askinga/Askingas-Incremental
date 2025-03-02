@@ -158,16 +158,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const incrementClick = () => {
-    const prestigeTab = document.getElementById('prestige-tab');
     gameState.clickCount = gameState.clickCount.add(gameState.clickMulti);
     updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
     checkUpgradeRequirements();
     saveGameState();
     toScientificNotation(new Decimal(gameState.clickCount));
-    if(gameState.clickCount.gte(1e10)) {
-	prestigeTab.style.display = '';
-    };
     updatePP();
+    checkPrestigeTab();
   };
   
   const buyUpgrade = (upgradeKey, cost, multiplier, cpsMulti, element) => {
@@ -192,6 +189,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
     updatePP();
     saveGameState();
+    checkPrestigeTab();
   };
 
   const updatePP = () => {
@@ -398,6 +396,7 @@ const addCPS = (upgradeKey, number, cost) => {
       updateCPS();
       updatePP();
       checkUpgradeRequirements();
+      checkPrestigeTab();
       console.log("Game initialized successfully");
     } catch (e) {
       console.error("Error during game initialization", e);
@@ -418,6 +417,14 @@ const addCPS = (upgradeKey, number, cost) => {
     }
   }
 
+  function checkPrestigeTab() {
+  	const prestigeTab = document.getElementById('prestige-tab');
+	if(gameState.clickCount.gte(1e10)) {
+	prestigeTab.style.display = '';
+    }
+  }
+
+	  
   await initializeGame();
 
   setInterval(saveGameState, 5000);
