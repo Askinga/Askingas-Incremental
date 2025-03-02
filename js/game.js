@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     checkUpgradeRequirements();
     saveGameState();
     toScientificNotation(new Decimal(gameState.clickCount));
+    updatePP();
   };
   
   const buyUpgrade = (upgradeKey, cost, multiplier, cpsMulti, element) => {
@@ -192,6 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cpsDisplay = totalClicks.div(elapsedSeconds).toFixed(2);
     updateElementText(elements.cpsElement, 'CPS: ' + format(cpsDisplay));
     gameState.cpsClicks = new Decimal(0);
+    updatePP();
     gameState.lastTime = now;
   };
 
@@ -233,6 +235,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  gameState.up9Bought = new Decimal(0);
 	  gameState.up10Bought = new Decimal(0);
 	  gameState.up11Bought = new Decimal(0);
+	  updatePP();
   }
 	  
   elements.clickButton.addEventListener('click', incrementClick);
@@ -373,6 +376,7 @@ const addCPS = (upgradeKey, number, cost) => {
       }
       updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
       updateCPS();
+      updatePP();
       checkUpgradeRequirements();
       console.log("Game initialized successfully");
     } catch (e) {
