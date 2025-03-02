@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const incrementClick = () => {
     gameState.clickCount = gameState.clickCount.add(gameState.clickMulti);
-    updateElementText(elements.clickElement, gameState.clickCount);
+    updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + 'Clicks');
     checkUpgradeRequirements();
     saveGameState();
     toScientificNotation(new Decimal(gameState.clickCount));
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const elapsedSeconds = now.sub(gameState.lastTime).div(1000);
     const totalClicks = gameState.cpsClicks.add(gameState.passiveIncome.times(elapsedSeconds));
     const cpsDisplay = totalClicks.div(elapsedSeconds).toFixed(2);
-    updateElementText(elements.cpsElement, `CPS: ${cpsDisplay}`);
+    updateElementText(elements.cpsElement, 'CPS: ' + format(cpsDisplay));
     gameState.cpsClicks = new Decimal(0);
     gameState.lastTime = now;
   };
