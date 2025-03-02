@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const updatePP = () => {
   	let resetAmount = new Decimal(gameState.clickCount.add(1).pow(0.075).div(1e10));
-	updateElementText(elements.prestigepoints, format(resetAmount))
+	updateElementText(elements.prestigeElement, format(resetAmount))
   }
 	
   const updateCPS = () => {
