@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const storageKeys = {
     CLICK: 'clicks',
-    PP: 'prestigepoints',
+    PP: 'PPts',
     UPGRADE1: 'up1bought',
     UPGRADE2: 'up2bought',
     UPGRADE3: 'up3bought',
@@ -288,7 +288,7 @@ const addCPS = (upgradeKey, number, cost) => {
       gameState.cps = cps;
       gameState.PPts = PPts;
       gameState.lastTime = lastTime;
-      return { clickCount, cps, lastTime };
+      return { clickCount, PPts, cps, lastTime };
     } catch (e) {
       console.error("Error loading game state:", e);
       return { clickCount: new Decimal(0), PPts: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()) };
