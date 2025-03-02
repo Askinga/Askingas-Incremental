@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     UPGRADE8: 'up8bought',
     UPGRADE9: 'up9bought',
     UPGRADE10: 'up10bought',
-    UPGRADE11: 'up11bought'  
+    UPGRADE11: 'up11bought',
     CPS: 'cps',
     LAST_TIME: 'lastTime'
   };
@@ -326,7 +326,7 @@ const addCPS = (upgradeKey, number, cost) => {
         gameState.passiveIncome = gameState.passiveIncome.times(6.66);
       }
       if (gameState.up11Bought.gte(1)) {
-        elements.up9Button.classList.add('bought');
+        elements.up11Button.classList.add('bought');
         gameState.clickMulti = gameState.clickMulti.times(5);
         gameState.cps = gameState.cps.times(10);
         gameState.passiveIncome = gameState.passiveIncome.times(10);
