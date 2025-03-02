@@ -331,7 +331,7 @@ const addCPS = (upgradeKey, number, cost) => {
         gameState.cps = gameState.cps.times(10);
         gameState.passiveIncome = gameState.passiveIncome.times(10);
       }
-      updateElementText(elements.clickElement, gameState.clickCount);
+      updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
       updateCPS();
       checkUpgradeRequirements();
       console.log("Game initialized successfully");
