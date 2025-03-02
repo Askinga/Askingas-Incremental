@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     elements.up9Button.classList.toggle('requirements-met', gameState.clickCount.gte(1e6) && gameState.up9Bought.lessThan(1));
     elements.up10Button.classList.toggle('requirements-met', gameState.clickCount.gte(6.66e6) && gameState.up10Bought.lessThan(1));
     elements.up11Button.classList.toggle('requirements-met', gameState.clickCount.gte(3.75e7) && gameState.up11Bought.lessThan(1));
-    elements.up11Button.classList.toggle('requirements-met', gameState.clickCount.gte(2.00e8) && gameState.up12Bought.lessThan(1));
+    elements.up12Button.classList.toggle('requirements-met', gameState.clickCount.gte(2.00e8) && gameState.up12Bought.lessThan(1));
   };
 
   const prestigeReset = () => {
