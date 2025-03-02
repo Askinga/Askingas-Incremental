@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       gameState.clickMulti = gameState.clickMulti.times(multiplier);
       gameState.cps = gameState.cps.times(cpsMulti);
       gameState.passiveIncome = gameState.passiveIncome.times(cpsMulti);
-      updateElementText(elements.clickElement, gameState.clickCount);
+      updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
       saveUpgradeState();
       saveGameState();
       element.classList.add('bought');
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const handlePassiveIncome = () => {
     gameState.clickCount = gameState.clickCount.add(gameState.passiveIncome);
-    updateElementText(elements.clickElement, gameState.clickCount);
+    updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
     saveGameState();
   };
 
