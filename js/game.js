@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const incrementClick = () => {
     gameState.clickCount = gameState.clickCount.add(gameState.clickMulti);
-    updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + 'Clicks');
+    updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
     checkUpgradeRequirements();
     saveGameState();
     toScientificNotation(new Decimal(gameState.clickCount));
