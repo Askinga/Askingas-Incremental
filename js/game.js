@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   const elements = {
     clickElement: getElement('.clicks'),
+    prestigeElement: getElement('.')
     clickButton: getElement('.click-button'),
+    prestigeButton: getElement('.prestige-button'),
     up1Button: getElement('#upgrade1'),
     up2Button: getElement('#upgrade2'),
     up3Button: getElement('#upgrade3'),
@@ -360,4 +362,5 @@ const addCPS = (upgradeKey, number, cost) => {
   setInterval(updateCPS, 1000);
   setInterval(handlePassiveIncome, 1000);
   setInterval(checkUpgradeRequirements, 1000);
+   
 });
