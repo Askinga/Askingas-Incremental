@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   const doPrestigeReset = () => {
-	  let resetAmount = new Decimal(gameState.clickCount.add(1).pow(0.075).div(1e10));
+	  let resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
 	  gameState.PPts = gameState.PPts.add(resetAmount);
 	  gameState.clickCount = new Decimal(0);
 	  gameState.up1Bought = new Decimal(0);
