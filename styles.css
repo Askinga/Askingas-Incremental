@@ -30,6 +30,23 @@ div.a {
   animation: fadeOut 1s forwards; /* Add this line */
 }
 
+#main-tab {
+  width: 75px;
+  height: 35px;
+  border-radius: 10px;
+  border-color: green;
+  background-color: green;
+}
+
+#prestige-tab {
+  width: 75px;
+  height: 35px;
+  border-radius: 10px;
+  border-color: blue;
+  background-color: blue;
+}
+
+
 .click-button {
   width: 165px;
   height: 75px;
