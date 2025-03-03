@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   const elements = {
     clickElement: getElement('.clicks'),
+    PPElement: getElement('.prestige'),
     prestigeElement: getElement('.prestigepoints'),
     clickButton: getElement('.click-button'),
     prestigeButton: getElement('.prestige-button'),
@@ -198,7 +199,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const updatePP = () => {
   	const resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
-	;updateElementText(elements.prestigeElement, format(resetAmount));
+	updateElementText(elements.prestigeElement, format(resetAmount));
   }
 	
   const updateCPS = () => {
@@ -264,6 +265,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  gameState.up11Bought = new Decimal(0);
 	  gameState.up12Bought = new Decimal(0);
 	  updatePP();
+	  updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
   };
 	  
   elements.clickButton.addEventListener('click', incrementClick);
@@ -415,6 +417,7 @@ const addCPS = (upgradeKey, number, cost) => {
       checkUpgradeRequirements();
       checkPrestigeTab();
       mainTab();
+      updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
       console.log("Game initialized successfully");
     } catch (e) {
       console.error("Error during game initialization", e);
