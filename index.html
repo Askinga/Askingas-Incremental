@@ -23,7 +23,7 @@
         <button class="click-button">Click Me!</button>
         <h2><span class="cps">{{format(gameState.cps)}}</span></h2>
     </div>
-    <div class="a" id="prestigeTab" v-else>
+    <div class="a" id="prestigeTab" v-if="gameState.tabPrestige.gte(1)">
         <h1>Askinga's Incremental</h1>
         <h2><span class="prestige">{{format(gameState.PPts)}}</span></h2>
         <button class="prestige-button">Prestige for <span class="prestigepoints">0</span> PP</button>
