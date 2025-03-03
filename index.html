@@ -14,8 +14,8 @@
         <h2>(If this takes too long, it means there was a serious error!)</h2>
     </div>
     <div class="tab-container">
-        	<button class="tab-button" id="main-tab">Main</button>
-            <button class="tab-button" id="prestige-tab">Prestige</button>
+        	<button class="tab-button" id="main-tab" onclick="mainTab()">Main</button>
+            <button class="tab-button" id="prestige-tab" onclick="prestigeTab()">Prestige</button>
     </div>
     <div class="a" id="mainTab" v-if="gameState.mainTab.gte(1)">
         <h1>Askinga's Incremental</h1>
