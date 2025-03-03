@@ -13,18 +13,23 @@
         <h1>Loading...</h1>
         <h2>(If this takes too long, it means there was a serious error!)</h2>
     </div>
-    <div class="a">
-        <h1>Askinga's Incremental</h1>
-        <div class="tab-container">
+    <div class="tab-container">
         	<button class="tab-button" id="main-tab">Main</button>
             <button class="tab-button" id="prestige-tab">Prestige</button>
-        </div>
+    </div>
+    <div class="a" id="mainTab" v-if="gameState.mainTab.gte(1)">
+        <h1>Askinga's Incremental</h1>
         <h2><span class="clicks">{{format(gameState.clickElement)}}</span></h2>
         <button class="click-button">Click Me!</button>
         <button class="prestige-button">Prestige for <span class="prestigepoints">0</span> PP</button>
         <h2><span class="cps">{{format(gameState.cps)}}</span></h2>
     </div>
-    <div class="upgrade-container">
+    <div class="a" id="prestigeTab" v-if="gameState.prestigeTab.gte(1)">
+        <h1>Askinga's Incremental</h1>
+        <h2><span class="clicks">{{format(gameState.PPts)}}</span></h2>
+        <button class="prestige-button">Prestige for <span class="prestigepoints">0</span> PP</button>
+    </div>
+    <div class="upgrade-container" v-if="gameState.mainTab.gte(1)">
         <button id="upgrade1" class="up1">Upgrade 1: x2 Clicks. Cost: 75 Clicks</button>
         <button id="upgrade2" class="up2">Upgrade 2: x2 Clicks and 1 Click per Second. Cost: 300 Clicks</button>
         <button id="upgrade3" class="up3">Upgrade 3: x1.75 Clicks and x5 Clicks per Second. Cost: 700 Clicks</button>
