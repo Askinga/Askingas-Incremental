@@ -64,8 +64,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const gameState = {
     clickMulti: new Decimal(1),
-    mainTab: true,
-    prestigeTab: false,
+    onMainTab: true,
+    onPrestigeTab: false,
     PPts: new Decimal(0),
     up1Bought: new Decimal(0),
     up2Bought: new Decimal(0),
@@ -290,12 +290,12 @@ const addCPS = (upgradeKey, number, cost) => {
   };
 
   const mainTab = () => {
-	gameState.mainTab = true;
-	gameState.prestigeTab = false;
+	gameState.onMainTab = true;
+	gameState.onPrestigeTab = false;
   }	
   const prestigeTab = () => {
-	gameState.prestigeTab = true;
-	gameState.mainTab = false;
+	gameState.onPrestigeTab = true;
+	gameState.onMainTab = false;
   }	
   const loadGameState = async () => {
     try {
