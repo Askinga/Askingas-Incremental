@@ -79,6 +79,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     up12Bought: new Decimal(0),
     clickCount: new Decimal(0),
     cpsClicks: new Decimal(0),
+    tabMain: new Decimal(0),
+    tabPrestige: new Decimal(0),
     lastTime: new Decimal(Date.now()),
     cps: new Decimal(0),
     passiveIncome: new Decimal(0)
@@ -196,7 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const updatePP = () => {
   	const resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
-	updateElementText(elements.prestigeElement, format(resetAmount));
+	;updateElementText(elements.prestigeElement, format(resetAmount));
   }
 	
   const updateCPS = () => {
@@ -208,7 +210,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     gameState.cpsClicks = new Decimal(0);
     gameState.lastTime = now;
   };
-
+	
   const checkUpgradeRequirements = () => {
     elements.up1Button.classList.toggle('requirements-met', gameState.clickCount.gte(75) && gameState.up1Bought.lessThan(1));
     elements.up2Button.classList.toggle('requirements-met', gameState.clickCount.gte(300) && gameState.up2Bought.lessThan(1));
@@ -230,8 +232,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 	    if(!confirm('Are you sure you want to prestige for ' + format(resetAmount) + ' PP?')) return
 	    doPrestigeReset();
 	}
-  }
+  };
 
+  const mainTab = () => {
+	gameState.tabMain = new Decimal(1)
+	gamestate.tabPrestige = new Decimal(0)
+  };
+
+  const prestigeTab = () => {
+	gameState.tabMain = new Decimal(0)
+	gamestate.tabPrestige = new Decimal(1)
+  };
+	
   const doPrestigeReset = () => {
 	  let resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
 	  gameState.PPts = gameState.PPts.add(resetAmount);
@@ -252,7 +264,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  gameState.up11Bought = new Decimal(0);
 	  gameState.up12Bought = new Decimal(0);
 	  updatePP();
-  }
+  };
 	  
   elements.clickButton.addEventListener('click', incrementClick);
   elements.prestigeButton.addEventListener('click', prestigeReset);
