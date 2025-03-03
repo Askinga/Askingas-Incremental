@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     up12Bought: new Decimal(0),
     clickCount: new Decimal(0),
     cpsClicks: new Decimal(0),
-    tabMain: new Decimal(0),
+    tabMain: new Decimal(1),
     tabPrestige: new Decimal(0),
     lastTime: new Decimal(Date.now()),
     cps: new Decimal(0),
