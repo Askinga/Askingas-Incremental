@@ -419,7 +419,7 @@ const addCPS = (upgradeKey, number, cost) => {
 function checkPrestigeTab() {
   	const prestigeTab = document.getElementById('prestige-tab');
 	if(gameState.clickCount.gte(1e10)) {
-	prestigeTab.style.display = 'inline';
+	prestigeTab.style.display = 'block';
     }
 }
 	
