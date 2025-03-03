@@ -166,11 +166,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     updatePP();
   };
   
-  const buyUpgrade = (upgradeKey, cost, multiplier, cpsMulti, element) => {
+  const buyUpgrade = (upgradeKey, cost, multiplier, cpsMulti, cpsAdd, element) => {
     if (gameState[upgradeKey].lessThan(1) && gameState.clickCount.gte(cost)) {
       gameState[upgradeKey] = gameState[upgradeKey].add(1);
       gameState.clickCount = gameState.clickCount.sub(cost);
       gameState.clickMulti = gameState.clickMulti.times(multiplier);
+      gameState.cps = gameState.cps.add(cpsAdd);
+      gameState.passiveIncome = gameState.passiveIncome.add(cpsAdd);
       gameState.cps = gameState.cps.times(cpsMulti);
       gameState.passiveIncome = gameState.passiveIncome.times(cpsMulti);
       updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
@@ -234,6 +236,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  let resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
 	  gameState.PPts = gameState.PPts.add(resetAmount);
 	  gameState.clickCount = new Decimal(0);
+	  gameState.clickMulti = new Decimal(1);
+	  gameState.cps = new Decimal(0);
+	  gameState.passiveIncome = new Decimal(0);
 	  gameState.up1Bought = new Decimal(0);
 	  gameState.up2Bought = new Decimal(0);
 	  gameState.up3Bought = new Decimal(0);
@@ -251,18 +256,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  
   elements.clickButton.addEventListener('click', incrementClick);
   elements.prestigeButton.addEventListener('click', prestigeReset);
-  elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), new Decimal(1), elements.up1Button));
-  elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), new Decimal(1), elements.up2Button)); // <-- Add this closing parenthesis
-  elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(1.75), new Decimal(5), elements.up3Button));  
-  elements.up4Button.addEventListener('click', () => buyUpgrade('up4Bought', new Decimal(1500), new Decimal(2.5), new Decimal(3), elements.up4Button));
-  elements.up5Button.addEventListener('click', () => buyUpgrade('up5Bought', new Decimal(4250), new Decimal(2.25), new Decimal(2.75), elements.up5Button));
-  elements.up6Button.addEventListener('click', () => buyUpgrade('up6Bought', new Decimal(10000), new Decimal(4), new Decimal(5), elements.up6Button));
-  elements.up7Button.addEventListener('click', () => buyUpgrade('up7Bought', new Decimal(50000), new Decimal(3.25), new Decimal(3), elements.up7Button));
-  elements.up8Button.addEventListener('click', () => buyUpgrade('up8Bought', new Decimal(225000), new Decimal(5), new Decimal(2.8), elements.up8Button));
-  elements.up9Button.addEventListener('click', () => buyUpgrade('up9Bought', new Decimal(1e6), new Decimal(6), new Decimal(2.5), elements.up9Button));
-  elements.up10Button.addEventListener('click', () => buyUpgrade('up10Bought', new Decimal(6.66e6), new Decimal(6.66), new Decimal(6.66), elements.up10Button));
-  elements.up11Button.addEventListener('click', () => buyUpgrade('up11Bought', new Decimal(3.75e7), new Decimal(5), new Decimal(10), elements.up11Button));
-  elements.up12Button.addEventListener('click', () => buyUpgrade('up12Bought', new Decimal(2.00e8), new Decimal(10), new Decimal(5), elements.up12Button));
+  elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), new Decimal(1), new Decimal(0), elements.up1Button));
+  elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), new Decimal(1), new Decimal(1), elements.up2Button)); // <-- Add this closing parenthesis
+  elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(1.75), new Decimal(5), new Decimal(0), elements.up3Button));  
+  elements.up4Button.addEventListener('click', () => buyUpgrade('up4Bought', new Decimal(1500), new Decimal(2.5), new Decimal(3), new Decimal(0), elements.up4Button));
+  elements.up5Button.addEventListener('click', () => buyUpgrade('up5Bought', new Decimal(4250), new Decimal(2.25), new Decimal(2.75), new Decimal(0), elements.up5Button));
+  elements.up6Button.addEventListener('click', () => buyUpgrade('up6Bought', new Decimal(10000), new Decimal(4), new Decimal(5), new Decimal(0), elements.up6Button));
+  elements.up7Button.addEventListener('click', () => buyUpgrade('up7Bought', new Decimal(50000), new Decimal(3.25), new Decimal(3), new Decimal(0), elements.up7Button));
+  elements.up8Button.addEventListener('click', () => buyUpgrade('up8Bought', new Decimal(225000), new Decimal(5), new Decimal(2.8), new Decimal(0), elements.up8Button));
+  elements.up9Button.addEventListener('click', () => buyUpgrade('up9Bought', new Decimal(1e6), new Decimal(6), new Decimal(2.5), new Decimal(0), elements.up9Button));
+  elements.up10Button.addEventListener('click', () => buyUpgrade('up10Bought', new Decimal(6.66e6), new Decimal(6.66), new Decimal(6.66), new Decimal(0), elements.up10Button));
+  elements.up11Button.addEventListener('click', () => buyUpgrade('up11Bought', new Decimal(3.75e7), new Decimal(5), new Decimal(10), new Decimal(0), elements.up11Button));
+  elements.up12Button.addEventListener('click', () => buyUpgrade('up12Bought', new Decimal(2.00e8), new Decimal(10), new Decimal(5), new Decimal(0), elements.up12Button));
 	
 
   const saveGameState = () => {
