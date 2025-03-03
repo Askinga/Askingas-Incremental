@@ -28,7 +28,7 @@
         <h2><span class="prestige">{{format(gameState.PPts)}}</span></h2>
         <button class="prestige-button">Prestige for <span class="prestigepoints">0</span> PP</button>
     </div>
-    <div class="upgrade-container" v-if="gameState.mainTab.gte(1)">
+    <div class="upgrade-container" v-if="gameState.tabMain.gte(1)">
         <button id="upgrade1" class="up1">Upgrade 1: x2 Clicks. Cost: 75 Clicks</button>
         <button id="upgrade2" class="up2">Upgrade 2: x2 Clicks and 1 Click per Second. Cost: 300 Clicks</button>
         <button id="upgrade3" class="up3">Upgrade 3: x1.75 Clicks and x5 Clicks per Second. Cost: 700 Clicks</button>
