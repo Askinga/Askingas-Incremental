@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const prestigeReset = () => {
 	let resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
 	if (resetAmount.gte(1)) {
-	    if(!confirm('Are you sure to prestige for ' + format(resetAmount) + ' PP?')) return
+	    if(!confirm('Are you sure you want to prestige for ' + format(resetAmount) + ' PP?')) return
 	    doPrestigeReset();
 	}
   }
@@ -419,7 +419,7 @@ const addCPS = (upgradeKey, number, cost) => {
 function checkPrestigeTab() {
   	const prestigeTab = document.getElementById('prestige-tab');
 	if(gameState.clickCount.gte(1e10)) {
-	prestigeTab.style.display = 'flex';
+	prestigeTab.style.display = 'inline';
     }
 }
 	
