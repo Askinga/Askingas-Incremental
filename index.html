@@ -13,7 +13,7 @@
         <h1>Loading...</h1>
         <h2>(If this takes too long, it means there was a serious error!)</h2>
     </div>
-    <div class="a">
+    <div v-if="gameState.mainTab === true" class="a">
         <h1>Askinga's Incremental</h1>
         <div class="tab-container">
         	<button class="tab-button" id="main-tab">Main</button>
