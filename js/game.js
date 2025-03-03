@@ -433,6 +433,7 @@ const addCPS = (upgradeKey, number, cost) => {
       updatePP();
       checkUpgradeRequirements();
       checkPrestigeTab();
+      mainTab();
       console.log("Game initialized successfully");
     } catch (e) {
       console.error("Error during game initialization", e);
