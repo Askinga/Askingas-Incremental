@@ -285,14 +285,6 @@ const addCPS = (upgradeKey, number, cost) => {
    }
   };
 
-  const mainTab = () => {
-	gameState.onMainTab = true;
-	gameState.onPrestigeTab = false;
-  }	
-  const prestigeTab = () => {
-	gameState.onPrestigeTab = true;
-	gameState.onMainTab = false;
-  }	
   const loadGameState = async () => {
     try {
       const [clickCount, PPts, cps, lastTime] = await Promise.all([
