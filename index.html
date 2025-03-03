@@ -25,7 +25,7 @@
     </div>
     <div class="a" id="prestigeTab" v-if="gameState.prestigeTab.gte(1)">
         <h1>Askinga's Incremental</h1>
-        <h2><span class="clicks">{{format(gameState.PPts)}}</span></h2>
+        <h2><span class="prestige">{{format(gameState.PPts)}}</span></h2>
         <button class="prestige-button">Prestige for <span class="prestigepoints">0</span> PP</button>
     </div>
     <div class="upgrade-container" v-if="gameState.mainTab.gte(1)">
