@@ -64,6 +64,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const gameState = {
     clickMulti: new Decimal(1),
+    mainTab: true,
+    prestigeTab: false,
     PPts: new Decimal(0),
     up1Bought: new Decimal(0),
     up2Bought: new Decimal(0),
@@ -256,7 +258,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  
   elements.clickButton.addEventListener('click', incrementClick);
   elements.prestigeButton.addEventListener('click', prestigeReset);
-  elements.main-tab.addEventListener('click', mainTab);
+  elements.tabMain.addEventListener('click', mainTab);
+  elements.tabPrestige.addEventListener('click', prestigeTab);
   elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), new Decimal(1), new Decimal(0), elements.up1Button));
   elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), new Decimal(1), new Decimal(1), elements.up2Button)); // <-- Add this closing parenthesis
   elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(1.75), new Decimal(5), new Decimal(0), elements.up3Button));  
@@ -287,34 +290,12 @@ const addCPS = (upgradeKey, number, cost) => {
   };
 
   const mainTab = () => {
-	const up1 = document.getElementById('upgrade1');
-	const up2 = document.getElementById('upgrade2');
- 	const up3 = document.getElementById('upgrade3');
-	const up4 = document.getElementById('upgrade4');
-	const up5 = document.getElementById('upgrade5');
-	const up6 = document.getElementById('upgrade6');
-	const up7 = document.getElementById('upgrade7');
-	const up8 = document.getElementById('upgrade8');
- 	const up9 = document.getElementById('upgrade9');
-	const up10 = document.getElementById('upgrade10');
-	const up11 = document.getElementById('upgrade11');
-	const up12 = document.getElementById('upgrade12');
-	const clickButton = document.getElementById('click-button');
-	const prestigeButton = document.getElementById('prestige-button');
-	up1.style.display = 'block';
-	up2.style.display = 'block'; 
-	up3.style.display = 'block';
-	up4.style.display = 'block';
-	up5.style.display = 'block';
-	up6.style.display = 'block';
-	up7.style.display = 'block';
-	up8.style.display = 'block';
-	up9.style.display = 'block';
-	up10.style.display = 'block';
-	up11.style.display = 'block';  
-	up12.style.display = 'block';
-	clickButton.style.display = 'block';
-	prestigeButton.style.display = 'none';
+	gameState.mainTab = true;
+	gameState.prestigeTab = false;
+  }	
+  const prestigeTab = () => {
+	gameState.prestigeTab = true;
+	gameState.mainTab = false;
   }	
   const loadGameState = async () => {
     try {
