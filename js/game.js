@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     up12Bought: new Decimal(0),
     clickCount: new Decimal(0),
     cpsClicks: new Decimal(0),
-    tabMain: new Decimal(1),
-    tabPrestige: new Decimal(0),
+    tabMain: true,
+    tabPrestige: false,
     lastTime: new Decimal(Date.now()),
     cps: new Decimal(0),
     passiveIncome: new Decimal(0)
@@ -237,13 +237,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const mainTab = () => {
-	gameState.tabMain = new Decimal(1)
-	gamestate.tabPrestige = new Decimal(0)
+	gameState.tabMain = true;
+	gamestate.tabPrestige = false;
   };
 
   const prestigeTab = () => {
-	gameState.tabMain = new Decimal(0)
-	gamestate.tabPrestige = new Decimal(1)
+	gameState.tabMain = false;
+	gamestate.tabPrestige = true;
   };
 	
   const doPrestigeReset = () => {
