@@ -64,8 +64,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const gameState = {
     clickMulti: new Decimal(1),
-    onMainTab: true,
-    onPrestigeTab: false,
     PPts: new Decimal(0),
     up1Bought: new Decimal(0),
     up2Bought: new Decimal(0),
@@ -258,8 +256,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  
   elements.clickButton.addEventListener('click', incrementClick);
   elements.prestigeButton.addEventListener('click', prestigeReset);
-  elements.tabMain.addEventListener('click', mainTab);
-  elements.tabPrestige.addEventListener('click', prestigeTab);
   elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), new Decimal(1), new Decimal(0), elements.up1Button));
   elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), new Decimal(1), new Decimal(1), elements.up2Button)); // <-- Add this closing parenthesis
   elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(1.75), new Decimal(5), new Decimal(0), elements.up3Button));  
