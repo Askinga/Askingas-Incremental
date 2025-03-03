@@ -165,6 +165,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
     checkUpgradeRequirements();
     saveGameState();
+    updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
     toScientificNotation(new Decimal(gameState.clickCount));
     updatePP();
   };
