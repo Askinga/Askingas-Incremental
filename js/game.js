@@ -200,6 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const updatePP = () => {
   	const resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
+	updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
 	updateElementText(elements.prestigeElement, format(resetAmount));
   }
 	
@@ -413,12 +414,12 @@ const addCPS = (upgradeKey, number, cost) => {
         gameState.passiveIncome = gameState.passiveIncome.times(5);
       }
       updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
+      updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
       updateCPS();
       updatePP();
       checkUpgradeRequirements();
       checkPrestigeTab();
       mainTab();
-      updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
       console.log("Game initialized successfully");
     } catch (e) {
       console.error("Error during game initialization", e);
