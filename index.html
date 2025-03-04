@@ -14,21 +14,21 @@
         <h2>(If this takes too long, it means there was a serious error!)</h2>
     </div>
     <div class="tab-container">
-        	<button class="tab-button" id="main-tab" onclick="mainTab()">Main</button>
-            <button class="tab-button" id="prestige-tab" onclick="prestigeTab()">Prestige</button>
+        	<button class="tab-button" id="main-tab" onclick="openTab(mainTab)">Main</button>
+            <button class="tab-button" id="prestige-tab" onclick="openTab(prestigeTab)">Prestige</button>
     </div>
-    <div class="a" id="mainTab" v-show="gameState.tabMain">
+    <div class="a" id="mainTab">
         <h1>Askinga's Incremental</h1>
         <h2><span class="clicks">{{format(gameState.clickElement)}}</span></h2>
         <button class="click-button">Click Me!</button>
         <h2><span class="cps">{{format(gameState.cps)}}</span></h2>
     </div>
-    <div class="a" id="prestigeTab" v-show="gameState.tabPrestige">
+    <div class="a" id="prestigeTab" style="display:none">
         <h1>Askinga's Incremental</h1>
         <h2><span class="prestige">{{format(gameState.PPts)}}</span></h2>
         <button class="prestige-button">Prestige for <span class="prestigepoints">0</span> PP</button>
     </div>
-    <div class="upgrade-container" v-show="gameState.tabMain">
+    <div class="upgrade-container">
         <button id="upgrade1" class="up1">Upgrade 1: x2 Clicks. Cost: 75 Clicks</button>
         <button id="upgrade2" class="up2">Upgrade 2: x2 Clicks and 1 Click per Second. Cost: 300 Clicks</button>
         <button id="upgrade3" class="up3">Upgrade 3: x1.75 Clicks and x5 Clicks per Second. Cost: 700 Clicks</button>
@@ -44,5 +44,15 @@
     </div>
     <div v-else>
     </div>
+    <script>
+        function openTab(tabName) {
+  var i;
+  var x = document.getElementsByClassName("a");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  document.getElementById(tabName).style.display = "block";
+                          }
+    </script>
 </body>
 </html>
