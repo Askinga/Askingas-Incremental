@@ -14,33 +14,33 @@
         <h2>(If this takes too long, it means there was a serious error!)</h2>
     </div>
     <div class="tab-container">
-        	<button class="tab-button" id="main-tab" onclick="openTab(mainTab)">Main</button>
-            <button class="tab-button" id="prestige-tab" onclick="openTab(prestigeTab)">Prestige</button>
+        	<button class="tab-button" id="main-tab" onclick="openTab('mainTab')">Main</button>
+            <button class="tab-button" id="prestige-tab" onclick="openTab('prestigeTab')">Prestige</button>
     </div>
     <div class="a" id="mainTab">
         <h1>Askinga's Incremental</h1>
         <h2><span class="clicks">{{format(gameState.clickElement)}}</span></h2>
         <button class="click-button">Click Me!</button>
         <h2><span class="cps">{{format(gameState.cps)}}</span></h2>
+        <div class="upgrade-container">
+        	<button id="upgrade1" class="up1">Upgrade 1: x2 Clicks. Cost: 75 Clicks</button>
+        	<button id="upgrade2" class="up2">Upgrade 2: x2 Clicks and 1 Click per Second. Cost: 300 Clicks</button>
+        	<button id="upgrade3" class="up3">Upgrade 3: x1.75 Clicks and x5 Clicks per Second. Cost: 700 Clicks</button>
+        	<button id="upgrade4" class="up4">Upgrade 4: x2.5 Clicks and x3 Clicks per Second. Cost: 1500 Clicks</button>
+        	<button id="upgrade5" class="up5">Upgrade 5: x2.25 Clicks and x2.75 Clicks per Second. Cost: 4250 Clicks</button>
+        	<button id="upgrade6" class="up6">Upgrade 6: x4 Clicks and x5 Clicks per Second. Cost: 10000 Clicks</button>
+        	<button id="upgrade7" class="up7">Upgrade 7: x3.25 Clicks and x3 Clicks per Second. Cost: 50000 Clicks</button>
+        	<button id="upgrade8" class="up8">Upgrade 8: x5 Clicks and x2.8 Clicks per Second. Cost: 225000 Clicks</button>
+        	<button id="upgrade9" class="up9">Upgrade 9: x6 Clicks and x2.5 Clicks per Second. Cost: 1.00e6 Clicks</button>
+        	<button id="upgrade10" class="up10">Upgrade 10: x6.66 Clicks and Clicks per Second. Cost: 6.66e6 Clicks</button>
+        	<button id="upgrade11" class="up11">Upgrade 11: x5 Clicks and x10 Clicks per Second. Cost: 3.75e7 Clicks</button>
+        	<button id="upgrade12" class="up12">Upgrade 12: x10 Clicks and x5 Clicks per Second. Cost: 2e8 Clicks</button> 
+        </div>
     </div>
     <div class="a" id="prestigeTab" style="display:none">
         <h1>Askinga's Incremental</h1>
         <h2><span class="prestige">{{format(gameState.PPts)}}</span></h2>
         <button class="prestige-button">Prestige for <span class="prestigepoints">0</span> PP</button>
-    </div>
-    <div class="upgrade-container">
-        <button id="upgrade1" class="up1">Upgrade 1: x2 Clicks. Cost: 75 Clicks</button>
-        <button id="upgrade2" class="up2">Upgrade 2: x2 Clicks and 1 Click per Second. Cost: 300 Clicks</button>
-        <button id="upgrade3" class="up3">Upgrade 3: x1.75 Clicks and x5 Clicks per Second. Cost: 700 Clicks</button>
-        <button id="upgrade4" class="up4">Upgrade 4: x2.5 Clicks and x3 Clicks per Second. Cost: 1500 Clicks</button>
-        <button id="upgrade5" class="up5">Upgrade 5: x2.25 Clicks and x2.75 Clicks per Second. Cost: 4250 Clicks</button>
-        <button id="upgrade6" class="up6">Upgrade 6: x4 Clicks and x5 Clicks per Second. Cost: 10000 Clicks</button>
-        <button id="upgrade7" class="up7">Upgrade 7: x3.25 Clicks and x3 Clicks per Second. Cost: 50000 Clicks</button>
-        <button id="upgrade8" class="up8">Upgrade 8: x5 Clicks and x2.8 Clicks per Second. Cost: 225000 Clicks</button>
-        <button id="upgrade9" class="up9">Upgrade 9: x6 Clicks and x2.5 Clicks per Second. Cost: 1.00e6 Clicks</button>
-        <button id="upgrade10" class="up10">Upgrade 10: x6.66 Clicks and Clicks per Second. Cost: 6.66e6 Clicks</button>
-        <button id="upgrade11" class="up11">Upgrade 11: x5 Clicks and x10 Clicks per Second. Cost: 3.75e7 Clicks</button>
-        <button id="upgrade12" class="up12">Upgrade 12: x10 Clicks and x5 Clicks per Second. Cost: 2e8 Clicks</button> 
     </div>
     <div v-else>
     </div>
