@@ -3,7 +3,7 @@ body {
   transition: all 0.3s;
 }
 
-div.a {
+.a {
     text-align: center;
 }
 
@@ -139,6 +139,8 @@ div.a {
   flex-direction: row; /* Set the container to arrange items in a row */
   overflow-x: auto; /* Allow horizontal scrolling if necessary */
   flex-wrap: wrap; /* Add wraping if upgrades are overflowing the screen. */
+  justify-content: center; /* Center alignment */
+  align-items: center; /* Center alignment */
 }
 
 .upgrade-tooltip:hover .tooltiptext {
