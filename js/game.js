@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     UPGRADE10: 'up10bought',
     UPGRADE11: 'up11bought',
     UPGRADE12: 'up12bought',
+    PRESTIGE_UNLOCKED: 'prestigeTabUnlocked',
     CPS: 'cps',
     LAST_TIME: 'lastTime'
   };
@@ -80,6 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     up12Bought: new Decimal(0),
     clickCount: new Decimal(0),
     cpsClicks: new Decimal(0),
+    prestigeTabUnlocked: new Decimal(0),
     tabMain: true,
     tabPrestige: false,
     lastTime: new Decimal(Date.now()),
@@ -321,32 +323,35 @@ const addCPS = (upgradeKey, number, cost) => {
 
   const loadGameState = async () => {
     try {
-      const [clickCount, PPts, cps, lastTime] = await Promise.all([
+      const [clickCount, PPts, cps, prestigeTabUnlocked, lastTime] = await Promise.all([
         loadState(storageKeys.CLICK, 0),
 	loadState(storageKeys.PP, 0),
         loadState(storageKeys.CPS, 0),
+	loadState(storageKeys.PRESTIGE_TAB, 0),  
         loadState(storageKeys.LAST_TIME, Date.now())
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
       gameState.PPts = PPts;
+      gameState.prestigeTabUnlocked = prestigeTabUnlocked;
       gameState.lastTime = lastTime;
-      return { clickCount, PPts, cps, lastTime };
+      return { clickCount, PPts, cps, prestigeTabUnlocked, lastTime };
     } catch (e) {
       console.error("Error loading game state:", e);
-      return { clickCount: new Decimal(0), PPts: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()) };
+      return { clickCount: new Decimal(0), PPts: new Decimal(0), cps: new Decimal(0), prestigeTabUnlocked: new Decimal(0), lastTime: new Decimal(Date.now()) };
     }
   };
 
   const initializeGame = async () => {
     try {
-      const [{ clickCount, PPts, cps, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought }] = await Promise.all([
+      const [{ clickCount, PPts, cps, prestigeTabUnlocked, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought }] = await Promise.all([
         loadGameState(),
         loadUpgradeState()
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
       gameState.PPts = PPts;
+      gameState.prestigeTabUnlocked = prestigeTabUnlocked;
       gameState.lastTime = lastTime;
       gameState.up1Bought = up1Bought;
       gameState.up2Bought = up2Bought;
@@ -460,8 +465,12 @@ const addCPS = (upgradeKey, number, cost) => {
 function checkPrestigeTab() {
   	const prestigeTab = document.getElementById('prestige-tab');
 	if(gameState.clickCount.gte(1e10)) {
-	prestigeTab.style.display = 'block';
-    }
+		prestigeTab.style.display = 'block';
+		gameState.prestigeTabUnlocked = gameState.prestigeTabUnlocked.add(1);
+	};
+	if(gameState.prestigeTabUnlocked.gte(1)) {
+		prestigeTab.style.display = 'block';
+	};
 }
 	
   await initializeGame();
