@@ -465,7 +465,7 @@ const addCPS = (upgradeKey, number, cost) => {
       }
       if (gameState.up13Bought.gte(1)) {
         elements.up13Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(5);
+        gameState.prestigeClickMulti = gameState.prestigeClickMulti.times(5);
       }
       updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
       updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
