@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const incrementClick = () => {
-    gameState.clickCount = gameState.clickCount.add(gameState.clickMulti);
+    gameState.clickCount = gameState.clickCount.add(gameState.clickMulti.times(gameState.prestigeClickMulti));
     updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
     checkUpgradeRequirements();
     saveGameState();
