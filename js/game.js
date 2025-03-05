@@ -398,8 +398,8 @@ const addCPS = (upgradeKey, number, cost) => {
       if (gameState.up7Bought.gte(1)) {
         elements.up7Button.classList.add('bought');
         gameState.clickMulti = gameState.clickMulti.times(3.25);
-        gameState.cps = gameState.cps.times(2.8);
-        gameState.passiveIncome = gameState.passiveIncome.times(2.8);
+        gameState.cps = gameState.cps.times(3);
+        gameState.passiveIncome = gameState.passiveIncome.times(3);
       }
       if (gameState.up8Bought.gte(1)) {
         elements.up8Button.classList.add('bought');
