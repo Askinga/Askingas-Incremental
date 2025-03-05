@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     up10Button: getElement('#upgrade10'),
     up11Button: getElement('#upgrade11'),  
     up12Button: getElement('#upgrade12'),
+    up13Button: getElement('#upgrade13'),
     tabMain: getElement('#main-tab'),
     tabPrestige: getElement('#prestige-tab'),
     cpsElement: getElement('.cps'),
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     UPGRADE10: 'up10bought',
     UPGRADE11: 'up11bought',
     UPGRADE12: 'up12bought',
+    UPGRADE13: 'up13bought',
     PRESTIGE_UNLOCKED: 'prestigeTabUnlocked',
     CPS: 'cps',
     LAST_TIME: 'lastTime'
@@ -66,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const gameState = {
     clickMulti: new Decimal(1),
+    prestigeClickMulti: new Decimal(1),
     PPts: new Decimal(0),
     up1Bought: new Decimal(0),
     up2Bought: new Decimal(0),
@@ -79,6 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     up10Bought: new Decimal(0),
     up11Bought: new Decimal(0),
     up12Bought: new Decimal(0),
+    up13Bought: new Decimal(0),  
     clickCount: new Decimal(0),
     cpsClicks: new Decimal(0),
     prestigeTabUnlocked: new Decimal(0),
@@ -125,11 +129,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveState(storageKeys.UPGRADE10, gameState.up10Bought);
     saveState(storageKeys.UPGRADE11, gameState.up11Bought);
     saveState(storageKeys.UPGRADE12, gameState.up12Bought);
+    saveState(storageKeys.UPGRADE13, gameState.up13Bought);
   };
 
   const loadUpgradeState = async () => {
     try {
-      const [up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought] = await Promise.all([
+      const [up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought, up13Bought] = await Promise.all([
         loadState(storageKeys.UPGRADE1, 0),
         loadState(storageKeys.UPGRADE2, 0),
         loadState(storageKeys.UPGRADE3, 0),
@@ -141,7 +146,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadState(storageKeys.UPGRADE9, 0),
 	loadState(storageKeys.UPGRADE10, 0),
         loadState(storageKeys.UPGRADE11, 0),
-	loadState(storageKeys.UPGRADE12, 0)
+	loadState(storageKeys.UPGRADE12, 0),
+	loadState(storageKeys.UPGRADE13, 0)
       ]);
       gameState.up1Bought = up1Bought;
       gameState.up2Bought = up2Bought;
@@ -155,10 +161,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       gameState.up10Bought = up10Bought;
       gameState.up11Bought = up11Bought;
       gameState.up12Bought = up12Bought;
-      return { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought };
+      gameState.up13Bought = up13Bought;
+      return { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought, up13Bought };
     } catch (e) {
       console.error("Error loading upgrade states:", e);
-      return { up1Bought: new Decimal(0), up2Bought: new Decimal(0), up3Bought: new Decimal(0), up4Bought: new Decimal(0), up5Bought: new Decimal(0), up6Bought: new Decimal(0), up7Bought: new Decimal(0), up8Bought: new Decimal(0), up9Bought: new Decimal(0), up10Bought: new Decimal(0), up11Bought: new Decimal(0), up12Bought: new Decimal(0) };
+      return { up1Bought: new Decimal(0), up2Bought: new Decimal(0), up3Bought: new Decimal(0), up4Bought: new Decimal(0), up5Bought: new Decimal(0), up6Bought: new Decimal(0), up7Bought: new Decimal(0), up8Bought: new Decimal(0), up9Bought: new Decimal(0), up10Bought: new Decimal(0), up11Bought: new Decimal(0), up12Bought: new Decimal(0), up13Bought: new Decimal(0) };
     }
   };
 
@@ -192,6 +199,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   };
 
+  const buyPPUpgrade = (upgradeKey, cost, multiplier, element) => {
+    if (gameState[upgradeKey].lessThan(1) && gameState.PPts.gte(cost)) {
+      gameState[upgradeKey] = gameState[upgradeKey].add(1);
+      gameState.PPts = gameState.PPts.sub(cost);
+      gameState.prestigeClickMulti = gameState.prestigeClickMulti.times(multiplier);
+      updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
+      saveUpgradeState();
+      saveGameState();
+      element.classList.add('bought');
+      checkUpgradeRequirements();
+      checkPrestigeTab();
+      updateCPS();
+      updatePP();
+    }
+  };
+	
   const handlePassiveIncome = () => {
     gameState.clickCount = gameState.clickCount.add(gameState.passiveIncome);
     updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
@@ -229,6 +252,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     elements.up10Button.classList.toggle('requirements-met', gameState.clickCount.gte(6.66e6) && gameState.up10Bought.lessThan(1));
     elements.up11Button.classList.toggle('requirements-met', gameState.clickCount.gte(3.75e7) && gameState.up11Bought.lessThan(1));
     elements.up12Button.classList.toggle('requirements-met', gameState.clickCount.gte(2.00e8) && gameState.up12Bought.lessThan(1));
+    elements.up13Button.classList.toggle('requirements-met', gameState.PPts.gte(1) && gameState.up13Bought.lessThan(1));
+
   };
 
   const prestigeReset = () => {
@@ -304,6 +329,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   elements.up10Button.addEventListener('click', () => buyUpgrade('up10Bought', new Decimal(6.66e6), new Decimal(6.66), new Decimal(6.66), new Decimal(0), elements.up10Button));
   elements.up11Button.addEventListener('click', () => buyUpgrade('up11Bought', new Decimal(3.75e7), new Decimal(5), new Decimal(10), new Decimal(0), elements.up11Button));
   elements.up12Button.addEventListener('click', () => buyUpgrade('up12Bought', new Decimal(2.00e8), new Decimal(10), new Decimal(5), new Decimal(0), elements.up12Button));
+  elements.up13Button.addEventListener('click', () => buyPPUpgrade('up13Bought', new Decimal(1), new Decimal(5), elements.up13Button));
 	
 
   const saveGameState = () => {
@@ -344,7 +370,7 @@ const addCPS = (upgradeKey, number, cost) => {
 
   const initializeGame = async () => {
     try {
-      const [{ clickCount, PPts, cps, prestigeTabUnlocked, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought }] = await Promise.all([
+      const [{ clickCount, PPts, cps, prestigeTabUnlocked, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought, up13Bought }] = await Promise.all([
         loadGameState(),
         loadUpgradeState()
       ]);
@@ -365,6 +391,7 @@ const addCPS = (upgradeKey, number, cost) => {
       gameState.up10Bought = up10Bought;
       gameState.up11Bought = up11Bought;
       gameState.up12Bought = up12Bought;
+      gameState.up13Bought = up13Bought;
 
       if (gameState.up1Bought.gte(1)) {
         elements.up1Button.classList.add('bought');
@@ -435,6 +462,10 @@ const addCPS = (upgradeKey, number, cost) => {
         gameState.clickMulti = gameState.clickMulti.times(10);
         gameState.cps = gameState.cps.times(5);
         gameState.passiveIncome = gameState.passiveIncome.times(5);
+      }
+      if (gameState.up13Bought.gte(1)) {
+        elements.up13Button.classList.add('bought');
+        gameState.clickMulti = gameState.clickMulti.times(5);
       }
       updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
       updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
