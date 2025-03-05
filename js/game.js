@@ -336,6 +336,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveState(storageKeys.CLICK, gameState.clickCount);
     saveState(storageKeys.PP, gameState.PPts);
     saveState(storageKeys.CPS, gameState.cps);
+    saveState(storageKeys.PRESTIGE_UNLOCKED, gameState.prestigeTabUnlocked);
     saveState(storageKeys.LAST_TIME, gameState.lastTime);
   };
 
