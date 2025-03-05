@@ -114,7 +114,7 @@ body {
   border-radius: 6px;
 }
 
-#upgrade1:hover, #upgrade2:hover, #upgrade3:hover, #upgrade4:hover, #upgrade5:hover, #upgrade6:hover, #upgrade7:hover, #upgrade8:hover, #upgrade9:hover, #upgrade10:hover, #upgrade11:hover, #upgrade12:hover, upgrade13:hover {
+#upgrade1:hover, #upgrade2:hover, #upgrade3:hover, #upgrade4:hover, #upgrade5:hover, #upgrade6:hover, #upgrade7:hover, #upgrade8:hover, #upgrade9:hover, #upgrade10:hover, #upgrade11:hover, #upgrade12:hover, #upgrade13:hover {
   transition: transform 0.5s ease-out;
   transform: scale(1.06);
   cursor: pointer;
