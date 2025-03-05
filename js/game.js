@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     UPGRADE11: 'up11bought',
     UPGRADE12: 'up12bought',
     CPS: 'cps',
-    PASSIVEINCOME: 'passiveIncome',
     LAST_TIME: 'lastTime'
   };
 
@@ -269,9 +268,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  gameState.up12Bought = new Decimal(0);
 	  updatePP();
 	  updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
+	  saveUpgradeState();
 	  saveGameState();
+	  removeBoughtProperty(up1Button);
+	  removeBoughtProperty(up2Button);
+	  removeBoughtProperty(up3Button);
+	  removeBoughtProperty(up4Button);
+	  removeBoughtProperty(up5Button);
+	  removeBoughtProperty(up6Button);
+	  removeBoughtProperty(up7Button);
+	  removeBoughtProperty(up8Button);
+	  removeBoughtProperty(up9Button);
+	  removeBoughtProperty(up10Button);
+	  removeBoughtProperty(up11Button);
+	  removeBoughtProperty(up12Button);
   };
-	  
+
+  const removeBoughtProperty = (element) => {
+	element.classList.remove('bought');
+  };
+
   elements.clickButton.addEventListener('click', incrementClick);
   elements.prestigeButton.addEventListener('click', prestigeReset);
   elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), new Decimal(1), new Decimal(0), elements.up1Button));
@@ -293,7 +309,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveState(storageKeys.PP, gameState.PPts);
     saveState(storageKeys.CPS, gameState.cps);
     saveState(storageKeys.LAST_TIME, gameState.lastTime);
-    saveState(storageKeys.PASSIVEINCOME, gameState.passiveIncome);
   };
 
 const addCPS = (upgradeKey, number, cost) => {
@@ -306,35 +321,32 @@ const addCPS = (upgradeKey, number, cost) => {
 
   const loadGameState = async () => {
     try {
-      const [clickCount, PPts, cps, passiveIncome, lastTime] = await Promise.all([
+      const [clickCount, PPts, cps, lastTime] = await Promise.all([
         loadState(storageKeys.CLICK, 0),
 	loadState(storageKeys.PP, 0),
         loadState(storageKeys.CPS, 0),
-	loadState(storageKeys.PASSIVEINCOME, 0),
         loadState(storageKeys.LAST_TIME, Date.now())
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
       gameState.PPts = PPts;
-      gameState.passiveIncome = passiveIncome;
       gameState.lastTime = lastTime;
-      return { clickCount, PPts, cps, passiveIncome, lastTime };
+      return { clickCount, PPts, cps, lastTime };
     } catch (e) {
       console.error("Error loading game state:", e);
-      return { clickCount: new Decimal(0), PPts: new Decimal(0), cps: new Decimal(0), passiveIncome: new Decimal(0), lastTime: new Decimal(Date.now()) };
+      return { clickCount: new Decimal(0), PPts: new Decimal(0), cps: new Decimal(0), lastTime: new Decimal(Date.now()) };
     }
   };
 
   const initializeGame = async () => {
     try {
-      const [{ clickCount, PPts, cps, passiveIncome, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought }] = await Promise.all([
+      const [{ clickCount, PPts, cps, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought }] = await Promise.all([
         loadGameState(),
         loadUpgradeState()
       ]);
       gameState.clickCount = clickCount;
       gameState.cps = cps;
       gameState.PPts = PPts;
-      gameState.passiveIncome = passiveIncome;
       gameState.lastTime = lastTime;
       gameState.up1Bought = up1Bought;
       gameState.up2Bought = up2Bought;
