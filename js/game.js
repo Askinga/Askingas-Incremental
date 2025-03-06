@@ -379,7 +379,7 @@ const addCPS = (upgradeKey, number, cost) => {
 
   const initializeGame = async () => {
     try {
-      const [{ clickCount, PPts, cps, prestigeTabUnlocked, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought, up13Bought }] = await Promise.all([
+      const [{ clickCount, PPts, cps, prestigeTabUnlocked, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought, up13Bought, up14Bought }] = await Promise.all([
         loadGameState(),
         loadUpgradeState()
       ]);
