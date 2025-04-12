@@ -7,94 +7,58 @@ document.addEventListener('DOMContentLoaded', async () => {
     return element;
   };
 
-	function toScientificNotation(input) {
-    // Check if the input is in the form of a number followed by "B"
-    if (typeof input === 'string' && input.endsWith('B')) {
-        // Remove "B" and convert to a number
-        input = parseFloat(input.slice(0, -1)) * 1e9;
-    } else if (typeof input === 'string') {
-        // Check if it's just a regular number
-        input = parseFloat(input);
-    }
+  const upgrades = [
+    { key: 'up1Bought', baseCost: 75, multiplier: 2, cpsMulti: 1, cpsAdd: 0 },
+    { key: 'up2Bought', baseCost: 300, multiplier: 2, cpsMulti: 1, cpsAdd: 1 },
+    { key: 'up3Bought', baseCost: 700, multiplier: 1.75, cpsMulti: 5, cpsAdd: 0 },
+    { key: 'up4Bought', baseCost: 1500, multiplier: 2.5, cpsMulti: 3, cpsAdd: 0 },
+    { key: 'up5Bought', baseCost: 4250, multiplier: 2.25, cpsMulti: 2.75, cpsAdd: 0 },
+    { key: 'up6Bought', baseCost: 10000, multiplier: 4, cpsMulti: 5, cpsAdd: 0 },
+    { key: 'up7Bought', baseCost: 50000, multiplier: 3.25, cpsMulti: 3, cpsAdd: 0 },
+    { key: 'up8Bought', baseCost: 225000, multiplier: 5, cpsMulti: 2.8, cpsAdd: 0 },
+    { key: 'up9Bought', baseCost: 1e6, multiplier: 6, cpsMulti: 2.5, cpsAdd: 0 },
+    { key: 'up10Bought', baseCost: 6.66e6, multiplier: 6.66, cpsMulti: 6.66, cpsAdd: 0 },
+    { key: 'up11Bought', baseCost: 3.75e7, multiplier: 5, cpsMulti: 10, cpsAdd: 0 },
+    { key: 'up12Bought', baseCost: 2.00e8, multiplier: 10, cpsMulti: 5, cpsAdd: 0 },
+    { key: 'up13Bought', baseCost: 1, multiplier: 5, cpsMulti: 0, cpsAdd: 0, isPP: true },
+    { key: 'up14Bought', baseCost: 2, multiplier: 3, cpsMulti: 0, cpsAdd: 0, isPP: true },
+  ];
 
-    // Convert the number to scientific notation with 2 decimal places
-    return input.toExponential(2);
-  }
   const elements = {
     clickElement: getElement('.clicks'),
     PPElement: getElement('.prestige'),
     prestigeElement: getElement('.prestigepoints'),
     clickButton: getElement('.click-button'),
     prestigeButton: getElement('.prestige-button'),
-    up1Button: getElement('#upgrade1'),
-    up2Button: getElement('#upgrade2'),
-    up3Button: getElement('#upgrade3'),
-    up4Button: getElement('#upgrade4'),
-    up5Button: getElement('#upgrade5'),
-    up6Button: getElement('#upgrade6'),
-    up7Button: getElement('#upgrade7'),
-    up8Button: getElement('#upgrade8'),
-    up9Button: getElement('#upgrade9'),
-    up10Button: getElement('#upgrade10'),
-    up11Button: getElement('#upgrade11'),  
-    up12Button: getElement('#upgrade12'),
-    up13Button: getElement('#upgrade13'),
-    up14Button: getElement('#upgrade14'),
-    tabMain: getElement('#main-tab'),
-    tabPrestige: getElement('#prestige-tab'),
+    buttons: upgrades.map((_, index) => getElement(`#upgrade${index + 1}`)),
     cpsElement: getElement('.cps'),
-    loadingScreen: getElement('#loading-screen')
+    loadingScreen: getElement('#loading-screen'),
   };
 
   const storageKeys = {
     CLICK: 'clicks',
     PP: 'PPts',
-    UPGRADE1: 'up1bought',
-    UPGRADE2: 'up2bought',
-    UPGRADE3: 'up3bought',
-    UPGRADE4: 'up4bought',
-    UPGRADE5: 'up5bought',
-    UPGRADE6: 'up6bought',
-    UPGRADE7: 'up7bought',
-    UPGRADE8: 'up8bought',
-    UPGRADE9: 'up9bought',
-    UPGRADE10: 'up10bought',
-    UPGRADE11: 'up11bought',
-    UPGRADE12: 'up12bought',
-    UPGRADE13: 'up13bought',
-    UPGRADE14: 'up14bought',
-    PRESTIGE_UNLOCKED: 'prestigeTabUnlocked',
     CPS: 'cps',
-    LAST_TIME: 'lastTime'
+    LAST_TIME: 'lastTime',
   };
+
+  upgrades.forEach((upgrade) => {
+    storageKeys[upgrade.key] = upgrade.key;
+  });
 
   const gameState = {
     clickMulti: new Decimal(1),
     prestigeClickMulti: new Decimal(1),
     PPts: new Decimal(0),
-    up1Bought: new Decimal(0),
-    up2Bought: new Decimal(0),
-    up3Bought: new Decimal(0),
-    up4Bought: new Decimal(0),
-    up5Bought: new Decimal(0),
-    up6Bought: new Decimal(0),
-    up7Bought: new Decimal(0),
-    up8Bought: new Decimal(0),
-    up9Bought: new Decimal(0),
-    up10Bought: new Decimal(0),
-    up11Bought: new Decimal(0),
-    up12Bought: new Decimal(0),
-    up13Bought: new Decimal(0),  
-    up14Bought: new Decimal(0),
     clickCount: new Decimal(0),
-    cpsClicks: new Decimal(0),
-    prestigeTabUnlocked: new Decimal(0),
-    tabMain: true,
-    tabPrestige: false,
-    lastTime: new Decimal(Date.now()),
     cps: new Decimal(0),
-    passiveIncome: new Decimal(0)
+    passiveIncome: new Decimal(0),
+    lastTime: new Decimal(Date.now()),
   };
+
+  upgrades.forEach((upgrade) => {
+    gameState[upgrade.key] = new Decimal(0);
+  });
 
   const saveState = (key, value) => {
     try {
@@ -105,424 +69,72 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const loadState = async (key, defaultValue) => {
-  try {
-    const value = localStorage.getItem(key);
-    return value !== null && !isNaN(value) ? new Decimal(value) : new Decimal(defaultValue);
-  } catch (e) {
-    console.error(`Failed to load ${key}`, e);
-    return new Decimal(defaultValue);
-  }
-};
+    try {
+      const value = localStorage.getItem(key);
+      return value !== null && !isNaN(value) ? new Decimal(value) : new Decimal(defaultValue);
+    } catch (e) {
+      console.error(`Failed to load ${key}`, e);
+      return new Decimal(defaultValue);
+    }
+  };
 
+  const saveGameState = () => {
+    Object.keys(storageKeys).forEach((key) => saveState(storageKeys[key], gameState[key]));
+  };
+
+  const loadGameState = async () => {
+    const promises = Object.keys(storageKeys).map((key) => loadState(storageKeys[key], 0));
+    const results = await Promise.all(promises);
+    Object.keys(storageKeys).forEach((key, index) => {
+      gameState[key] = results[index];
+    });
+  };
 
   const updateElementText = (element, value) => {
     element.innerText = value.toString();
   };
 
-  const saveUpgradeState = () => {
-    saveState(storageKeys.UPGRADE1, gameState.up1Bought);
-    saveState(storageKeys.UPGRADE2, gameState.up2Bought);
-    saveState(storageKeys.UPGRADE3, gameState.up3Bought);
-    saveState(storageKeys.UPGRADE4, gameState.up4Bought);
-    saveState(storageKeys.UPGRADE5, gameState.up5Bought);
-    saveState(storageKeys.UPGRADE6, gameState.up6Bought);
-    saveState(storageKeys.UPGRADE7, gameState.up7Bought);
-    saveState(storageKeys.UPGRADE8, gameState.up8Bought);
-    saveState(storageKeys.UPGRADE9, gameState.up9Bought);
-    saveState(storageKeys.UPGRADE10, gameState.up10Bought);
-    saveState(storageKeys.UPGRADE11, gameState.up11Bought);
-    saveState(storageKeys.UPGRADE12, gameState.up12Bought);
-    saveState(storageKeys.UPGRADE13, gameState.up13Bought);
-    saveState(storageKeys.UPGRADE14, gameState.up14Bought);
-  };
-
-  const loadUpgradeState = async () => {
-    try {
-      const [up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought, up13Bought, up14Bought] = await Promise.all([
-        loadState(storageKeys.UPGRADE1, 0),
-        loadState(storageKeys.UPGRADE2, 0),
-        loadState(storageKeys.UPGRADE3, 0),
-        loadState(storageKeys.UPGRADE4, 0),
-        loadState(storageKeys.UPGRADE5, 0),
-        loadState(storageKeys.UPGRADE6, 0),
-        loadState(storageKeys.UPGRADE7, 0),
-        loadState(storageKeys.UPGRADE8, 0),
-        loadState(storageKeys.UPGRADE9, 0),
-	loadState(storageKeys.UPGRADE10, 0),
-        loadState(storageKeys.UPGRADE11, 0),
-	loadState(storageKeys.UPGRADE12, 0),
-	loadState(storageKeys.UPGRADE13, 0),
-	loadState(storageKeys.UPGRADE14, 0)
-      ]);
-      gameState.up1Bought = up1Bought;
-      gameState.up2Bought = up2Bought;
-      gameState.up3Bought = up3Bought;
-      gameState.up4Bought = up4Bought;
-      gameState.up5Bought = up5Bought;
-      gameState.up6Bought = up6Bought;
-      gameState.up7Bought = up7Bought;
-      gameState.up8Bought = up8Bought;
-      gameState.up9Bought = up9Bought;
-      gameState.up10Bought = up10Bought;
-      gameState.up11Bought = up11Bought;
-      gameState.up12Bought = up12Bought;
-      gameState.up13Bought = up13Bought;
-      gameState.up14Bought = up14Bought;
-      return { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought, up13Bought, up14Bought };
-    } catch (e) {
-      console.error("Error loading upgrade states:", e);
-      return { up1Bought: new Decimal(0), up2Bought: new Decimal(0), up3Bought: new Decimal(0), up4Bought: new Decimal(0), up5Bought: new Decimal(0), up6Bought: new Decimal(0), up7Bought: new Decimal(0), up8Bought: new Decimal(0), up9Bought: new Decimal(0), up10Bought: new Decimal(0), up11Bought: new Decimal(0), up12Bought: new Decimal(0), up13Bought: new Decimal(0), up14Bought: new Decimal(0) };
-    }
-  };
-
-  const incrementClick = () => {
-    gameState.clickCount = gameState.clickCount.add(gameState.clickMulti.times(gameState.prestigeClickMulti));
-    updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
-    checkUpgradeRequirements();
-    saveGameState();
-    updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
-    toScientificNotation(new Decimal(gameState.clickCount));
-    updatePP();
-  };
-  
-  const buyUpgrade = (upgradeKey, cost, multiplier, cpsMulti, cpsAdd, element) => {
-    if (gameState[upgradeKey].lessThan(1) && gameState.clickCount.gte(cost)) {
-      gameState[upgradeKey] = gameState[upgradeKey].add(1);
-      gameState.clickCount = gameState.clickCount.sub(cost);
-      gameState.clickMulti = gameState.clickMulti.times(multiplier);
-      gameState.cps = gameState.cps.add(cpsAdd);
-      gameState.passiveIncome = gameState.passiveIncome.add(cpsAdd);
-      gameState.cps = gameState.cps.times(cpsMulti);
-      gameState.passiveIncome = gameState.passiveIncome.times(cpsMulti);
-      updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
-      saveUpgradeState();
-      saveGameState();
-      element.classList.add('bought');
-      checkUpgradeRequirements();
-      checkPrestigeTab();
-      updateCPS();
-      updatePP();
-    }
-  };
-
-  const buyPPUpgrade = (upgradeKey, cost, multiplier, element) => {
-    if (gameState[upgradeKey].lessThan(1) && gameState.PPts.gte(cost)) {
-      gameState[upgradeKey] = gameState[upgradeKey].add(1);
-      gameState.PPts = gameState.PPts.sub(cost);
-      gameState.prestigeClickMulti = gameState.prestigeClickMulti.times(multiplier);
-      updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
-      saveUpgradeState();
-      saveGameState();
-      element.classList.add('bought');
-      checkUpgradeRequirements();
-      checkPrestigeTab();
-      updateCPS();
-      updatePP();
-    }
-  };
-	
-  const handlePassiveIncome = () => {
-    gameState.clickCount = gameState.clickCount.add(gameState.passiveIncome);
-    updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
-    updatePP();
-    saveGameState();
-    checkPrestigeTab();
-  };
-
-  const updatePP = () => {
-  	const resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
-	updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
-	updateElementText(elements.prestigeElement, format(resetAmount));
-  }
-	
-  const updateCPS = () => {
-    const now = new Decimal(Date.now());
-    const elapsedSeconds = now.sub(gameState.lastTime).div(1000);
-    const totalClicks = gameState.cpsClicks.add(gameState.passiveIncome.times(elapsedSeconds));
-    const cpsDisplay = totalClicks.div(elapsedSeconds).toFixed(2);
-    updateElementText(elements.cpsElement, 'CPS: ' + format(cpsDisplay));
-    gameState.cpsClicks = new Decimal(0);
-    gameState.lastTime = now;
-  };
-	
   const checkUpgradeRequirements = () => {
-    elements.up1Button.classList.toggle('requirements-met', gameState.clickCount.gte(75) && gameState.up1Bought.lessThan(1));
-    elements.up2Button.classList.toggle('requirements-met', gameState.clickCount.gte(300) && gameState.up2Bought.lessThan(1));
-    elements.up3Button.classList.toggle('requirements-met', gameState.clickCount.gte(700) && gameState.up3Bought.lessThan(1));
-    elements.up4Button.classList.toggle('requirements-met', gameState.clickCount.gte(1500) && gameState.up4Bought.lessThan(1));
-    elements.up5Button.classList.toggle('requirements-met', gameState.clickCount.gte(4250) && gameState.up5Bought.lessThan(1));
-    elements.up6Button.classList.toggle('requirements-met', gameState.clickCount.gte(10000) && gameState.up6Bought.lessThan(1));
-    elements.up7Button.classList.toggle('requirements-met', gameState.clickCount.gte(50000) && gameState.up7Bought.lessThan(1));
-    elements.up8Button.classList.toggle('requirements-met', gameState.clickCount.gte(225000) && gameState.up8Bought.lessThan(1));
-    elements.up9Button.classList.toggle('requirements-met', gameState.clickCount.gte(1e6) && gameState.up9Bought.lessThan(1));
-    elements.up10Button.classList.toggle('requirements-met', gameState.clickCount.gte(6.66e6) && gameState.up10Bought.lessThan(1));
-    elements.up11Button.classList.toggle('requirements-met', gameState.clickCount.gte(3.75e7) && gameState.up11Bought.lessThan(1));
-    elements.up12Button.classList.toggle('requirements-met', gameState.clickCount.gte(2.00e8) && gameState.up12Bought.lessThan(1));
-    elements.up13Button.classList.toggle('requirements-met', gameState.PPts.gte(1) && gameState.up13Bought.lessThan(1));
-    elements.up14Button.classList.toggle('requirements-met', gameState.PPts.gte(2) && gameState.up14Bought.lessThan(1));
-	  
+    upgrades.forEach((upgrade, index) => {
+      const button = elements.buttons[index];
+      const cost = upgrade.isPP ? gameState.PPts : gameState.clickCount;
+      button.classList.toggle('requirements-met', cost.gte(upgrade.baseCost) && gameState[upgrade.key].lessThan(1));
+    });
   };
 
-  const prestigeReset = () => {
-	let resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
-	if (resetAmount.gte(1)) {
-	    if(!confirm('Are you sure you want to prestige for ' + format(resetAmount) + ' PP?')) return
-	    doPrestigeReset();
-	}
-  };
+  const buyUpgrade = (upgrade, element) => {
+    const currency = upgrade.isPP ? gameState.PPts : gameState.clickCount;
+    const cost = new Decimal(upgrade.baseCost);
 
-  const mainTab = () => {
-	gameState.tabMain = true;
-	gamestate.tabPrestige = false;
-  };
-
-  const prestigeTab = () => {
-	gameState.tabMain = false;
-	gamestate.tabPrestige = true;
-  };
-	
-  const doPrestigeReset = () => {
-	  let resetAmount = new Decimal(gameState.clickCount.add(1).div(1e10).pow(0.075));
-	  gameState.PPts = gameState.PPts.add(resetAmount);
-	  gameState.clickCount = new Decimal(0);
-	  gameState.clickMulti = new Decimal(1);
-	  gameState.cps = new Decimal(0);
-	  gameState.passiveIncome = new Decimal(0);
-	  gameState.up1Bought = new Decimal(0);
-	  gameState.up2Bought = new Decimal(0);
-	  gameState.up3Bought = new Decimal(0);
-	  gameState.up4Bought = new Decimal(0);
-	  gameState.up5Bought = new Decimal(0);
-	  gameState.up6Bought = new Decimal(0);
-	  gameState.up7Bought = new Decimal(0);
-  	  gameState.up8Bought = new Decimal(0);
-	  gameState.up9Bought = new Decimal(0);
-	  gameState.up10Bought = new Decimal(0);
-	  gameState.up11Bought = new Decimal(0);
-	  gameState.up12Bought = new Decimal(0);
-	  updatePP();
-	  updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
-	  saveUpgradeState();
-	  saveGameState();
-	  removeBoughtProperty(up1Button);
-	  removeBoughtProperty(up2Button);
-	  removeBoughtProperty(up3Button);
-	  removeBoughtProperty(up4Button);
-	  removeBoughtProperty(up5Button);
-	  removeBoughtProperty(up6Button);
-	  removeBoughtProperty(up7Button);
-	  removeBoughtProperty(up8Button);
-	  removeBoughtProperty(up9Button);
-	  removeBoughtProperty(up10Button);
-	  removeBoughtProperty(up11Button);
-	  removeBoughtProperty(up12Button);
-  };
-
-  const removeBoughtProperty = (element) => {
-	element.classList.remove('bought');
-  };
-
-  elements.clickButton.addEventListener('click', incrementClick);
-  elements.prestigeButton.addEventListener('click', prestigeReset);
-  elements.up1Button.addEventListener('click', () => buyUpgrade('up1Bought', new Decimal(75), new Decimal(2), new Decimal(1), new Decimal(0), elements.up1Button));
-  elements.up2Button.addEventListener('click', () => buyUpgrade('up2Bought', new Decimal(300), new Decimal(2), new Decimal(1), new Decimal(1), elements.up2Button)); // <-- Add this closing parenthesis
-  elements.up3Button.addEventListener('click', () => buyUpgrade('up3Bought', new Decimal(700), new Decimal(1.75), new Decimal(5), new Decimal(0), elements.up3Button));  
-  elements.up4Button.addEventListener('click', () => buyUpgrade('up4Bought', new Decimal(1500), new Decimal(2.5), new Decimal(3), new Decimal(0), elements.up4Button));
-  elements.up5Button.addEventListener('click', () => buyUpgrade('up5Bought', new Decimal(4250), new Decimal(2.25), new Decimal(2.75), new Decimal(0), elements.up5Button));
-  elements.up6Button.addEventListener('click', () => buyUpgrade('up6Bought', new Decimal(10000), new Decimal(4), new Decimal(5), new Decimal(0), elements.up6Button));
-  elements.up7Button.addEventListener('click', () => buyUpgrade('up7Bought', new Decimal(50000), new Decimal(3.25), new Decimal(3), new Decimal(0), elements.up7Button));
-  elements.up8Button.addEventListener('click', () => buyUpgrade('up8Bought', new Decimal(225000), new Decimal(5), new Decimal(2.8), new Decimal(0), elements.up8Button));
-  elements.up9Button.addEventListener('click', () => buyUpgrade('up9Bought', new Decimal(1e6), new Decimal(6), new Decimal(2.5), new Decimal(0), elements.up9Button));
-  elements.up10Button.addEventListener('click', () => buyUpgrade('up10Bought', new Decimal(6.66e6), new Decimal(6.66), new Decimal(6.66), new Decimal(0), elements.up10Button));
-  elements.up11Button.addEventListener('click', () => buyUpgrade('up11Bought', new Decimal(3.75e7), new Decimal(5), new Decimal(10), new Decimal(0), elements.up11Button));
-  elements.up12Button.addEventListener('click', () => buyUpgrade('up12Bought', new Decimal(2.00e8), new Decimal(10), new Decimal(5), new Decimal(0), elements.up12Button));
-  elements.up13Button.addEventListener('click', () => buyPPUpgrade('up13Bought', new Decimal(1), new Decimal(5), elements.up13Button));
-  elements.up14Button.addEventListener('click', () => buyPPUpgrade('up14Bought', new Decimal(2), new Decimal(3), elements.up14Button));
-	
-
-  const saveGameState = () => {
-    saveState(storageKeys.CLICK, gameState.clickCount);
-    saveState(storageKeys.PP, gameState.PPts);
-    saveState(storageKeys.CPS, gameState.cps);
-    saveState(storageKeys.PRESTIGE_UNLOCKED, gameState.prestigeTabUnlocked);
-    saveState(storageKeys.LAST_TIME, gameState.lastTime);
-  };
-
-const addCPS = (upgradeKey, number, cost) => {
-   if (gameState[upgradeKey].lessThan(1) && gameState.clickCount.gte(cost)) { 
-    gameState.cps = gameState.cps.add(number);
-    gameState.passiveIncome = gameState.passiveIncome.add(number);
-    updateCPS();
-   }
-  };
-
-  const loadGameState = async () => {
-    try {
-      const [clickCount, PPts, cps, prestigeTabUnlocked, lastTime] = await Promise.all([
-        loadState(storageKeys.CLICK, 0),
-	loadState(storageKeys.PP, 0),
-        loadState(storageKeys.CPS, 0),
-	loadState(storageKeys.PRESTIGE_TAB, 0),  
-        loadState(storageKeys.LAST_TIME, Date.now())
-      ]);
-      gameState.clickCount = clickCount;
-      gameState.cps = cps;
-      gameState.PPts = PPts;
-      gameState.prestigeTabUnlocked = prestigeTabUnlocked;
-      gameState.lastTime = lastTime;
-      return { clickCount, PPts, cps, prestigeTabUnlocked, lastTime };
-    } catch (e) {
-      console.error("Error loading game state:", e);
-      return { clickCount: new Decimal(0), PPts: new Decimal(0), cps: new Decimal(0), prestigeTabUnlocked: new Decimal(0), lastTime: new Decimal(Date.now()) };
+    if (currency.gte(cost) && gameState[upgrade.key].lessThan(1)) {
+      gameState[upgrade.key] = gameState[upgrade.key].add(1);
+      if (upgrade.isPP) {
+        gameState.PPts = gameState.PPts.sub(cost);
+        gameState.prestigeClickMulti = gameState.prestigeClickMulti.times(upgrade.multiplier);
+      } else {
+        gameState.clickCount = gameState.clickCount.sub(cost);
+        gameState.clickMulti = gameState.clickMulti.times(upgrade.multiplier);
+        gameState.cps = gameState.cps.add(upgrade.cpsAdd).times(upgrade.cpsMulti);
+        gameState.passiveIncome = gameState.passiveIncome.add(upgrade.cpsAdd).times(upgrade.cpsMulti);
+      }
+      element.classList.add('bought');
+      saveGameState();
+      checkUpgradeRequirements();
     }
   };
 
   const initializeGame = async () => {
-    try {
-      const [{ clickCount, PPts, cps, prestigeTabUnlocked, lastTime }, { up1Bought, up2Bought, up3Bought, up4Bought, up5Bought, up6Bought, up7Bought, up8Bought, up9Bought, up10Bought, up11Bought, up12Bought, up13Bought, up14Bought }] = await Promise.all([
-        loadGameState(),
-        loadUpgradeState()
-      ]);
-      gameState.clickCount = clickCount;
-      gameState.cps = cps;
-      gameState.PPts = PPts;
-      gameState.prestigeTabUnlocked = prestigeTabUnlocked;
-      gameState.lastTime = lastTime;
-      gameState.up1Bought = up1Bought;
-      gameState.up2Bought = up2Bought;
-      gameState.up3Bought = up3Bought;
-      gameState.up4Bought = up4Bought;
-      gameState.up5Bought = up5Bought;
-      gameState.up6Bought = up6Bought;
-      gameState.up7Bought = up7Bought;
-      gameState.up8Bought = up8Bought;
-      gameState.up9Bought = up9Bought;
-      gameState.up10Bought = up10Bought;
-      gameState.up11Bought = up11Bought;
-      gameState.up12Bought = up12Bought;
-      gameState.up13Bought = up13Bought;
-      gameState.up14Bought = up14Bought;
-
-      if (gameState.up1Bought.gte(1)) {
-        elements.up1Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(2);
-      }
-      if (gameState.up2Bought.gte(1)) {
-        elements.up2Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(2);
-        gameState.cps = gameState.cps.add(1);
-        gameState.passiveIncome = gameState.passiveIncome.add(1);
-      }
-      if (gameState.up3Bought.gte(1)) {
-        elements.up3Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(1.75);
-        gameState.cps = gameState.cps.times(5);
-        gameState.passiveIncome = gameState.passiveIncome.times(5);
-      }
-      if (gameState.up4Bought.gte(1)) {
-        elements.up4Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(2.5);
-        gameState.cps = gameState.cps.times(3);
-        gameState.passiveIncome = gameState.passiveIncome.times(3);
-      }
-      if (gameState.up5Bought.gte(1)) {
-        elements.up5Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(2.25);
-        gameState.cps = gameState.cps.times(2.75);
-        gameState.passiveIncome = gameState.passiveIncome.times(2.75);
-      }
-      if (gameState.up6Bought.gte(1)) {
-        elements.up6Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(4);
-        gameState.cps = gameState.cps.times(5);
-        gameState.passiveIncome = gameState.passiveIncome.times(5);
-      }
-      if (gameState.up7Bought.gte(1)) {
-        elements.up7Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(3.25);
-        gameState.cps = gameState.cps.times(3);
-        gameState.passiveIncome = gameState.passiveIncome.times(3);
-      }
-      if (gameState.up8Bought.gte(1)) {
-        elements.up8Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(5);
-        gameState.cps = gameState.cps.times(2.8);
-        gameState.passiveIncome = gameState.passiveIncome.times(2.8);
-      }
-      if (gameState.up9Bought.gte(1)) {
-        elements.up9Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(6);
-        gameState.cps = gameState.cps.times(2.5);
-        gameState.passiveIncome = gameState.passiveIncome.times(2.5);
-      }
-      if (gameState.up10Bought.gte(1)) {
-        elements.up10Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(6.66);
-        gameState.cps = gameState.cps.times(6.66);
-        gameState.passiveIncome = gameState.passiveIncome.times(6.66);
-      }
-      if (gameState.up11Bought.gte(1)) {
-        elements.up11Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(5);
-        gameState.cps = gameState.cps.times(10);
-        gameState.passiveIncome = gameState.passiveIncome.times(10);
-      }
-      if (gameState.up12Bought.gte(1)) {
-        elements.up12Button.classList.add('bought');
-        gameState.clickMulti = gameState.clickMulti.times(10);
-        gameState.cps = gameState.cps.times(5);
-        gameState.passiveIncome = gameState.passiveIncome.times(5);
-      }
-      if (gameState.up13Bought.gte(1)) {
-        elements.up13Button.classList.add('bought');
-        gameState.prestigeClickMulti = gameState.prestigeClickMulti.times(5);
-      }
-      if (gameState.up14Bought.gte(1)) {
-        elements.up14Button.classList.add('bought');
-        gameState.prestigeClickMulti = gameState.prestigeClickMulti.times(3);
-      }
-      updateElementText(elements.clickElement, 'You have ' + format(gameState.clickCount) + ' Clicks');
-      updateElementText(elements.PPElement, 'You have ' + format(gameState.PPts) + ' PP');
-      updateCPS();
-      updatePP();
-      checkUpgradeRequirements();
-      checkPrestigeTab();
-      mainTab();
-      console.log("Game initialized successfully");
-    } catch (e) {
-      console.error("Error during game initialization", e);
-    } finally {
-      hideLoadingScreen();
-    }
+    await loadGameState();
+    upgrades.forEach((upgrade, index) => {
+      const element = elements.buttons[index];
+      element.addEventListener('click', () => buyUpgrade(upgrade, element));
+    });
+    checkUpgradeRequirements();
   };
 
-  function hideLoadingScreen() {
-    const loadingScreen = document.getElementById('loading-screen');
-    if (loadingScreen) {
-      loadingScreen.style.animation = 'fadeOut 1s forwards';
-      loadingScreen.addEventListener('animationend', () => {
-        loadingScreen.style.display = 'none';
-      });
-    } else {
-      console.error('Loading screen element not found.');
-    }
-  }  
-function checkPrestigeTab() {
-  	const prestigeTab = document.getElementById('prestige-tab');
-	if(gameState.clickCount.gte(1e10)) {
-		prestigeTab.style.display = 'block';
-		gameState.prestigeTabUnlocked = gameState.prestigeTabUnlocked.add(1);
-	};
-	if(gameState.prestigeTabUnlocked.gte(1)) {
-		prestigeTab.style.display = 'block';
-	};
-}
-	
-  await initializeGame();
-
+  // Periodic Updates
   setInterval(saveGameState, 5000);
-  setInterval(updateCPS, 1000);
-  setInterval(handlePassiveIncome, 1000);
   setInterval(checkUpgradeRequirements, 1000);
-   
+
+  await initializeGame();
 });
