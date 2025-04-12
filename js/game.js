@@ -7,6 +7,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     return element;
   };
 
+  const mainUpgrades = [
+    { id: 1, description: 'x2 Clicks', cost: new Decimal(75) },
+    { id: 2, description: 'x2 Clicks and 1 Click per Second', cost: new Decimal(300) },
+    { id: 3, description: 'x1.75 Clicks and x5 Clicks per Second', cost: new Decimal(700) },
+    { id: 4, description: 'x2.5 Clicks and x3 Clicks per Second', cost: new Decimal(1500) },
+    { id: 5, description: 'x2.25 Clicks and x2.75 Click per Second', cost: new Decimal(4250) },
+    { id: 6, description: 'x4 Clicks and x5 Clicks per Second', cost: new Decimal(10000) },
+    { id: 7, description: 'x3.25 Clicks and x3 Clicks per Second', cost: new Decimal(50000) },
+    { id: 8, description: 'x5 Clicks and x2.8 Click per Second', cost: new Decimal(225000) },
+    { id: 9, description: 'x6 Clicks and x2.5 Click per Second', cost: new Decimal("1e6") },
+    { id: 10, description: 'x6.66 Clicks and Clicks per Second', cost: new Decimal("6.66e6") },
+    { id: 11, description: 'x5 Clicks and x10 Click per Second', cost: new Decimal("3.75e7") },
+    { id: 12, description: 'x10 Clicks and x5 Clicks per Second', cost: new Decimal("2e8") },
+    // Add more upgrades here
+];
+
+const prestigeUpgrades = [
+    { id: 13, description: 'x5 Clicks', cost: 1 },
+    { id: 14, description: 'x3 Clicks', cost: 2 },
+    { id: 15, description: 'x10 Clicks', cost: 5 },
+    // Add more prestige upgrades here
+];
+
+function renderUpgrades(containerId, upgrades) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = ''; // Clear existing buttons
+    upgrades.forEach(upgrade => {
+        const button = document.createElement('button');
+        button.id = `upgrade${upgrade.id}`;
+        button.className = `up${upgrade.id}`;
+        button.textContent = `Upgrade ${upgrade.id}: ${upgrade.description}. Cost: ${format(upgrade.cost)} Clicks`;
+        container.appendChild(button);
+    });
+}
+
+// Call render functions on page load or game state update
+renderUpgrades('main-upgrades', mainUpgrades);
+renderUpgrades('prestige-upgrades', prestigeUpgrades);
+  
   const upgrades = [
     { key: 'up1Bought', baseCost: 75, multiplier: 2, cpsMulti: 1, cpsAdd: 0 },
     { key: 'up2Bought', baseCost: 300, multiplier: 2, cpsMulti: 1, cpsAdd: 1 },
