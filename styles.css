@@ -4,10 +4,10 @@ body {
 }
 
 .a {
-    text-align: center;
+  text-align: center;
 }
 
-/* Define keyframes for fade-out animation */
+/* Keyframes for fade-out animation */
 @keyframes fadeOut {
   from {
     opacity: 1;
@@ -17,7 +17,7 @@ body {
   }
 }
 
-/* Apply the fade-out animation to the loading screen */
+/* Loading screen animation */
 #loading-screen {
   position: fixed;
   width: 100%;
@@ -27,21 +27,21 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  animation: fadeOut 1s forwards; /* Add this line */
+  animation: fadeOut 1s forwards;
 }
 
-#main-tab {
+#main-tab, #prestige-tab {
   width: 75px;
   height: 35px;
   border-radius: 10px;
+}
+
+#main-tab {
   border-color: green;
   background-color: green;
 }
 
 #prestige-tab {
-  width: 75px;
-  height: 35px;
-  border-radius: 10px;
   border-color: blue;
   background-color: blue;
   display: none;
@@ -49,51 +49,39 @@ body {
 
 .tab-container {
   display: flex;
-  flex-direction: row; /* Set the container to arrange items in a row */
-  overflow-x: auto; /* Allow horizontal scrolling if necessary */
-  flex-wrap: wrap; /* Add wraping if upgrades are overflowing the screen. */
-  justify-content: center; /* Center alignment */
-  align-items: center; /* Center alignment */
+  flex-direction: row;
+  overflow-x: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
-.tab-button:hover {
-  transition: transform 0.4s ease-out;
-  transform: scale(1.05);
-  cursor: pointer;
-}
-  
-.click-button {
-  width: 165px;
-  height: 75px;
-  border-radius: 20px;
-  border-color: green;
-  background-color: green;
-}
-
-.prestige-button {
-  width: 200px;
-  height: 75px;
-  border-radius: 20px;
-  border-color: blue;
-  background-color: blue;
-}
-
-.click-button:hover {
-  transition: transform 0.65s ease-out;
-  transform: scale(1.15);
-  cursor: pointer;
-}
-
+.tab-button:hover,
+.click-button:hover,
 .prestige-button:hover {
   transition: transform 0.65s ease-out;
   transform: scale(1.15);
   cursor: pointer;
 }
 
-.click-button:active {
-  transform: scale(1.2);
+.click-button,
+.prestige-button {
+  width: 165px;
+  height: 75px;
+  border-radius: 20px;
 }
 
+.click-button {
+  border-color: green;
+  background-color: green;
+}
+
+.prestige-button {
+  border-color: blue;
+  background-color: blue;
+}
+
+.click-button:active,
 .prestige-button:active {
   transform: scale(1.2);
 }
@@ -114,13 +102,8 @@ body {
   border-radius: 6px;
 }
 
-#upgrade1:hover, #upgrade2:hover, #upgrade3:hover, #upgrade4:hover, #upgrade5:hover, #upgrade6:hover, #upgrade7:hover, #upgrade8:hover, #upgrade9:hover, #upgrade10:hover, #upgrade11:hover, #upgrade12:hover, #upgrade13:hover, #upgrade14:hover {
-  transition: transform 0.5s ease-out;
-  transform: scale(1.06);
-  cursor: pointer;
-}
-
-#upgrade1, #upgrade2, #upgrade3, #upgrade4, #upgrade5, #upgrade6, #upgrade7, #upgrade8, #upgrade9, #upgrade10, #upgrade11, #upgrade12, #upgrade13, #upgrade14 {
+/* Upgrade styles */
+.upgrade {
   background-color: red;
   text-align: center;
   vertical-align: middle;
@@ -128,30 +111,36 @@ body {
   height: 150px;
   border-radius: 10px;
   display: flex;
-  flex-direction: column; /* Changed to column for vertical alignment */
-  justify-content: center; /* Center alignment */
-  align-items: center; /* Center alignment */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-right: 5px;
+}
+
+.upgrade:hover {
+  transition: transform 0.5s ease-out;
+  transform: scale(1.06);
+  cursor: pointer;
+}
+
+.upgrade.requirements-met {
+  background-color: yellow;
+}
+
+.upgrade.bought {
+  background-color: green;
 }
 
 .upgrade-container {
   display: flex;
-  flex-direction: row; /* Set the container to arrange items in a row */
-  overflow-x: auto; /* Allow horizontal scrolling if necessary */
-  flex-wrap: wrap; /* Add wraping if upgrades are overflowing the screen. */
-  justify-content: center; /* Center alignment */
-  align-items: center; /* Center alignment */
+  flex-direction: row;
+  overflow-x: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .upgrade-tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
-}
-
-#upgrade1.requirements-met, #upgrade2.requirements-met, #upgrade3.requirements-met, #upgrade4.requirements-met, #upgrade5.requirements-met, #upgrade6.requirements-met, #upgrade7.requirements-met, #upgrade8.requirements-met, #upgrade9.requirements-met, #upgrade10.requirements-met, #upgrade11.requirements-met, #upgrade12.requirements-met, #upgrade13.requirements-met, #upgrade14.requirements-met {
-  background-color: yellow;
-}
-
-#upgrade1.bought, #upgrade2.bought, #upgrade3.bought, #upgrade4.bought, #upgrade5.bought, #upgrade6.bought, #upgrade7.bought, #upgrade8.bought, #upgrade9.bought, #upgrade10.bought, #upgrade11.bought, #upgrade12.bought, #upgrade13.bought, #upgrade14.bought {
-  background-color: green;
 }
