@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     { key: 'up12Bought', baseCost: 2.00e8, multiplier: 10, cpsMulti: 5, cpsAdd: 0 },
     { key: 'up13Bought', baseCost: 1, multiplier: 5, cpsMulti: 0, cpsAdd: 0, isPP: true },
     { key: 'up14Bought', baseCost: 2, multiplier: 3, cpsMulti: 0, cpsAdd: 0, isPP: true },
+    { key: 'up14Bought', baseCost: 5, multiplier: 10, cpsMulti: 0, cpsAdd: 0, isPP: true },
   ];
 
   const elements = {
