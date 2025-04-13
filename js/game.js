@@ -61,7 +61,7 @@ renderUpgrades('prestige-upgrades', prestigeUpgrades);
     { key: 'up12Bought', baseCost: 2.00e8, multiplier: 10, cpsMulti: 5, cpsAdd: 0 },
     { key: 'up13Bought', baseCost: 1, multiplier: 5, cpsMulti: 0, cpsAdd: 0, isPP: true },
     { key: 'up14Bought', baseCost: 2, multiplier: 3, cpsMulti: 0, cpsAdd: 0, isPP: true },
-    { key: 'up14Bought', baseCost: 5, multiplier: 10, cpsMulti: 0, cpsAdd: 0, isPP: true },
+    { key: 'up15Bought', baseCost: 5, multiplier: 10, cpsMulti: 0, cpsAdd: 0, isPP: true },
   ];
 
   const elements = {
@@ -109,14 +109,14 @@ renderUpgrades('prestige-upgrades', prestigeUpgrades);
   };
 
   const loadState = async (key, defaultValue) => {
-    try {
-      const value = localStorage.getItem(key);
-      return value !== null && !isNaN(value) ? new Decimal(value) : new Decimal(defaultValue);
-    } catch (e) {
-      console.error(`Failed to load ${key}`, e);
-      return new Decimal(defaultValue);
-    }
-  };
+  try {
+    const value = localStorage.getItem(key);
+    return value !== null && !isNaN(Number(value)) ? new Decimal(value) : new Decimal(defaultValue);
+  } catch (e) {
+    console.error(`Failed to load ${key}`, e);
+    return new Decimal(defaultValue);
+  }
+};
 
   const saveGameState = () => {
     Object.keys(storageKeys).forEach((key) => saveState(storageKeys[key], gameState[key]));
@@ -135,12 +135,15 @@ renderUpgrades('prestige-upgrades', prestigeUpgrades);
   };
 
   const checkUpgradeRequirements = () => {
-    upgrades.forEach((upgrade, index) => {
-      const button = elements.buttons[index];
-      const cost = upgrade.isPP ? gameState.PPts : gameState.clickCount;
-      button.classList.toggle('requirements-met', cost.gte(upgrade.baseCost) && gameState[upgrade.key].lessThan(1));
-    });
-  };
+  upgrades.forEach((upgrade, index) => {
+    const button = elements.buttons[index];
+    const cost = upgrade.isPP ? gameState.PPts : gameState.clickCount;
+    const meetsRequirements = cost.gte(upgrade.baseCost) && gameState[upgrade.key].lessThan(1);
+    if (button.classList.contains('requirements-met') !== meetsRequirements) {
+      button.classList.toggle('requirements-met', meetsRequirements);
+    }
+  });
+};
 
   const buyUpgrade = (upgrade, element) => {
     const currency = upgrade.isPP ? gameState.PPts : gameState.clickCount;
@@ -173,8 +176,11 @@ renderUpgrades('prestige-upgrades', prestigeUpgrades);
   };
 
   // Periodic Updates
-  setInterval(saveGameState, 5000);
-  setInterval(checkUpgradeRequirements, 1000);
+  const AUTO_SAVE_INTERVAL = 5000; // 5 seconds
+const UPGRADE_CHECK_INTERVAL = 1000; // 1 second
+
+setInterval(saveGameState, AUTO_SAVE_INTERVAL);
+setInterval(checkUpgradeRequirements, UPGRADE_CHECK_INTERVAL);
 
   await initializeGame();
 });
