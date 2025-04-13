@@ -35,7 +35,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       const button = document.createElement('button');
       button.id = `upgrade${upgrade.id}`;
       button.className = `up${upgrade.id}`;
+      if(containerId = prestigeUpgrades) {
       button.textContent = `Upgrade ${upgrade.id}: ${upgrade.description}. Cost: ${format(upgrade.cost)} Clicks`;
+      } else {
+      button.textContent = `Upgrade ${upgrade.id}: ${upgrade.description}. Cost: ${format(upgrade.cost)} PP`;
+      }
       container.appendChild(button);
     });
   };
