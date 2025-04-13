@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     { id: 3, description: 'x1.75 Clicks and +5 Clicks per Second', cost: new Decimal(700), multiplier: 1.75, cpsAdd: 5 },
     { id: 4, description: 'x2.5 Clicks and +3 Clicks per Second', cost: new Decimal(1500), multiplier: 2.5, cpsAdd: 3},
     // Add other upgrades here...
-    { id: 5, description: 'x2.25 Clicks and +15 Click per Second', cost: new Decimal(4250), multiplier: 1.75, cpsAdd: 15},
+    { id: 5, description: 'x2.25 Clicks and +15 Click per Second', cost: new Decimal(4250), multiplier: 2.25, cpsAdd: 15},
     { id: 6, description: 'x4 Clicks and +50 Clicks per Second', cost: new Decimal(10000), multiplier: 4, cpsAdd: 50 },
     { id: 7, description: 'x3.25 Clicks and +150 Clicks per Second', cost: new Decimal(50000), multiplier: 3.25, cpsAdd: 150 },
     { id: 8, description: 'x5 Clicks and +300 Click per Second', cost: new Decimal(225000), multiplier: 5, cpsAdd: 300 },
@@ -65,17 +65,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     LAST_TIME: 'lastTime',
     ...Object.fromEntries([...mainUpgrades, ...prestigeUpgrades].map((u) => [`upgrade${u.id}`, `upgrade${u.id}`])),
   };
-
+  
+  const createDecimalMap = (items, defaultValue = 0) =>
+  Object.fromEntries(items.map((item) => [`upgrade${item.id}`, new Decimal(defaultValue)]));
+  
   const gameState = {
-    clickMulti: new Decimal(1),
-    prestigeClickMulti: new Decimal(1),
-    PPts: new Decimal(0),
-    clickCount: new Decimal(0),
-    cps: new Decimal(0),
-    passiveIncome: new Decimal(0),
-    lastTime: new Decimal(Date.now()),
-    ...Object.fromEntries([...mainUpgrades, ...prestigeUpgrades].map((u) => [`upgrade${u.id}`, new Decimal(0)])),
-  };
+  clickMulti: new Decimal(1),
+  prestigeClickMulti: new Decimal(1),
+  PPts: new Decimal(0),
+  clickCount: new Decimal(0),
+  cps: new Decimal(0),
+  passiveIncome: new Decimal(0),
+  lastTime: new Decimal(Date.now()),
+  ...createDecimalMap([...mainUpgrades, ...prestigeUpgrades]),
+};
 
   const saveState = (key, value) => {
     try {
@@ -116,25 +119,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   };
 
-  const buyUpgrade = (upgrade, element) => {
-    const currency = upgrade.isPP ? gameState.PPts : gameState.clickCount;
-    const cost = new Decimal(upgrade.cost);
+  const applyUpgrade = (upgrade, currency, cost) => {
+  gameState[`upgrade${upgrade.id}`] = gameState[`upgrade${upgrade.id}`].add(1);
+  if (upgrade.isPP) {
+    gameState.PPts = currency.sub(cost);
+    gameState.prestigeClickMulti = gameState.prestigeClickMulti.times(upgrade.multiplier);
+  } else {
+    gameState.clickCount = currency.sub(cost);
+    gameState.clickMulti = gameState.clickMulti.times(upgrade.multiplier);
+    gameState.cps = gameState.cps.add(upgrade.cpsAdd || 0);
+  }
+};
 
-    if (currency.gte(cost) && gameState[`upgrade${upgrade.id}`].lessThan(1)) {
-      gameState[`upgrade${upgrade.id}`] = gameState[`upgrade${upgrade.id}`].add(1);
-      if (upgrade.isPP) {
-        gameState.PPts = gameState.PPts.sub(cost);
-        gameState.prestigeClickMulti = gameState.prestigeClickMulti.times(upgrade.multiplier);
-      } else {
-        gameState.clickCount = gameState.clickCount.sub(cost);
-        gameState.clickMulti = gameState.clickMulti.times(upgrade.multiplier);
-        gameState.cps = gameState.cps.add(upgrade.cpsAdd || 0);
-      }
-      element.classList.add('bought');
-      saveGameState();
-      checkUpgradeRequirements();
-    }
-  };
+const buyUpgrade = (upgrade, element) => {
+  const currency = upgrade.isPP ? gameState.PPts : gameState.clickCount;
+  const cost = new Decimal(upgrade.cost);
+
+  if (currency.gte(cost) && gameState[`upgrade${upgrade.id}`].lessThan(1)) {
+    applyUpgrade(upgrade, currency, cost);
+    element.classList.add('bought');
+    saveGameState();
+    checkUpgradeRequirements();
+  }
+};
 
   const initializeGame = async () => {
     await loadGameState();
@@ -149,6 +156,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   const AUTO_SAVE_INTERVAL = 5000; // 5 seconds
   const UPGRADE_CHECK_INTERVAL = 1000; // 1 second
 
+  const validateUpgrades = (upgrades) => {
+  upgrades.forEach((upgrade) => {
+    if (typeof upgrade.multiplier !== 'number' || upgrade.multiplier <= 0) {
+      console.warn(`Invalid multiplier for upgrade ${upgrade.id}`);
+    }
+  });
+};
+
+validateUpgrades(mainUpgrades);
+validateUpgrades(prestigeUpgrades);
+  
   setInterval(saveGameState, AUTO_SAVE_INTERVAL);
   setInterval(checkUpgradeRequirements, UPGRADE_CHECK_INTERVAL);
 
